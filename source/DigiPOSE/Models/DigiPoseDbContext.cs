@@ -130,7 +130,7 @@ namespace DigiPOSE.Models
             {
                 if (property.Name.Contains("Amount") || property.Name.Contains("Cash") || property.Name.Contains("Total") || property.Name.Contains("Gross"))
                 {
-                    property.SetColumnType("decimal(18,2)");
+                    property.SetColumnType("decimal(18,4)");
                 }
                 else
                 {

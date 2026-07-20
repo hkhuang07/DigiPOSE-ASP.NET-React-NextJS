@@ -6,19 +6,19 @@
         <div class="cyber-panel-sub">[WAREHOUSE MODULE] // STOCK LEVELS BY BRANCH</div>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <button type="button" class="btn-cyber-success btn-show-modal" data-url="@Url.Action("Create", "ProductInventories")"><i class="fa-solid fa-plus me-1"></i> ADD INVENTORY RECORD</button>
-        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">RECORDS: <strong style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">@Model.Count()</strong></div>
+        <button type="button" class="btn-cyber-success btn-show-modal" data-url="@Url.Action("Create", "ProductInventories")"><i class="fa-solid fa-plus me-1"></i> ADD INVENTORY</button>
+        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">TOTAL: <strong style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">@Model.Count()</strong></div>
     </div>
     <div class="table-responsive">
         <table class="table-cyber">
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">PRODUCT</th>
-                    <th style="white-space:nowrap;">BRANCH</th>
-                    <th style="white-space:nowrap; text-align:right;">STOCK QTY</th>
-                    <th style="white-space:nowrap; text-align:right;">MIN LEVEL</th>
-                    <th style="white-space:nowrap;">ALERT</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.ProductId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.BranchId)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.StockQuantity)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.MinStockLevel)</th>
+                    <th style="white-space:nowrap; text-align:center;">STATUS</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -32,7 +32,7 @@
                         <td style="color:#A0C0CE; white-space:nowrap;">@item.Branch?.BranchName</td>
                         <td style="color:@(lowStock ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.2rem; text-align:right; white-space:nowrap;">@item.StockQuantity</td>
                         <td style="color:#FFB000; font-family:'VT323'; font-size:1.2rem; text-align:right; white-space:nowrap;">@item.MinStockLevel</td>
-                        <td style="white-space:nowrap;">@if(lowStock){ <span class="badge bg-danger">LOW STOCK</span> } else { <span class="badge bg-success">OK</span> }</td>
+                        <td style="white-space:nowrap; text-align:center;">@if(lowStock){ <span class="badge bg-danger">LOW STOCK</span> } else { <span class="badge bg-success">OK</span> }</td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details" data-url="@Url.Action("Details", "ProductInventories", new { id = item.InventoryId })"><i class="fa-solid fa-eye"></i></button>
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem; margin:0 2px; border-color:#FFB000; color:#FFB000;" title="Edit" data-url="@Url.Action("Edit", "ProductInventories", new { id = item.InventoryId })"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -48,4 +48,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:620px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

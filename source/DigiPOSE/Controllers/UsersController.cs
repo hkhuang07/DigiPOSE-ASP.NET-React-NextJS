@@ -15,7 +15,6 @@ namespace DigiPOSE.Controllers
             => View(await _context.Users
                 .Include(u => u.Branch)
                 .Include(u => u.Role)
-                .Where(u => u.IsActive)
                 .ToListAsync());
 
         public async Task<IActionResult> Details(int? id)
@@ -117,13 +116,20 @@ namespace DigiPOSE.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var item = await _context.Users.FindAsync(id);
-            if (item != null)
-            {
-                item.IsActive = false;
-                _context.Update(item);
-                await _context.SaveChangesAsync();
-            }
-            return Json(new { success = true, message = "User deactivated successfully." });
+            if (item == null) return Json(new { success = false, message = "Record not found." });
+            _context.Users.Remove(item);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = "User permanently deleted." });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleActive(int id)
+        {
+            var item = await _context.Users.FindAsync(id);
+            if (item == null) return Json(new { success = false });
+            item.IsActive = !item.IsActive;
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, isActive = item.IsActive, message = item.IsActive ? "Activated." : "Deactivated." });
         }
     }
 }

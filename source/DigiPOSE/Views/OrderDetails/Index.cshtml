@@ -1,4 +1,4 @@
-@model IEnumerable<DigiPOSE.Models.OrderDetail>
+﻿@model IEnumerable<DigiPOSE.Models.OrderDetail>
 @{ ViewData["Title"] = "Order Line Items"; }
 <div class="cyber-panel">
     <div class="cyber-panel-header">
@@ -14,12 +14,12 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">ORDER</th>
-                    <th style="white-space:nowrap;">PRODUCT</th>
-                    <th style="white-space:nowrap; text-align:right;">QTY</th>
-                    <th style="white-space:nowrap; text-align:right;">UNIT PRICE</th>
-                    <th style="white-space:nowrap; text-align:right;">TOTAL</th>
-                    <th style="white-space:nowrap;">FREE?</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.OrderId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.ProductName)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.UnitPrice)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.TotalAmount)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsFree)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -49,4 +49,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:720px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

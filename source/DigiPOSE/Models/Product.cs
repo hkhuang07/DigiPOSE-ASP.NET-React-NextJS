@@ -13,10 +13,15 @@ namespace DigiPOSE.Models
         [Display(Name = "Tax Type")] public int TaxTypeId { get; set; }
 
         [Required, StringLength(50)][Display(Name = "SKU")] public string SKU { get; set; } = null!;
+        [Column(TypeName = "varchar(50)")][StringLength(50)][Display(Name = "Barcode")] public string? Barcode { get; set; }
         [Required, StringLength(150)][Display(Name = "Product Name")] public string ProductName { get; set; } = null!;
-        [Column(TypeName = "decimal(18,0)")][Display(Name = "Selling Price")] public decimal BasePrice { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "Selling Price must be non-negative")][Column(TypeName = "decimal(18,4)")][Display(Name = "Selling Price")] public decimal BasePrice { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "Cost Price must be non-negative")][Column(TypeName = "decimal(18,4)")][Display(Name = "Cost Price")] public decimal CostPrice { get; set; } = 0;
         [StringLength(255)][Display(Name = "Image URL")] public string? ImageUrl { get; set; }
         [StringLength(200)][Display(Name = "Slug")] public string? Slug { get; set; }
+        [StringLength(1000)][Display(Name = "Description")] public string? Description { get; set; }
+        [Display(Name = "Min Stock Level")] public int MinStockLevel { get; set; } = 0;
+        [Display(Name = "Max Stock Level")] public int MaxStockLevel { get; set; } = 1000;
 
         public bool IsActive { get; set; } = true;
         [Timestamp] public byte[]? RowVersion { get; set; }

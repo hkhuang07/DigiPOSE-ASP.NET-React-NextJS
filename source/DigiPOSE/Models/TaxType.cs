@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DigiPOSE.Models
@@ -10,7 +10,7 @@ namespace DigiPOSE.Models
         [Required, StringLength(100)]
         public string TaxName { get; set; } = null!; // VD: "Thuế GTGT 8%", "Không chịu thuế"
 
-        [Column(TypeName = "decimal(18,2)")]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal TaxPercentage { get; set; }
 
         [Required, StringLength(20)]

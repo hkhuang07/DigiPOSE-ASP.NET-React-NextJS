@@ -29,10 +29,11 @@
             <thead>
                 <tr>
                     <th style="width: 5%; text-align: center; white-space: nowrap;">#</th>
-                    <th style="width: 22%; white-space: nowrap;">@Html.DisplayNameFor(model => model.CategoryName)</th>
-                    <th style="width: 18%; white-space: nowrap;">@Html.DisplayNameFor(model => model.Slug)</th>
-                    <th style="width: 35%; white-space: nowrap;">@Html.DisplayNameFor(model => model.Description)</th>
-                    <th style="width: 20%; text-align: center; white-space: nowrap;">Actions</th>
+                    <th style="white-space: nowrap;">@Html.DisplayNameFor(model => model.CategoryName)</th>
+                    <th style="white-space: nowrap;">@Html.DisplayNameFor(model => model.Slug)</th>
+                    <th style="white-space: nowrap;">@Html.DisplayNameFor(model => model.Description)</th>
+                    <th style="white-space: nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
+                    <th style="width: 20%; text-align: center; white-space: nowrap;">ACTIONS</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +53,14 @@
                         </td>
                         <td style="color: #A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="@item.Description">
                             @(string.IsNullOrEmpty(item.Description) ? "N/A" : item.Description)
+                        </td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Categories" asp-route-id="@item.CategoryId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
+                                </button>
+                            </form>
                         </td>
                         <td style="text-align: center; white-space: nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal me-1" style="padding: 4px 10px; font-size: 0.75rem; border-color:#00FF66; color:#00FF66;"

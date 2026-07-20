@@ -1,4 +1,4 @@
-@model DigiPOSE.Models.TaxType
+﻿@model DigiPOSE.Models.TaxType
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title"><i class="fa-solid fa-percent text-cyan me-2"></i> @(Model.TaxTypeId == 0 ? "ADD NEW" : "EDIT") TAXTYPE</h5>
@@ -10,19 +10,23 @@
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="mb-3">
-                <label asp-for="TaxName" class="form-cyber-label">TAX NAME</label>
+                <label asp-for="TaxName" class="form-cyber-label"></label>
                 <input asp-for="TaxName" class="form-control form-cyber-control" />
                 <span asp-validation-for="TaxName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="TaxPercentage" class="form-cyber-label">PERCENTAGE</label>
+                <label asp-for="TaxPercentage" class="form-cyber-label"></label>
                 <input asp-for="TaxPercentage" class="form-control form-cyber-control" />
                 <span asp-validation-for="TaxPercentage" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="TaxXmlCode" class="form-cyber-label">XML CODE</label>
+                <label asp-for="TaxXmlCode" class="form-cyber-label"></label>
                 <input asp-for="TaxXmlCode" class="form-control form-cyber-control" />
                 <span asp-validation-for="TaxXmlCode" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-3 d-flex align-items-center gap-3">
+                <label asp-for="IsActive" class="form-cyber-label mb-0"></label>
+                <input asp-for="IsActive" type="checkbox" class="form-check-input" />
             </div>
         </div>
         <div class="modal-footer">
@@ -31,3 +35,4 @@
         </div>
     </form>
 </div>
+

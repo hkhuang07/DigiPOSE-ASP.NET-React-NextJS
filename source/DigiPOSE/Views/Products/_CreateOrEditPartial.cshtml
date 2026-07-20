@@ -5,50 +5,75 @@
         <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
     </div>
     @* NOTE: Use id="productForm" so the special multipart AJAX handler in Products/Index.cshtml kicks in *@
-    <form id="productForm" asp-action="@(Model.ProductId == 0 ? "Create" : "Edit")" asp-controller="Products" method="post" enctype="multipart/form-data">
+    <form id="productForm" class="ajax-modal-form" asp-action="@(Model.ProductId == 0 ? "Create" : "Edit")" asp-controller="Products" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="ProductId" />
         <input type="hidden" name="existingImageUrl" value="@Model.ImageUrl" />
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="row g-2">
-                <div class="col-md-6 mb-2">
-                    <label asp-for="SKU" class="form-cyber-label">SKU <span style="color:#FF3333;">*</span></label>
+                <div class="col-md-4 mb-2">
+                    <label asp-for="SKU" class="form-cyber-label">@Html.DisplayNameFor(model => model.SKU) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="SKU" class="form-control form-cyber-control" placeholder="e.g. SKU-001" />
                     <span asp-validation-for="SKU" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-6 mb-2">
-                    <label asp-for="BasePrice" class="form-cyber-label">SELLING PRICE (VNĐ) <span style="color:#FF3333;">*</span></label>
-                    <input asp-for="BasePrice" class="form-control form-cyber-control" type="number" step="1000" min="0" />
+                <div class="col-md-4 mb-2">
+                    <label asp-for="Barcode" class="form-cyber-label"></label>
+                    <input asp-for="Barcode" class="form-control form-cyber-control" placeholder="Barcode" />
+                    <span asp-validation-for="Barcode" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label asp-for="BasePrice" class="form-cyber-label">@Html.DisplayNameFor(model => model.BasePrice) <span style="color:#FF3333;">*</span></label>
+                    <input asp-for="BasePrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="BasePrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="CostPrice" class="form-cyber-label"></label>
+                    <input asp-for="CostPrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
+                    <span asp-validation-for="CostPrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label asp-for="MinStockLevel" class="form-cyber-label"></label>
+                    <input asp-for="MinStockLevel" class="form-control form-cyber-control" type="number" min="0" />
+                    <span asp-validation-for="MinStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label asp-for="MaxStockLevel" class="form-cyber-label"></label>
+                    <input asp-for="MaxStockLevel" class="form-control form-cyber-control" type="number" min="0" />
+                    <span asp-validation-for="MaxStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
                 <div class="col-12 mb-2">
-                    <label asp-for="ProductName" class="form-cyber-label">PRODUCT NAME <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="ProductName" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductName) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="ProductName" class="form-control form-cyber-control" placeholder="Full product name" id="productNameInput" />
                     <span asp-validation-for="ProductName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
+                <div class="col-12 mb-2">
+                    <label asp-for="Description" class="form-cyber-label"></label>
+                    <textarea asp-for="Description" class="form-control form-cyber-control" rows="2" placeholder="Product details / specifications"></textarea>
+                    <span asp-validation-for="Description" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="CategoryId" class="form-cyber-label">CATEGORY <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="CategoryId" class="form-cyber-label">@Html.DisplayNameFor(model => model.CategoryId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="CategoryId" class="form-select form-cyber-control" asp-items="ViewBag.CategoryId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="CategoryId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="ProductTypeId" class="form-cyber-label">PRODUCT TYPE <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="ProductTypeId" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductTypeId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="ProductTypeId" class="form-select form-cyber-control" asp-items="ViewBag.ProductTypeId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="ProductTypeId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="UnitId" class="form-cyber-label">UNIT <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="UnitId" class="form-cyber-label">@Html.DisplayNameFor(model => model.UnitId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="UnitId" class="form-select form-cyber-control" asp-items="ViewBag.UnitId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="UnitId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="TaxTypeId" class="form-cyber-label">TAX TYPE <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="TaxTypeId" class="form-cyber-label">@Html.DisplayNameFor(model => model.TaxTypeId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="TaxTypeId" class="form-select form-cyber-control" asp-items="ViewBag.TaxTypeId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="TaxTypeId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-12 mb-2">
-                    <label asp-for="ManufacturerId" class="form-cyber-label">MANUFACTURER (optional)</label>
+                    <label asp-for="ManufacturerId" class="form-cyber-label"></label>
                     <select asp-for="ManufacturerId" class="form-select form-cyber-control" asp-items="ViewBag.ManufacturerId"><option value="">-- NONE --</option></select>
                     <span asp-validation-for="ManufacturerId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
@@ -75,6 +100,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-12 mb-2 d-flex align-items-center gap-3">
+                    <label asp-for="IsActive" class="form-cyber-label mb-0"></label>
+                    <input asp-for="IsActive" type="checkbox" class="form-check-input form-check-cyber" />
                 </div>
             </div>
         </div>

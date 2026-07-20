@@ -20,6 +20,8 @@ namespace DigiPOSE.Models
         [Display(Name = "Description")]
         public string? Description { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         public ICollection<Product>? Products { get; set; }
     }
 }

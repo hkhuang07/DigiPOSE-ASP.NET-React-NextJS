@@ -1,8 +1,43 @@
 /**
  * Global Dynamic AJAX Modal Form Engine for ERP Architecture
- * Address: Unobtrusive Validation Parsing, Anti-Forgery Tokens, & DRY Event Delegation
+ * Address: Unobtrusive Validation Parsing, Anti-Forgery Tokens, DRY Event Delegation, & Double-Submit Guard
  */
 $(document).ready(function () {
+
+    // Helper: Lock form and disable submit button with loading spinner
+    function lockFormSubmit($form) {
+        if ($form.data('submitting') === true) {
+            return false;
+        }
+        $form.data('submitting', true);
+
+        var $submitBtns = $form.find('button[type="submit"], input[type="submit"], .btn-cyber-primary[type="submit"], .btn-cyber-success[type="submit"], .btn-cyber-danger[type="submit"]');
+        $submitBtns.prop('disabled', true).addClass('disabled');
+
+        $submitBtns.each(function () {
+            var $btn = $(this);
+            if (!$btn.data('orig-html')) {
+                $btn.data('orig-html', $btn.html());
+            }
+            $btn.html('<i class="fa-solid fa-spinner fa-spin me-2"></i> PROCESSING...');
+        });
+
+        return true;
+    }
+
+    // Helper: Unlock form and restore submit button
+    function unlockFormSubmit($form) {
+        $form.data('submitting', false);
+        var $submitBtns = $form.find('button[type="submit"], input[type="submit"], .btn-cyber-primary[type="submit"], .btn-cyber-success[type="submit"], .btn-cyber-danger[type="submit"]');
+        $submitBtns.prop('disabled', false).removeClass('disabled');
+
+        $submitBtns.each(function () {
+            var $btn = $(this);
+            if ($btn.data('orig-html')) {
+                $btn.html($btn.data('orig-html'));
+            }
+        });
+    }
 
     // 1. GLOBAL GET ENGINE: Triggered by any element with class '.btn-show-modal'
     $(document).on('click', '.btn-show-modal', function (e) {
@@ -55,10 +90,30 @@ $(document).ready(function () {
             return false;
         }
 
+        // DOUBLE-SUBMIT GUARD: Lock form immediately
+        if (!lockFormSubmit($form)) {
+            return false;
+        }
+
+        var isMultipart = $form.attr('enctype') === 'multipart/form-data';
+        var ajaxData, processDataVal, contentTypeVal;
+
+        if (isMultipart) {
+            ajaxData = new FormData($form[0]);
+            processDataVal = false;
+            contentTypeVal = false;
+        } else {
+            ajaxData = $form.serialize();
+            processDataVal = true;
+            contentTypeVal = 'application/x-www-form-urlencoded; charset=UTF-8';
+        }
+
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
-            data: $form.serialize(), // AUTOMATICALLY INCLUDES __RequestVerificationToken & MODEL DATA
+            data: ajaxData,
+            processData: processDataVal,
+            contentType: contentTypeVal,
             headers: { "X-Requested-With": "XMLHttpRequest" },
             success: function (response) {
                 // CASE A: SERVER RETURNS JSON (SUCCESSFUL TRANSACTION)
@@ -79,6 +134,7 @@ $(document).ready(function () {
                 } 
                 // CASE B: SERVER RETURNS JSON (BUSINESS RULE FAILURE)
                 else if (typeof response === 'object' && !response.success) {
+                    unlockFormSubmit($form);
                     if (typeof showCyberNotify === 'function') {
                         showCyberNotify('Validation Fault', response.message, 'warning');
                     }
@@ -95,6 +151,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr) {
+                unlockFormSubmit($form);
                 var errorMsg = (xhr.responseJSON && xhr.responseJSON.message) 
                     ? xhr.responseJSON.message 
                     : "An error occurred during submission (" + xhr.status + ").";
@@ -108,4 +165,85 @@ $(document).ready(function () {
         });
     });
 
+    // 3. GLOBAL ACTIVE TOGGLE ENGINE: Handled with Cyber-Cinematic Modal Confirmation (Green/Orange/Red)
+    $(document).on('submit', '.toggle-active-form', function (e) {
+        e.preventDefault();
+        var form = this;
+        var $form = $(form);
+        var $btn = $form.find('button');
+
+        if ($form.data('submitting') === true) {
+            return false;
+        }
+
+        var isCurrentlyActive = $btn.hasClass('bg-success');
+        var themeType = isCurrentlyActive ? 'orange' : 'green';
+        var actionTitle = isCurrentlyActive ? 'CONFIRM DEACTIVATION' : 'CONFIRM ACTIVATION';
+        var actionMsg = isCurrentlyActive 
+            ? 'Are you sure you want to DEACTIVATE this record? It will be marked as inactive in the system telemetry.' 
+            : 'Are you sure you want to ACTIVATE this record?';
+        var btnText = isCurrentlyActive ? 'DEACTIVATE' : 'ACTIVATE';
+
+        var executeToggle = function() {
+            if (!lockFormSubmit($form)) {
+                return false;
+            }
+
+            var tokenInput = form.querySelector('[name=__RequestVerificationToken]');
+            var token = tokenInput ? tokenInput.value : '';
+            $.ajax({
+                url: form.action,
+                type: 'POST',
+                data: $form.serialize(),
+                headers: { "X-Requested-With": "XMLHttpRequest", "RequestVerificationToken": token },
+                success: function (d) {
+                    if (typeof d === 'object' && d.success) {
+                        if (typeof showCyberNotify === 'function') {
+                            showCyberNotify('SYSTEM STATUS UPDATED', d.message || 'Status updated successfully.', 'success');
+                        }
+                        setTimeout(function () { location.reload(); }, 600);
+                    } else {
+                        unlockFormSubmit($form);
+                        var errMsg = (d && d.message) ? d.message : 'Operation failed.';
+                        if (typeof showCyberNotify === 'function') {
+                            showCyberNotify('OPERATION FAULT', errMsg, 'error');
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    unlockFormSubmit($form);
+                    if (typeof showCyberNotify === 'function') {
+                        showCyberNotify('NETWORK FAULT', 'Communication error with server.', 'error');
+                    }
+                }
+            });
+        };
+
+        if (typeof showCyberConfirm === 'function') {
+            showCyberConfirm(actionTitle, actionMsg, themeType, executeToggle, btnText, 'CANCEL');
+        } else {
+            if (confirm(actionMsg)) {
+                executeToggle();
+            }
+        }
+    });
+
+    // 4. GLOBAL CATCH-ALL FORM SUBMIT GUARD FOR ALL OTHER FORMS
+    $(document).on('submit', 'form:not(.ajax-modal-form):not(.toggle-active-form)', function (e) {
+        var $form = $(this);
+
+        if ($form.valid && !$form.valid()) {
+            return false;
+        }
+
+        if ($form.data('submitting') === true) {
+            e.preventDefault();
+            return false;
+        }
+
+        lockFormSubmit($form);
+    });
+
 });
+
+

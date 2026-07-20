@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigiPOSE.Models
 {
@@ -7,13 +7,14 @@ namespace DigiPOSE.Models
     {
         [Key] public int NatureId { get; set; }
 
-        [Required, StringLength(100)]
+        [Required, StringLength(100)][Display(Name = "Nature Name")]
         public string NatureName { get; set; } = null!;
 
         // Mã dùng để đẩy lên API của Cơ quan Thuế (1, 2, 3, 4 theo Thông tư 78)
-        [StringLength(50)]
+        [StringLength(50)][Display(Name = "Tax Xml Code")]
         public string? TaxXmlCode { get; set; }
 
+        [Display(Name = "Status")]
         public bool IsActive { get; set; } = true;
 
         public ICollection<OrderDetail>? OrderDetails { get; set; }

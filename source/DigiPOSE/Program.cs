@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 
 // Sử dụng DbContextPooling để tái sử dụng DbContext Instance, giảm tối đa chi phí cấp phát bộ nhớ (GC Pressure) khi xử lý hàng ngàn request/giây
 builder.Services.AddDbContextPool<DigiPoseDbContext>(options =>

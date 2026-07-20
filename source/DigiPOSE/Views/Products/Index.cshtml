@@ -19,13 +19,13 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="width:50px; white-space:nowrap;">IMG</th>
-                    <th style="white-space:nowrap;">SKU</th>
-                    <th style="white-space:nowrap;">PRODUCT NAME</th>
-                    <th style="white-space:nowrap;">CATEGORY</th>
-                    <th style="white-space:nowrap;">UNIT</th>
-                    <th style="white-space:nowrap; text-align:right;">PRICE (VNĐ)</th>
-                    <th style="white-space:nowrap;">STATUS</th>
+                    <th style="width:50px; white-space:nowrap;">@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.SKU)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.ProductName)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.CategoryId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.UnitId)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.BasePrice)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -48,7 +48,14 @@
                         <td style="color:#A0C0CE; white-space:nowrap;">@item.Category?.CategoryName</td>
                         <td style="color:#A0C0CE; white-space:nowrap;">@item.Unit?.UnitName</td>
                         <td style="color:#00FF66; font-family:'VT323'; font-size:1.1rem; text-align:right; white-space:nowrap;">@string.Format("{0:N0}", item.BasePrice)</td>
-                        <td style="white-space:nowrap;"><span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">@(item.IsActive ? "ACTIVE" : "INACTIVE")</span></td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Products" asp-route-id="@item.ProductId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
+                                </button>
+                            </form>
+                        </td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details"
                                     data-url="@Url.Action("Details", "Products", new { id = item.ProductId })"><i class="fa-solid fa-eye"></i></button>
@@ -71,50 +78,4 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    <script>
-    // Override AJAX POST for product form to support multipart file upload
-    $(document).on('submit', '#productForm', function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: { "X-Requested-With": "XMLHttpRequest" },
-            success: function (response) {
-                if (typeof response === 'object' && response.success) {
-                    var modalEl = document.getElementById('globalModal');
-                    if (modalEl) { var m = bootstrap.Modal.getInstance(modalEl); if (m) m.hide(); }
-                    if (typeof showCyberNotify === 'function') showCyberNotify('Success', response.message, 'success');
-                    setTimeout(function () { location.reload(); }, 600);
-                } else if (typeof response === 'object' && !response.success) {
-                    if (typeof showCyberNotify === 'function') showCyberNotify('Validation Fault', response.message, 'warning');
-                } else {
-                    var $container = $('#globalModalContainer');
-                    $container.html(response);
-                    if ($.validator && $.validator.unobtrusive) $.validator.unobtrusive.parse($container);
-                }
-            },
-            error: function (xhr) {
-                var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Upload error (' + xhr.status + ')';
-                if (typeof showCyberNotify === 'function') showCyberNotify('Error', msg, 'error');
-            }
-        });
-    });
-
-    // Image preview
-    $(document).on('change', '#imageFile', function () {
-        var file = this.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#imagePreview').attr('src', e.target.result).show();
-                $('#noImageMsg').hide();
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    </script>
 }

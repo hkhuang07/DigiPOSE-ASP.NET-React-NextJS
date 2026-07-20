@@ -21,9 +21,13 @@
                 <div class="col-4 form-cyber-label">Slug:</div>
                 <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.95rem; color:#00E5FF;">@(string.IsNullOrEmpty(Model.Slug) ? "N/A" : Model.Slug)</div>
             </div>
-            <div class="row align-items-center">
+            <div class="row mb-3 align-items-center">
                 <div class="col-4 form-cyber-label">Description:</div>
                 <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE;">@(string.IsNullOrEmpty(Model.Description) ? "No detailed description provided." : Model.Description)</div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-4 form-cyber-label">Status:</div>
+                <div class="col-8"><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></div>
             </div>
         </div>
     </div>

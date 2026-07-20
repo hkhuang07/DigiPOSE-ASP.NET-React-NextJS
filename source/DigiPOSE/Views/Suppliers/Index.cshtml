@@ -14,10 +14,10 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">SUPPLIER NAME</th>
-                    <th style="white-space:nowrap;">PHONE</th>
-                    <th style="white-space:nowrap; text-align:right;">DEBT BALANCE</th>
-                    <th style="white-space:nowrap;">STATUS</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.SupplierName)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Phone)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.DebtBalance)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -29,7 +29,14 @@
                         <td style="font-family:'Rajdhani'; font-weight:600; color:#FFF; white-space:nowrap;"><i class="fa-solid fa-truck-fast me-2 text-cyan"></i>@item.SupplierName</td>
                         <td style="color:#A0C0CE; white-space:nowrap;">@item.Phone</td>
                         <td style="color:@(item.DebtBalance > 0 ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.1rem; text-align:right; white-space:nowrap;">@string.Format("{0:N0}", item.DebtBalance)</td>
-                        <td style="white-space:nowrap;"><span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">@(item.IsActive ? "ACTIVE" : "INACTIVE")</span></td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Suppliers" asp-route-id="@item.SupplierId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
+                                </button>
+                            </form>
+                        </td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details" data-url="@Url.Action("Details", "Suppliers", new { id = item.SupplierId })"><i class="fa-solid fa-eye"></i></button>
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem; margin:0 2px; border-color:#FFB000; color:#FFB000;" title="Edit" data-url="@Url.Action("Edit", "Suppliers", new { id = item.SupplierId })"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -45,4 +52,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:620px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

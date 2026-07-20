@@ -14,12 +14,12 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">INVOICE NO</th>
-                    <th style="white-space:nowrap;">FORM</th>
-                    <th style="white-space:nowrap;">SERIES</th>
-                    <th style="white-space:nowrap;">TYPE</th>
-                    <th style="white-space:nowrap;">STATUS</th>
-                    <th style="white-space:nowrap;">DATE</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.InvoiceNo)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Form)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Series)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.InvoiceTypeId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.InvoiceStatusId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Date)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -49,4 +49,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:720px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -384,10 +384,14 @@ body.sidebar-collapsed .hud-main-content {
 .hud-main-content {
     margin-left: var(--sidebar-width);
     flex: 1;
+    min-width: 0 !important;
+    width: calc(100vw - var(--sidebar-width) - 20px);
+    max-width: 100%;
     padding: 1.5rem 1.5rem 3.5rem 1.5rem;
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-height: calc(100vh - var(--navbar-height) - 36px);
     position: relative;
+    overflow-x: hidden;
 }
 
 /* Sidebar Menu Sections */
@@ -476,6 +480,14 @@ body.sidebar-collapsed .hud-main-content {
     border: 1px solid rgba(0, 229, 255, 0.3);
     color: var(--primary-cyan);
     border-radius: 2px;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.hud-menu-text {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Cyber Glass Panel Container */
@@ -487,31 +499,16 @@ body.sidebar-collapsed .hud-main-content {
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
     margin-bottom: 1.5rem;
+    min-width: 0 !important;
+    width: 100% !important;
+    overflow: hidden;
 }
 
-/* Technical Corner Reticles (+ _ [ ] //) */
-.cyber-panel::before {
-    content: "+";
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    color: var(--primary-cyan);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 0 0 5px var(--primary-cyan);
-}
-
+/* Technical Corner Reticles - DISABLED TO REMOVE UNWANTED FLOATING '+' CHARACTERS */
+.cyber-panel::before,
 .cyber-panel::after {
-    content: "+";
-    position: absolute;
-    bottom: -8px;
-    right: -8px;
-    color: var(--primary-cyan);
-    font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 0 0 5px var(--primary-cyan);
+    display: none !important;
+    content: none !important;
 }
 
 .cyber-panel-header {
@@ -547,14 +544,48 @@ body.sidebar-collapsed .hud-main-content {
     letter-spacing: 1px;
 }
 
-/* Cyber HUD Tables */
+/* Cyber HUD Tables Responsive Container & Neon Scrollbars */
+.table-responsive {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    padding-bottom: 10px;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 10px !important;
+    width: 10px !important;
+    display: block !important;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #000000 !important;
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #00E5FF !important;
+    border-radius: 2px !important;
+    box-shadow: 0 0 10px #00E5FF !important;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #00FF66 !important;
+    box-shadow: 0 0 15px #00FF66 !important;
+}
+
 .table-cyber {
-    width: 100%;
+    width: 100% !important;
+    min-width: 950px !important;
+    table-layout: auto !important;
     color: #D8F8FF;
     border-collapse: separate;
     border-spacing: 0;
     font-family: 'Rajdhani', sans-serif;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .table-cyber th {
@@ -569,6 +600,7 @@ body.sidebar-collapsed .hud-main-content {
     border-top: 1px solid rgba(0, 229, 255, 0.3);
     border-bottom: 2px solid var(--primary-cyan);
     text-align: left;
+    white-space: nowrap;
 }
 
 .table-cyber td {
@@ -577,6 +609,7 @@ body.sidebar-collapsed .hud-main-content {
     font-size: 0.95rem;
     vertical-align: middle;
     transition: background 0.15s ease;
+    white-space: nowrap;
 }
 
 .table-cyber tbody tr:hover td {
@@ -733,10 +766,12 @@ body.sidebar-collapsed .hud-main-content {
 }
 
 /* Cyber Form Controls */
-.form-cyber-control {
-    background: rgba(0, 0, 0, 0.8) !important;
+.form-cyber-control,
+.form-select,
+.form-control {
+    background: #0A0A0A !important;
     border: 1px solid rgba(0, 229, 255, 0.4) !important;
-    color: #FFFFFF !important;
+    color: aliceblue !important;
     font-family: 'Roboto Mono', monospace !important;
     font-size: 0.95rem !important;
     padding: 10px 14px !important;
@@ -744,23 +779,92 @@ body.sidebar-collapsed .hud-main-content {
     transition: all 0.2s ease !important;
 }
 
-.form-cyber-control:focus {
+.form-cyber-control:focus,
+.form-select:focus,
+.form-control:focus {
     background: rgba(0, 229, 255, 0.08) !important;
     border-color: #00E5FF !important;
     box-shadow: 0 0 10px rgba(0, 229, 255, 0.5) !important;
-    color: #FFFFFF !important;
+    color: aliceblue !important;
     outline: none !important;
 }
 
+/* Cyber Select Dropdown & Options (Cyber-Cinematic Theme) */
+select.form-cyber-control,
+select.form-select,
+select.form-control,
+select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-color: #0A0A0A !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2300E5FF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 16px 12px !important;
+    padding-right: 2.2rem !important;
+    color: #00E5FF !important;
+    border: 1px solid rgba(0, 229, 255, 0.5) !important;
+    cursor: pointer !important;
+}
+
+select.form-cyber-control:focus,
+select.form-select:focus,
+select.form-control:focus,
+select:focus {
+    background-color: #05131A !important;
+    border-color: #00E5FF !important;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.6), inset 0 0 6px rgba(0, 229, 255, 0.2) !important;
+    color: #FFFFFF !important;
+}
+
+/* Explicit Cyber styling for Select Popup Options & Optgroups */
+select option,
+select optgroup,
+.form-cyber-control option,
+.form-select option,
+.form-control option,
+option {
+    background-color: #0A0A0A !important;
+    color: #00E5FF !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.95rem !important;
+    padding: 10px 14px !important;
+}
+
+select option:checked,
+select option:hover,
+select option:focus,
+.form-cyber-control option:checked,
+.form-select option:checked,
+.form-control option:checked,
+option:checked {
+    background-color: #004D5A !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 0 6px #00E5FF !important;
+}
+
+select option[value=""],
+select option:disabled,
+option[value=""],
+option:disabled {
+    color: rgba(0, 229, 255, 0.5) !important;
+    background-color: #0A0A0A !important;
+}
+
+
 .form-cyber-label {
     font-family: 'Orbitron', sans-serif !important;
-    font-size: 0.8rem !important;
-    color: #00E5FF !important;
+    font-size: 0.78rem !important;
+    color: aliceblue !important;
     text-transform: uppercase !important;
-    letter-spacing: 1px !important;
+    letter-spacing: 0.5px !important;
     margin-bottom: 6px !important;
     display: block !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.35 !important;
 }
 
 /* Cyber HUD Modal Dialogs */

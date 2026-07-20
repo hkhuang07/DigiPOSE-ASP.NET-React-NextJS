@@ -11,22 +11,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="row g-2">
                 <div class="col-md-6 mb-2">
-                    <label asp-for="BranchId" class="form-cyber-label">BRANCH <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="BranchId" class="form-cyber-label">@Html.DisplayNameFor(model => model.BranchId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="BranchId" class="form-select form-cyber-control" asp-items="ViewBag.BranchId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="BranchId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="UserId" class="form-cyber-label">EMPLOYEE <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="UserId" class="form-cyber-label">@Html.DisplayNameFor(model => model.UserId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="UserId" class="form-select form-cyber-control" asp-items="ViewBag.UserId"><option value="">-- SELECT --</option></select>
                     <span asp-validation-for="UserId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="SupplierId" class="form-cyber-label">SUPPLIER (optional)</label>
+                    <label asp-for="SupplierId" class="form-cyber-label"></label>
                     <select asp-for="SupplierId" class="form-select form-cyber-control" asp-items="ViewBag.SupplierId"><option value="">-- NONE --</option></select>
                     <span asp-validation-for="SupplierId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="VoucherType" class="form-cyber-label">VOUCHER TYPE <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="VoucherType" class="form-cyber-label">@Html.DisplayNameFor(model => model.VoucherType) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="VoucherType" class="form-select form-cyber-control">
                         <option value="">-- SELECT --</option>
                         <option value="IN">IN - Goods Receipt</option>
@@ -36,12 +36,12 @@
                     <span asp-validation-for="VoucherType" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="TotalValue" class="form-cyber-label">TOTAL VALUE (VNĐ)</label>
-                    <input asp-for="TotalValue" class="form-control form-cyber-control" type="number" step="1000" />
+                    <label asp-for="TotalValue" class="form-cyber-label"></label>
+                    <input asp-for="TotalValue" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="TotalValue" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="CreatedAt" class="form-cyber-label">VOUCHER DATE</label>
+                    <label asp-for="CreatedAt" class="form-cyber-label"></label>
                     <input asp-for="CreatedAt" class="form-control form-cyber-control" type="datetime-local" />
                     <span asp-validation-for="CreatedAt" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>

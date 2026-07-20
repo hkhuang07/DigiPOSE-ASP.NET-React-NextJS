@@ -10,23 +10,23 @@
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="mb-3">
-                <label asp-for="BranchId" class="form-cyber-label">BRANCH <span style="color:#FF3333;">*</span></label>
+                <label asp-for="BranchId" class="form-cyber-label">@Html.DisplayNameFor(model => model.BranchId) <span style="color:#FF3333;">*</span></label>
                 <select asp-for="BranchId" class="form-select form-cyber-control" asp-items="ViewBag.BranchId"><option value="">-- SELECT BRANCH --</option></select>
                 <span asp-validation-for="BranchId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="ProductId" class="form-cyber-label">PRODUCT <span style="color:#FF3333;">*</span></label>
+                <label asp-for="ProductId" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductId) <span style="color:#FF3333;">*</span></label>
                 <select asp-for="ProductId" class="form-select form-cyber-control" asp-items="ViewBag.ProductId"><option value="">-- SELECT PRODUCT --</option></select>
                 <span asp-validation-for="ProductId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="row g-2">
                 <div class="col-md-6 mb-2">
-                    <label asp-for="StockQuantity" class="form-cyber-label">STOCK QUANTITY</label>
+                    <label asp-for="StockQuantity" class="form-cyber-label"></label>
                     <input asp-for="StockQuantity" class="form-control form-cyber-control" type="number" min="0" />
                     <span asp-validation-for="StockQuantity" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="MinStockLevel" class="form-cyber-label">MIN STOCK LEVEL</label>
+                    <label asp-for="MinStockLevel" class="form-cyber-label"></label>
                     <input asp-for="MinStockLevel" class="form-control form-cyber-control" type="number" min="0" />
                     <span asp-validation-for="MinStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>

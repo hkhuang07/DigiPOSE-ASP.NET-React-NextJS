@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DigiPOSE.Models
@@ -8,14 +8,14 @@ namespace DigiPOSE.Models
         [Key] public int InvoiceId { get; set; } 
         public int OrderId { get; set; } 
 
-        public int InvoiceStatusId { get; set; }
-        public int InvoiceTypeId { get; set; }
+        [Display(Name = "Invoice Status")] public int InvoiceStatusId { get; set; }
+        [Display(Name = "Invoice Type")] public int InvoiceTypeId { get; set; }
 
-        [Required, StringLength(20)] public string Form { get; set; } = null!;   // Mẫu số
-        [Required, StringLength(20)] public string Series { get; set; } = null!; // Ký hiệu
-        [Required, StringLength(50)] public string InvoiceNo { get; set; } = null!; // Số hóa đơn
+        [Required, StringLength(20)][Display(Name = "Form")] public string Form { get; set; } = null!;   // Mẫu số
+        [Required, StringLength(20)][Display(Name = "Series")] public string Series { get; set; } = null!; // Ký hiệu
+        [Required, StringLength(50)][Display(Name = "Invoice No")] public string InvoiceNo { get; set; } = null!; // Số hóa đơn
 
-        public DateTime Date { get; set; } = DateTime.Now;
+        [Display(Name = "Invoice Date")] public DateTime Date { get; set; } = DateTime.Now;
         public DateTime? SignedDate { get; set; }
 
         [Column(TypeName = "decimal(18,4)")] public decimal? ExchangeRate { get; set; }

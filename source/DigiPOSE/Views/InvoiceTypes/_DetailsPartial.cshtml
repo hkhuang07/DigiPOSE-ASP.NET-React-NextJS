@@ -6,9 +6,9 @@
     </div>
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">TYPE ID</td><td>@Model.InvoiceTypeId</td></tr>
-            <tr><td style="color:#00E5FF; width:35%;">TYPE NAME</td><td>@Model.TypeName</td></tr>
-            <tr><td style="color:#00E5FF; width:35%;">DESCRIPTION</td><td>@Model.Description</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.InvoiceTypeId)</td><td>@Model.InvoiceTypeId</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.TypeName)</td><td>@Model.TypeName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.Description)</td><td>@Model.Description</td></tr>
         </table>
     </div>
     <div class="modal-footer">

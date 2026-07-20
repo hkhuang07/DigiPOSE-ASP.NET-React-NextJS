@@ -6,11 +6,14 @@
     </div>
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">BRANCH ID</td><td>@Model.BranchId</td></tr>
-            <tr><td style="color:#00E5FF;">BRANCH NAME</td><td style="font-weight:600;">@Model.BranchName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.BranchId)</td><td>@Model.BranchId</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.BranchName)</td><td style="font-weight:600;">@Model.BranchName</td></tr>
             <tr><td style="color:#00E5FF;">SLUG</td><td>@(string.IsNullOrEmpty(Model.Slug) ? "N/A" : Model.Slug)</td></tr>
-            <tr><td style="color:#00E5FF;">ADDRESS</td><td>@Model.Address</td></tr>
-            <tr><td style="color:#00E5FF;">CONTACT PHONE</td><td>@Model.ContactPhone</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Address)</td><td>@Model.Address</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.ContactPhone)</td><td>@Model.ContactPhone</td></tr>
+            <tr><td style="color:#00E5FF;">EMAIL</td><td>@(string.IsNullOrEmpty(Model.Email) ? "N/A" : Model.Email)</td></tr>
+            <tr><td style="color:#00E5FF;">MANAGER NAME</td><td>@(string.IsNullOrEmpty(Model.ManagerName) ? "N/A" : Model.ManagerName)</td></tr>
+            <tr><td style="color:#00E5FF;">NOTES</td><td>@(string.IsNullOrEmpty(Model.Notes) ? "N/A" : Model.Notes)</td></tr>
             <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></td></tr>
         </table>
     </div>

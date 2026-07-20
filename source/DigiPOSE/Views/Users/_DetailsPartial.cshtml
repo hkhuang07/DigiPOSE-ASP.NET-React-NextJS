@@ -6,10 +6,13 @@
     </div>
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">USER ID</td><td>@Model.UserId</td></tr>
-            <tr><td style="color:#00E5FF;">USERNAME</td><td style="font-weight:600;">@Model.UserName</td></tr>
-            <tr><td style="color:#00E5FF;">ROLE</td><td>@Model.Role?.RoleName</td></tr>
-            <tr><td style="color:#00E5FF;">BRANCH</td><td>@Model.Branch?.BranchName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.UserId)</td><td>@Model.UserId</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.UserName)</td><td style="font-weight:600;">@Model.UserName</td></tr>
+            <tr><td style="color:#00E5FF;">FULL NAME</td><td>@(string.IsNullOrEmpty(Model.FullName) ? "N/A" : Model.FullName)</td></tr>
+            <tr><td style="color:#00E5FF;">EMAIL</td><td>@(string.IsNullOrEmpty(Model.Email) ? "N/A" : Model.Email)</td></tr>
+            <tr><td style="color:#00E5FF;">PHONE NUMBER</td><td>@(string.IsNullOrEmpty(Model.PhoneNumber) ? "N/A" : Model.PhoneNumber)</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Role)</td><td>@Model.Role?.RoleName</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Branch)</td><td>@Model.Branch?.BranchName</td></tr>
             <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></td></tr>
         </table>
     </div>

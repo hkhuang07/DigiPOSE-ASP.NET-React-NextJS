@@ -6,8 +6,8 @@
     </div>
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">ROLE ID</td><td>@Model.RoleId</td></tr>
-            <tr><td style="color:#00E5FF;">ROLE NAME</td><td style="font-weight:600;">@Model.RoleName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.RoleId)</td><td>@Model.RoleId</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.RoleName)</td><td style="font-weight:600;">@Model.RoleName</td></tr>
             <tr><td style="color:#00E5FF;">DESCRIPTION</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
         </table>
     </div>

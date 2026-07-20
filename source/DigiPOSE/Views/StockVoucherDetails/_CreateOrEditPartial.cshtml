@@ -10,24 +10,24 @@
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="mb-3">
-                <label asp-for="VoucherId" class="form-cyber-label">STOCK VOUCHER <span style="color:#FF3333;">*</span></label>
+                <label asp-for="VoucherId" class="form-cyber-label">@Html.DisplayNameFor(model => model.VoucherId) <span style="color:#FF3333;">*</span></label>
                 <select asp-for="VoucherId" class="form-select form-cyber-control" asp-items="ViewBag.VoucherId"><option value="">-- SELECT VOUCHER --</option></select>
                 <span asp-validation-for="VoucherId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="ProductId" class="form-cyber-label">PRODUCT <span style="color:#FF3333;">*</span></label>
+                <label asp-for="ProductId" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductId) <span style="color:#FF3333;">*</span></label>
                 <select asp-for="ProductId" class="form-select form-cyber-control" asp-items="ViewBag.ProductId"><option value="">-- SELECT PRODUCT --</option></select>
                 <span asp-validation-for="ProductId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
             </div>
             <div class="row g-2">
                 <div class="col-md-6 mb-2">
-                    <label asp-for="Quantity" class="form-cyber-label">QUANTITY <span style="color:#FF3333;">*</span></label>
+                    <label asp-for="Quantity" class="form-cyber-label">@Html.DisplayNameFor(model => model.Quantity) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="Quantity" class="form-control form-cyber-control" type="number" min="1" />
                     <span asp-validation-for="Quantity" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
                 <div class="col-md-6 mb-2">
-                    <label asp-for="ActualPrice" class="form-cyber-label">ACTUAL PRICE (VNĐ)</label>
-                    <input asp-for="ActualPrice" class="form-control form-cyber-control" type="number" step="1000" />
+                    <label asp-for="ActualPrice" class="form-cyber-label"></label>
+                    <input asp-for="ActualPrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="ActualPrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
             </div>

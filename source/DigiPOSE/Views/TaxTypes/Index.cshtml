@@ -19,10 +19,10 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">TAX NAME</th>
-                    <th style="white-space:nowrap;">TAX %</th>
-                    <th style="white-space:nowrap;">XML CODE</th>
-                    <th style="white-space:nowrap;">STATUS</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.TaxName)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.TaxPercentage)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.TaxXmlCode)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -34,7 +34,14 @@
                         <td style="color:#A0C0CE; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;" title="@item.TaxName">@item.TaxName</td>
                         <td style="color:#A0C0CE; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;" title="@item.TaxPercentage">@item.TaxPercentage</td>
                         <td style="color:#A0C0CE; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;" title="@item.TaxXmlCode">@item.TaxXmlCode</td>
-                        <td style="white-space:nowrap;"><span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">@(item.IsActive ? "ACTIVE" : "INACTIVE")</span></td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="TaxTypes" asp-route-id="@item.TaxTypeId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
+                                </button>
+                            </form>
+                        </td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details" data-url="@Url.Action("Details", "TaxTypes", new { id = item.TaxTypeId })"><i class="fa-solid fa-eye"></i></button>
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem; margin:0 2px; border-color:#FFB000; color:#FFB000;" title="Edit" data-url="@Url.Action("Edit", "TaxTypes", new { id = item.TaxTypeId })"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -50,4 +57,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:620px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

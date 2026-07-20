@@ -62,7 +62,12 @@ public class CategoriesController : Controller
         _context.Add(category);
         await _context.SaveChangesAsync();
 
-        return Json(new { success = true, message = "Category created successfully." });
+        return Json(
+            new { 
+                    success = true, 
+                    message = "Category created successfully." 
+                }
+            );
     }
 
     // GET: Categories/Edit/5
@@ -143,6 +148,16 @@ public class CategoriesController : Controller
         }
 
         return Json(new { success = true, message = "Category deleted successfully." });
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleActive(int id)
+    {
+        var item = await _context.Categories.FindAsync(id);
+        if (item == null) return Json(new { success = false });
+        item.IsActive = !item.IsActive;
+        await _context.SaveChangesAsync();
+        return Json(new { success = true, isActive = item.IsActive, message = item.IsActive ? "Activated." : "Deactivated." });
     }
 
     private bool CategoryExists(int id)

@@ -23,11 +23,11 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">BRANCH NAME</th>
-                    <th style="white-space:nowrap;">SLUG</th>
-                    <th style="white-space:nowrap;">ADDRESS</th>
-                    <th style="white-space:nowrap;">PHONE</th>
-                    <th style="white-space:nowrap;">STATUS</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.BranchName)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Slug)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Address)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.ContactPhone)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -40,7 +40,14 @@
                         <td style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">@(string.IsNullOrEmpty(item.Slug) ? "N/A" : item.Slug)</td>
                         <td style="color:#A0C0CE; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="@item.Address">@item.Address</td>
                         <td style="color:#A0C0CE; white-space:nowrap;">@item.ContactPhone</td>
-                        <td style="white-space:nowrap;"><span class="badge @(item.IsActive ? "bg-success" : "bg-secondary")">@(item.IsActive ? "ACTIVE" : "INACTIVE")</span></td>
+                        <td style="text-align:center; white-space:nowrap;">
+                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Branches" asp-route-id="@item.BranchId" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
+                                </button>
+                            </form>
+                        </td>
                         <td style="text-align:center; white-space:nowrap;">
                             <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details"
                                     data-url="@Url.Action("Details", "Branches", new { id = item.BranchId })">

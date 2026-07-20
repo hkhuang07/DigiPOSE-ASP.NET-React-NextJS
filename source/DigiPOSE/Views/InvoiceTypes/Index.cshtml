@@ -1,4 +1,4 @@
-@model IEnumerable<DigiPOSE.Models.InvoiceType>
+﻿@model IEnumerable<DigiPOSE.Models.InvoiceType>
 @{ ViewData["Title"] = "Invoice Type"; }
 
 <div class="cyber-panel">
@@ -19,8 +19,8 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">TYPE NAME</th>
-                    <th style="white-space:nowrap;">DESCRIPTION</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.TypeName)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Description)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -46,4 +46,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:620px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

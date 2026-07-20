@@ -1,19 +1,28 @@
-@model DigiPOSE.Models.InvoiceType
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> CONFIRM DELETE</h5>
-        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+﻿@model DigiPOSE.Models.InvoiceType
+<div class="modal-content" style="border-color:rgba(255,51,51,0.6);">
+    <div class="modal-header" style="border-bottom-color:rgba(255,51,51,0.4);">
+        <h5 class="modal-title" style="color:#FF3333;"><i class="fa-solid fa-triangle-exclamation me-2"></i> CONFIRM REMOVAL</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal" style="border-color:rgba(255,51,51,0.4);color:#FF3333;"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <form class="ajax-modal-form" asp-action="Delete" asp-controller="InvoiceTypes" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="id" value="@Model.InvoiceTypeId" />
-        <div class="modal-body">
-            <p style="font-family:'Roboto Mono'; color:#FF3333;">Are you sure you want to delete <strong style="color:#FFF;">@Model.TypeName</strong>?</p>
-            <p style="font-family:'Roboto Mono'; font-size:0.8rem; color:#A0C0CE;">This action is permanent and cannot be undone.</p>
+    <div class="modal-body">
+        <div style="background:rgba(255,51,51,0.08);border:1px solid rgba(255,51,51,0.4);padding:1rem;margin-bottom:1rem;">
+            <div style="font-family:'Orbitron';font-size:0.85rem;color:#FF3333;font-weight:bold;margin-bottom:0.5rem;">
+                <i class="fa-solid fa-radiation me-2"></i> TARGET: <strong style="color:#FFF;">@Model.TypeName</strong>
+            </div>
+            <p style="font-family:'Rajdhani';font-size:0.95rem;color:#A0C0CE;margin:0;">
+                Are you sure you want to completely delete this record? This action is <strong style="color:#FF3333;">irreversible</strong>.
+            </p>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
-            <button type="submit" class="btn-cyber-danger"><i class="fa-solid fa-trash me-1"></i> CONFIRM DELETE</button>
-        </div>
-    </form>
+    </div>
+    <div class="modal-footer" style="gap:8px;">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+        <form class="ajax-modal-form d-inline" asp-action="Delete" asp-controller="InvoiceTypes" asp-route-id="@Model.InvoiceTypeId" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn-cyber-danger">
+                <i class="fa-solid fa-trash me-1"></i> HARD DELETE
+            </button>
+        </form>
+    </div>
 </div>
+
+

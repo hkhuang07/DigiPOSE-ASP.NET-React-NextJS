@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DigiPOSE.Models
@@ -22,7 +22,7 @@ namespace DigiPOSE.Models
         [Column(TypeName = "decimal(18,4)")] public decimal TaxRate { get; set; } = 0;
         [Column(TypeName = "decimal(18,4)")] public decimal TaxAmount { get; set; } = 0;
 
-        [Column(TypeName = "decimal(18,2)")] public decimal TotalAmount { get; set; } = 0; // = (Qty*UnitPrice) - Discount + Tax
+        [Column(TypeName = "decimal(18,4)")] public decimal TotalAmount { get; set; } = 0; // = (Qty*UnitPrice) - Discount + Tax
 
         [StringLength(500)] public string? Notes { get; set; }
         public bool IsFree { get; set; } = false; 

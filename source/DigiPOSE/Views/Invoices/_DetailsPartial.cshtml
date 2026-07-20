@@ -7,11 +7,11 @@
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
             <tr><td style="color:#00E5FF; width:40%;">INVOICE ID</td><td>#@Model.InvoiceId</td></tr>
-            <tr><td style="color:#00E5FF;">INVOICE NO</td><td style="font-weight:600; color:#FFF;">@Model.InvoiceNo</td></tr>
-            <tr><td style="color:#00E5FF;">FORM / SERIES</td><td>@Model.Form / @Model.Series</td></tr>
-            <tr><td style="color:#00E5FF;">TYPE</td><td>@Model.InvoiceType?.TypeName</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.InvoiceNo)</td><td style="font-weight:600; color:#FFF;">@Model.InvoiceNo</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Form)</td><td>@Model.Form / @Model.Series</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.InvoiceType)</td><td>@Model.InvoiceType?.TypeName</td></tr>
             <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge bg-info">@Model.InvoiceStatus?.StatusName</span></td></tr>
-            <tr><td style="color:#00E5FF;">DATE</td><td>@Model.Date.ToString("dd/MM/yyyy")</td></tr>
+            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Date)</td><td>@Model.Date.ToString("dd/MM/yyyy")</td></tr>
             <tr><td style="color:#00E5FF;">SIGNED DATE</td><td>@(Model.SignedDate.HasValue ? Model.SignedDate.Value.ToString("dd/MM/yyyy") : "---")</td></tr>
             <tr><td style="color:#00E5FF;">ORDER</td><td>#@Model.OrderId</td></tr>
             <tr><td style="color:#00E5FF;">TAX AUTH CODE</td><td>@(Model.TaxAuthorityCode ?? "---")</td></tr>

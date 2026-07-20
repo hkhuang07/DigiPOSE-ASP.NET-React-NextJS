@@ -1,4 +1,4 @@
-@model IEnumerable<DigiPOSE.Models.StockVoucherDetail>
+﻿@model IEnumerable<DigiPOSE.Models.StockVoucherDetail>
 @{ ViewData["Title"] = "Stock Voucher Line Items"; }
 <div class="cyber-panel">
     <div class="cyber-panel-header">
@@ -14,10 +14,10 @@
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
-                    <th style="white-space:nowrap;">VOUCHER ID</th>
-                    <th style="white-space:nowrap;">PRODUCT</th>
-                    <th style="white-space:nowrap; text-align:right;">QTY</th>
-                    <th style="white-space:nowrap; text-align:right;">ACTUAL PRICE</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.VoucherId)</th>
+                    <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Product)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.ActualPrice)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -45,4 +45,6 @@
 <div class="modal fade modal-cyber" id="globalModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:620px;" id="globalModalContainer"></div>
 </div>
-@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -6,10 +6,10 @@
     </div>
     <div class="modal-body">
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">STATUS ID</td><td>@Model.StatusId</td></tr>
-            <tr><td style="color:#00E5FF; width:35%;">STATUS NAME</td><td>@Model.StatusName</td></tr>
-            <tr><td style="color:#00E5FF; width:35%;">BADGE COLOR</td><td>@Model.BadgeColor</td></tr>
-            <tr><td style="color:#00E5FF; width:35%;">DESCRIPTION</td><td>@Model.Description</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.StatusId)</td><td>@Model.StatusId</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.StatusName)</td><td>@Model.StatusName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.BadgeColor)</td><td>@Model.BadgeColor</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.Description)</td><td>@Model.Description</td></tr>
         </table>
     </div>
     <div class="modal-footer">
