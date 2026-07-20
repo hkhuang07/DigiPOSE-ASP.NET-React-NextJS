@@ -1,0 +1,33 @@
+@model DigiPOSE.Models.Branch
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-layer-group text-cyan me-2"></i> @(Model.BranchId == 0 ? "ADD NEW" : "EDIT") BRANCH</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="@(Model.BranchId == 0 ? "Create" : "Edit")" asp-controller="Branches" >
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="BranchId" />
+        <div class="modal-body">
+            <div class="mb-3">
+                <label asp-for="BranchName" class="form-cyber-label">BRANCHNAME (OPTIONAL)</label>
+                <input asp-for="BranchName" class="form-control form-cyber-control" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Address" class="form-cyber-label">ADDRESS (OPTIONAL)</label>
+                <input asp-for="Address" class="form-control form-cyber-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ContactPhone" class="form-cyber-label">CONTACTPHONE (OPTIONAL)</label>
+                <input asp-for="ContactPhone" class="form-control form-cyber-control" />
+                <span asp-validation-for="ContactPhone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal">CANCEL</button>
+            <button type="submit" class="btn-cyber-success">SAVE</button>
+        </div>
+    </form>
+</div>

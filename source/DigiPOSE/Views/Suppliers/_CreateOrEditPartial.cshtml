@@ -1,0 +1,33 @@
+@model DigiPOSE.Models.Supplier
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-truck-fast text-cyan me-2"></i> @(Model.SupplierId == 0 ? "ADD NEW" : "EDIT") SUPPLIER</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="@(Model.SupplierId == 0 ? "Create" : "Edit")" asp-controller="Suppliers" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="SupplierId" />
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
+            <div class="mb-3">
+                <label asp-for="SupplierName" class="form-cyber-label">SUPPLIER NAME <span style="color:#FF3333;">*</span></label>
+                <input asp-for="SupplierName" class="form-control form-cyber-control" placeholder="Enter supplier company name" />
+                <span asp-validation-for="SupplierName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-cyber-label">PHONE</label>
+                <input asp-for="Phone" class="form-control form-cyber-control" placeholder="Contact phone number" />
+                <span asp-validation-for="Phone" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="DebtBalance" class="form-cyber-label">DEBT BALANCE</label>
+                <input asp-for="DebtBalance" class="form-control form-cyber-control" type="number" step="0.01" placeholder="0.00" />
+                <span asp-validation-for="DebtBalance" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE</button>
+        </div>
+    </form>
+</div>

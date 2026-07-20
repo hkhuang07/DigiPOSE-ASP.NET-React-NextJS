@@ -1,0 +1,19 @@
+@model DigiPOSE.Models.ItemNature
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> CONFIRM DEACTIVATE</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="Delete" asp-controller="ItemNatures" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.NatureId" />
+        <div class="modal-body">
+            <p style="font-family:'Roboto Mono'; color:#FF3333;">Are you sure you want to deactivate <strong style="color:#FFF;">@Model.NatureName</strong>?</p>
+            <p style="font-family:'Roboto Mono'; font-size:0.8rem; color:#A0C0CE;">This performs a soft delete (IsActive = false).</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-danger"><i class="fa-solid fa-trash me-1"></i> CONFIRM DEACTIVATE</button>
+        </div>
+    </form>
+</div>

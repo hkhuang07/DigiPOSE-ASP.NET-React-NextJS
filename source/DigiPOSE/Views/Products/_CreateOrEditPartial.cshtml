@@ -1,0 +1,86 @@
+@model DigiPOSE.Models.Product
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-box-open text-cyan me-2"></i> @(Model.ProductId == 0 ? "ADD NEW PRODUCT" : "EDIT PRODUCT")</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    @* NOTE: Use id="productForm" so the special multipart AJAX handler in Products/Index.cshtml kicks in *@
+    <form id="productForm" asp-action="@(Model.ProductId == 0 ? "Create" : "Edit")" asp-controller="Products" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ProductId" />
+        <input type="hidden" name="existingImageUrl" value="@Model.ImageUrl" />
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
+            <div class="row g-2">
+                <div class="col-md-6 mb-2">
+                    <label asp-for="SKU" class="form-cyber-label">SKU <span style="color:#FF3333;">*</span></label>
+                    <input asp-for="SKU" class="form-control form-cyber-control" placeholder="e.g. SKU-001" />
+                    <span asp-validation-for="SKU" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="BasePrice" class="form-cyber-label">SELLING PRICE (VNĐ) <span style="color:#FF3333;">*</span></label>
+                    <input asp-for="BasePrice" class="form-control form-cyber-control" type="number" step="1000" min="0" />
+                    <span asp-validation-for="BasePrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-12 mb-2">
+                    <label asp-for="ProductName" class="form-cyber-label">PRODUCT NAME <span style="color:#FF3333;">*</span></label>
+                    <input asp-for="ProductName" class="form-control form-cyber-control" placeholder="Full product name" id="productNameInput" />
+                    <span asp-validation-for="ProductName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="CategoryId" class="form-cyber-label">CATEGORY <span style="color:#FF3333;">*</span></label>
+                    <select asp-for="CategoryId" class="form-select form-cyber-control" asp-items="ViewBag.CategoryId"><option value="">-- SELECT --</option></select>
+                    <span asp-validation-for="CategoryId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="ProductTypeId" class="form-cyber-label">PRODUCT TYPE <span style="color:#FF3333;">*</span></label>
+                    <select asp-for="ProductTypeId" class="form-select form-cyber-control" asp-items="ViewBag.ProductTypeId"><option value="">-- SELECT --</option></select>
+                    <span asp-validation-for="ProductTypeId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="UnitId" class="form-cyber-label">UNIT <span style="color:#FF3333;">*</span></label>
+                    <select asp-for="UnitId" class="form-select form-cyber-control" asp-items="ViewBag.UnitId"><option value="">-- SELECT --</option></select>
+                    <span asp-validation-for="UnitId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label asp-for="TaxTypeId" class="form-cyber-label">TAX TYPE <span style="color:#FF3333;">*</span></label>
+                    <select asp-for="TaxTypeId" class="form-select form-cyber-control" asp-items="ViewBag.TaxTypeId"><option value="">-- SELECT --</option></select>
+                    <span asp-validation-for="TaxTypeId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                <div class="col-12 mb-2">
+                    <label asp-for="ManufacturerId" class="form-cyber-label">MANUFACTURER (optional)</label>
+                    <select asp-for="ManufacturerId" class="form-select form-cyber-control" asp-items="ViewBag.ManufacturerId"><option value="">-- NONE --</option></select>
+                    <span asp-validation-for="ManufacturerId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+
+                @* ── IMAGE UPLOAD SECTION ── *@
+                <div class="col-12 mb-2">
+                    <label class="form-cyber-label">PRODUCT IMAGE (optional)</label>
+                    <div style="border:1px dashed #00E5FF; border-radius:4px; padding:12px; background:rgba(0,229,255,0.03);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div style="width:80px; height:80px; flex-shrink:0; border:1px solid #333; border-radius:4px; overflow:hidden; background:#0A0A0A; display:flex; align-items:center; justify-content:center;">
+                                @if (!string.IsNullOrEmpty(Model.ImageUrl)) {
+                                    <img id="imagePreview" src="@Model.ImageUrl" alt="Preview" style="width:100%; height:100%; object-fit:cover;" />
+                                    <span id="noImageMsg" style="display:none; color:#444; font-size:0.7rem;">NO IMAGE</span>
+                                } else {
+                                    <img id="imagePreview" src="" alt="Preview" style="width:100%; height:100%; object-fit:cover; display:none;" />
+                                    <span id="noImageMsg" style="color:#444; font-size:0.7rem; font-family:'Roboto Mono';">NO IMAGE</span>
+                                }
+                            </div>
+                            <div style="flex:1;">
+                                <input type="file" id="imageFile" name="imageFile" class="form-control form-cyber-control" accept="image/*" style="font-size:0.85rem;" />
+                                <p style="font-family:'Roboto Mono'; font-size:0.75rem; color:#A0C0CE; margin-top:6px; margin-bottom:0;">
+                                    Accepted: JPG, PNG, GIF, WebP. Max ~5MB. Leave empty to keep current image.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE PRODUCT</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,19 @@
+@model DigiPOSE.Models.ProductInventory
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-warehouse text-cyan me-2"></i> INVENTORY DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <tr><td style="color:#00E5FF; width:40%;">INVENTORY ID</td><td>@Model.InventoryId</td></tr>
+            <tr><td style="color:#00E5FF;">PRODUCT</td><td style="font-weight:600;">@Model.Product?.ProductName</td></tr>
+            <tr><td style="color:#00E5FF;">BRANCH</td><td>@Model.Branch?.BranchName</td></tr>
+            <tr><td style="color:#00E5FF;">STOCK QTY</td><td style="color:@(Model.StockQuantity <= Model.MinStockLevel ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.3rem;">@Model.StockQuantity</td></tr>
+            <tr><td style="color:#00E5FF;">MIN STOCK LEVEL</td><td style="color:#FFB000; font-family:'VT323'; font-size:1.3rem;">@Model.MinStockLevel</td></tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>

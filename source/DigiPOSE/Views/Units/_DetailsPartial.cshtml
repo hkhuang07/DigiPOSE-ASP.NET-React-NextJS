@@ -1,0 +1,17 @@
+@model DigiPOSE.Models.Unit
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-weight-hanging text-cyan me-2"></i> UNIT DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <tr><td style="color:#00E5FF; width:35%;">UNIT ID</td><td>@Model.UnitId</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">UNIT NAME</td><td>@Model.UnitName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">DESCRIPTION</td><td>@Model.Description</td></tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>

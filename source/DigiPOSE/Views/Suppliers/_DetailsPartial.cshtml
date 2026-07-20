@@ -1,0 +1,19 @@
+@model DigiPOSE.Models.Supplier
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-truck-fast text-cyan me-2"></i> SUPPLIER DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <tr><td style="color:#00E5FF; width:35%;">SUPPLIER ID</td><td>@Model.SupplierId</td></tr>
+            <tr><td style="color:#00E5FF;">NAME</td><td style="font-weight:600;">@Model.SupplierName</td></tr>
+            <tr><td style="color:#00E5FF;">PHONE</td><td>@Model.Phone</td></tr>
+            <tr><td style="color:#00E5FF;">DEBT BALANCE</td><td style="color:@(Model.DebtBalance > 0 ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.2rem;">@string.Format("{0:N0}", Model.DebtBalance)</td></tr>
+            <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></td></tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>

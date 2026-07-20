@@ -1,0 +1,82 @@
+# ============================================================================
+# DigiPOSE (Digital Point of Sale Enterprise)
+# ASP.NET Core MVC (.NET 10) + SQL Server + EF Core
+# ============================================================================
+
+# ── Build Artifacts ──
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+
+# ── NuGet Packages ──
+*.nupkg
+*.snupkg
+**/packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ── Visual Studio / Rider / VS Code ──
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+.idea/
+*.DotSettings.user
+launchSettings.json
+
+# ── MSBuild ──
+*.log
+msbuild*.wrn
+msbuild*.err
+msbuild*.svclog
+
+# ── Test Results ──
+[Tt]est[Rr]esult*/
+[Dd]ebug[Pp]ublic/
+TestResults/
+coverage*.xml
+coverage*.json
+*.coverage
+*.coveragexml
+
+# ── Publish / Deploy ──
+publish/
+[Pp]ublish/
+*.Publish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+web.config
+
+# ── User-specific & Environment ──
+*.env
+*.env.*
+!*.env.example
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+# ── OS Generated ──
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ── LibMan ──
+**/wwwroot/lib/
+
+# ── Secrets & Certificates ──
+*.pfx
+*.p12
+*.key
+*.pem

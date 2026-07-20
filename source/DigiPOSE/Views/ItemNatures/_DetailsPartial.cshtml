@@ -1,0 +1,17 @@
+@model DigiPOSE.Models.ItemNature
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-tag text-cyan me-2"></i> ITEMNATURE DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <tr><td style="color:#00E5FF; width:35%;">NATURE ID</td><td>@Model.NatureId</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">NAME</td><td>@Model.NatureName</td></tr>
+            <tr><td style="color:#00E5FF; width:35%;">TAX XML CODE</td><td>@Model.TaxXmlCode</td></tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>
