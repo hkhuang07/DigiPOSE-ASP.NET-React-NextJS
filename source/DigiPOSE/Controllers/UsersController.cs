@@ -69,7 +69,8 @@ namespace DigiPOSE.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, User model, string? NewPassword)
         {
-            if (id != model.UserId) return Json(new { success = false, message = "ID mismatch." });
+            if (id != model.UserId) 
+                return Json(new { success = false, message = "ID mismatch." });
 
             ModelState.Remove("PasswordHash");
             ModelState.Remove("NewPassword");
@@ -84,7 +85,8 @@ namespace DigiPOSE.Controllers
             try
             {
                 var existing = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserId == id);
-                if (existing == null) return Json(new { success = false, message = "User not found." });
+                if (existing == null) 
+                    return Json(new { success = false, message = "User not found." });
 
                 // Only re-hash password if a new one was provided
                 model.PasswordHash = !string.IsNullOrWhiteSpace(NewPassword)

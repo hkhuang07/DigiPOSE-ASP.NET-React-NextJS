@@ -15,7 +15,7 @@
             <tr><td style="color:#00E5FF;">TAX CODE</td><td>@(string.IsNullOrEmpty(Model.TaxCode) ? "N/A" : Model.TaxCode)</td></tr>
             <tr><td style="color:#00E5FF;">WEBSITE</td><td>@(string.IsNullOrEmpty(Model.Website) ? "N/A" : Model.Website)</td></tr>
             <tr><td style="color:#00E5FF;">SLUG</td><td>@(string.IsNullOrEmpty(Model.Slug) ? "N/A" : Model.Slug)</td></tr>
-            <tr><td style="color:#00E5FF;">LOGO URL</td><td>@(string.IsNullOrEmpty(Model.LogoUrl) ? "N/A" : Model.LogoUrl)</td></tr>
+            <tr><td style="color:#00E5FF;">LOGO URL</td><td>@(string.IsNullOrEmpty(Model.ImageUrl) ? "N/A" : Model.ImageUrl)</td></tr>
             <tr><td style="color:#00E5FF;">DESCRIPTION</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
             <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></td></tr>
         </table>

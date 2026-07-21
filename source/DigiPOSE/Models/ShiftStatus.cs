@@ -6,8 +6,14 @@ namespace DigiPOSE.Models
     public class ShiftStatus
     {
         [Key] public int StatusId { get; set; }
-        [Required, StringLength(50)][Display(Name = "Shift status name")] public string StatusName { get; set; } = null!;
-        [StringLength(255)][Display(Name = "Description")] public string? Description { get; set; }
+        [Required(ErrorMessage = "Status Name cannot be empty.")]
+        [StringLength(50, ErrorMessage = "Status Name cannot exceed 50 characters.")]
+        [Display(Name = "Shift Status Name")] 
+        public string StatusName { get; set; } = null!;
+        
+        [StringLength(255, ErrorMessage = "Description cannot exceed 255 characters.")]
+        [Display(Name = "Description")] 
+        public string? Description { get; set; }
         public ICollection<Shift>? Shifts { get; set; }
     }
 }

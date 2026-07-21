@@ -50,9 +50,16 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label asp-for="LogoUrl" class="form-cyber-label"></label>
-                    <input asp-for="LogoUrl" class="form-control form-cyber-control" placeholder="Image URL" />
-                    <span asp-validation-for="LogoUrl" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                    <label asp-for="ImageUpload" class="form-label"></label>
+                    <input asp-for="ImageUpload" class="form-control" type="file" accept="image/*" />
+                    <span asp-validation-for="ImageUpload" class="text-danger"></span>
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="mt-2">
+                            <img src="~/uploads/manufacturers/@Model.ImageUrl" alt="Current Logo" style="max-width: 100px; border-radius: 4px;" />
+                            <input type="hidden" asp-for="ImageUrl" />
+                        </div>
+                    }
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="Website" class="form-cyber-label"></label>

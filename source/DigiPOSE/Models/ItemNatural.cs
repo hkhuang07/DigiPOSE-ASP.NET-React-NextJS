@@ -7,11 +7,14 @@ namespace DigiPOSE.Models
     {
         [Key] public int NatureId { get; set; }
 
-        [Required, StringLength(100)][Display(Name = "Nature Name")]
+        [Required(ErrorMessage = "Nature Name cannot be empty.")]
+        [StringLength(100, ErrorMessage = "Nature Name cannot exceed 100 characters.")]
+        [Display(Name = "Nature Name")]
         public string NatureName { get; set; } = null!;
 
         // Mã dùng để đẩy lên API của Cơ quan Thuế (1, 2, 3, 4 theo Thông tư 78)
-        [StringLength(50)][Display(Name = "Tax Xml Code")]
+        [StringLength(50, ErrorMessage = "Tax Xml Code cannot exceed 50 characters.")]
+        [Display(Name = "Tax Xml Code")]
         public string? TaxXmlCode { get; set; }
 
         [Display(Name = "Status")]

@@ -56,6 +56,23 @@ namespace DigiPOSE.Controllers
                 return PartialView("_CreateOrEditPartial", model);
             }
 
+            if(model.ImageUpload != null && model.ImageUpload.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(_env.WebRootPath,"uploads","products");
+                if(!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+                
+                string fileExtension = Path.GetExtension(model.ImageUpload.FileName).ToLower();
+                string fileName = $"{SlugHelper.GenerateSlug(model.ProductName)}-{Guid.NewGuid().ToString("N")[..6]}{fileExtension}";
+                string physicalPath = Path.Combine(uploadsFolder,fileName);
+
+                using (var stream = new FileStream(physicalPath,FileMode.Create))
+                {
+                    await model.ImageUpload.CopyToAsync(stream);
+                }
+                model.ImageUrl = fileName;
+            }
+            
             _context.Add(model);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Product created successfully." });
@@ -73,10 +90,12 @@ namespace DigiPOSE.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Product model)
         {
-            if (id != model.ProductId) return Json(new { success = false, message = "ID mismatch." });
+            if (id != model.ProductId) 
+                return Json(new { success = false, message = "ID mismatch." });
 
             if (string.IsNullOrWhiteSpace(model.Slug))
                 model.Slug = SlugHelper.GenerateSlug(model.ProductName);
+            
             ModelState.Remove("Slug");
             ModelState.Remove("RowVersion");
 
@@ -88,6 +107,32 @@ namespace DigiPOSE.Controllers
 
             try
             {
+                 if(model.ImageUpload != null && model.ImageUpload.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(_env.WebRootPath,"uploads","products");
+                    if(!Directory.Exists(uploadsFolder))
+                        Directory.CreateDirectory(uploadsFolder);
+                    
+                    string fileExtension = Path.GetExtension(model.ImageUpload.FileName).ToLower();
+                    string fileName = $"{SlugHelper.GenerateSlug(model.ProductName)}-{Guid.NewGuid().ToString("N")[..6]}{fileExtension}";
+                    string physicalPath = Path.Combine(uploadsFolder,fileName);
+
+                    using (var stream = new FileStream(physicalPath,FileMode.Create))
+                    {
+                        await model.ImageUpload.CopyToAsync(stream);
+                    }
+                    //delete old image
+                    if(!string.IsNullOrEmpty(model.ImageUrl))
+                    {
+                        string oldPhysicalPath = Path.Combine(uploadsFolder, model.ImageUrl);
+                        if(System.IO.File.Exists(oldPhysicalPath))
+                        {
+                            System.IO.File.Delete(oldPhysicalPath);
+                        }
+                    }
+                    model.ImageUrl = fileName;
+                }
+
                 _context.Update(model);
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Product updated successfully." });
@@ -112,7 +157,17 @@ namespace DigiPOSE.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var item = await _context.Products.FindAsync(id);
-            if (item == null) return Json(new { success = false, message = "Record not found." });
+            if (item == null) 
+                return Json(new { success = false, message = "Record not found." });
+            
+            if(!string.IsNullOrEmpty(item.ImageUrl)){
+                string oldPhysicalPath = Path.Combine(_env.WebRootPath, "uploads", "products", item.ImageUrl);
+                if(System.IO.File.Exists(oldPhysicalPath))
+                {
+                    System.IO.File.Delete(oldPhysicalPath);
+                }
+            }
+            
             _context.Products.Remove(item);
             await _context.SaveChangesAsync();
             return Json(new { success = true, message = "Product permanently deleted." });

@@ -6,7 +6,9 @@ namespace DigiPOSE.Models
     public class ProductType
     {
         [Key] public int ProductTypeId { get; set; }
-        [Required, StringLength(100)][Display(Name = "Type Name")]
+        [Required(ErrorMessage = "Type Name cannot be empty.")]
+        [StringLength(100, ErrorMessage = "Type Name cannot exceed 100 characters.")]
+        [Display(Name = "Type Name")]
         public string TypeName { get; set; } = null!;
 
         // Cờ Logic Lõi: True = Phải kiểm tra và trừ tồn kho, False = Bán thoải mái (Dịch vụ)

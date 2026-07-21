@@ -8,7 +8,9 @@
     <form id="productForm" class="ajax-modal-form" asp-action="@(Model.ProductId == 0 ? "Create" : "Edit")" asp-controller="Products" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="ProductId" />
-        <input type="hidden" name="existingImageUrl" value="@Model.ImageUrl" />
+        <input type="hidden" asp-for="ImageUrl" /> <!-- Giữ lại đường dẫn ảnh cũ nếu không đổi -->
+        <input type="hidden" asp-for="RowVersion" />
+        
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="row g-2">
@@ -78,29 +80,20 @@
                     <span asp-validation-for="ManufacturerId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
 
-                @* ── IMAGE UPLOAD SECTION ── *@
-                <div class="col-12 mb-2">
-                    <label class="form-cyber-label">PRODUCT IMAGE (optional)</label>
-                    <div style="border:1px dashed #00E5FF; border-radius:4px; padding:12px; background:rgba(0,229,255,0.03);">
-                        <div class="d-flex align-items-center gap-3">
-                            <div style="width:80px; height:80px; flex-shrink:0; border:1px solid #333; border-radius:4px; overflow:hidden; background:#0A0A0A; display:flex; align-items:center; justify-content:center;">
-                                @if (!string.IsNullOrEmpty(Model.ImageUrl)) {
-                                    <img id="imagePreview" src="@Model.ImageUrl" alt="Preview" style="width:100%; height:100%; object-fit:cover;" />
-                                    <span id="noImageMsg" style="display:none; color:#444; font-size:0.7rem;">NO IMAGE</span>
-                                } else {
-                                    <img id="imagePreview" src="" alt="Preview" style="width:100%; height:100%; object-fit:cover; display:none;" />
-                                    <span id="noImageMsg" style="color:#444; font-size:0.7rem; font-family:'Roboto Mono';">NO IMAGE</span>
-                                }
+                <div class="col-md-6">
+                    <label asp-for="ImageUpload" class="form-cyber-label"></label>
+                        <!-- Preview old image if available -->
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="mb-2 d-flex align-items-center gap-2">
+                            <img src="~/uploads/products/@Model.ImageUrl" width="60" height="60" class="img-thumbnail bg-dark" style="object-fit:cover;" />
+                            <small class="text-muted">Current image (Leave blank if desired)</small>
                             </div>
-                            <div style="flex:1;">
-                                <input type="file" id="imageFile" name="imageFile" class="form-control form-cyber-control" accept="image/*" style="font-size:0.85rem;" />
-                                <p style="font-family:'Roboto Mono'; font-size:0.75rem; color:#A0C0CE; margin-top:6px; margin-bottom:0;">
-                                    Accepted: JPG, PNG, GIF, WebP. Max ~5MB. Leave empty to keep current image.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        }
+                    <input asp-for="ImageUpload" type="file" accept="image/jpeg,image/png,image/webp" class="form-control form-cyber-control" />
+                    <span asp-validation-for="ImageUpload" class="text-danger"></span>
                 </div>
+                
                 <div class="col-12 mb-2 d-flex align-items-center gap-3">
                     <label asp-for="IsActive" class="form-cyber-label mb-0"></label>
                     <input asp-for="IsActive" type="checkbox" class="form-check-input form-check-cyber" />

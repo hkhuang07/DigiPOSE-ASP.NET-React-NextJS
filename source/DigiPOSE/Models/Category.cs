@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace DigiPOSE.Models
 {
@@ -19,6 +20,14 @@ namespace DigiPOSE.Models
         [StringLength(255, ErrorMessage = "Description cannot exceed 255 characters.")]
         [Display(Name = "Description")]
         public string? Description { get; set; }
+
+        [StringLength(255, ErrorMessage = "Image URL cannot exceed 255 characters.")]
+        [Display(Name = "Image URL")] 
+        public string? ImageUrl { get; set; }
+        
+        [NotMapped]
+        [Display(Name = "Upload Image")] 
+        public IFormFile? ImageUpload { get; set; }
 
         public bool IsActive { get; set; } = true;
 

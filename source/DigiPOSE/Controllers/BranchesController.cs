@@ -13,11 +13,13 @@ namespace DigiPOSE.Controllers
         public async Task<IActionResult> Index()
             => View(await _context.Branches.ToListAsync());
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id) //Lấy thông tin chi tiết 1 sản phẩm
         {
-            if (id == null) return NotFound();
+            if (id == null) 
+                return NotFound();
             var item = await _context.Branches.FirstOrDefaultAsync(m => m.BranchId == id);
-            if (item == null) return NotFound();
+            if (item == null) 
+                return NotFound();
             return PartialView("_DetailsPartial", item);
         }
 

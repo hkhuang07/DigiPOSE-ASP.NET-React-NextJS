@@ -7,7 +7,7 @@
     <div class="modal-body">
         <div class="d-flex gap-4 mb-3">
             @if (!string.IsNullOrEmpty(Model.ImageUrl)) {
-                <img src="@Model.ImageUrl" alt="@Model.ProductName"
+                <img src="~/uploads/products/@Model.ImageUrl" alt="@Model.ProductName"
                      style="width:100px; height:100px; object-fit:cover; border:1px solid #00E5FF; border-radius:6px; flex-shrink:0;" />
             } else {
                 <div style="width:100px; height:100px; background:#0A0A0A; border:1px dashed #444; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">

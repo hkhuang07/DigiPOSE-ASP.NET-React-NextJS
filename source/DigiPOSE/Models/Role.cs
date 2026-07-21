@@ -6,8 +6,14 @@ namespace DigiPOSE.Models
     public class Role
     {
         [Key] public int RoleId { get; set; }
-        [Required, StringLength(150)][Display(Name = "Role name")] public string RoleName { get; set; } = null!;
-        [StringLength(255)][Display(Name = "Description")] public string? Description { get; set; }
+        [Required(ErrorMessage = "Role Name cannot be empty.")]
+        [StringLength(150, ErrorMessage = "Role Name cannot exceed 150 characters.")]
+        [Display(Name = "Role Name")] 
+        public string RoleName { get; set; } = null!;
+        
+        [StringLength(255, ErrorMessage = "Description cannot exceed 255 characters.")]
+        [Display(Name = "Description")] 
+        public string? Description { get; set; }
         public ICollection<User>? Users { get; set; }
     }
 }
