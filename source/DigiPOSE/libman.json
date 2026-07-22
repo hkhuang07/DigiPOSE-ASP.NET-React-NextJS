@@ -3,7 +3,6 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "provider": "cdnjs",
       "library": "bootstrap@5.3.3",
       "destination": "wwwroot/lib/bootstrap/",
       "files": [
@@ -12,7 +11,6 @@
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "jquery@3.7.1",
       "destination": "wwwroot/lib/jquery",
       "files": [
@@ -22,6 +20,44 @@
     {
       "library": "font-awesome@6.5.1",
       "destination": "wwwroot/lib/font-awesome"
+    },
+    {
+      "library": "jszip@3.10.1",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "jszip.min.js"
+      ]
+    },
+    {
+      "library": "datatables.net@1.13.8",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "jquery.dataTables.min.js"
+      ]
+    },
+    {
+      "library": "datatables.net-bs5@1.13.8",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "dataTables.bootstrap5.min.css",
+        "dataTables.bootstrap5.min.js"
+      ]
+    },
+    {
+      "library": "datatables.net-buttons-bs5@2.4.2",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "buttons.bootstrap5.min.css",
+        "buttons.bootstrap5.min.js"
+      ]
+    },
+    {
+      "library": "datatables.net-buttons@2.4.2",
+      "destination": "wwwroot/lib/datatables",
+      "files": [
+        "js/dataTables.buttons.min.js",
+        "js/buttons.html5.min.js"
+      ]
     }
   ]
 }

@@ -7,10 +7,10 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <button type="button" class="btn-cyber-success btn-show-modal" data-url="@Url.Action("Create", "Invoices")"><i class="fa-solid fa-plus me-1"></i> NEW INVOICE</button>
-        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">TOTAL: <strong style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">@Model.Count()</strong></div>
+        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">TOTAL RECORDS: <strong id="totalRecordsCount" style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">--</strong></div>
     </div>
     <div class="table-responsive">
-        <table class="table-cyber">
+        <table id="datatable" class="table-cyber w-100">
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
@@ -23,26 +23,6 @@
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
-            <tbody>
-                @{ int idx = 1; }
-                @foreach (var item in Model) {
-                    <tr>
-                        <td style="font-family:'VT323'; font-size:1.2rem; color:#00E5FF; text-align:center; white-space:nowrap;">@idx.ToString("D2")</td>
-                        <td style="color:#FFF; font-family:'Rajdhani'; font-weight:600; white-space:nowrap;"><i class="fa-solid fa-file-signature me-2 text-cyan"></i>@item.InvoiceNo</td>
-                        <td style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem; white-space:nowrap;">@item.Form</td>
-                        <td style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem; white-space:nowrap;">@item.Series</td>
-                        <td style="color:#A0C0CE; white-space:nowrap;">@item.InvoiceType?.TypeName</td>
-                        <td style="white-space:nowrap;"><span class="badge bg-info">@item.InvoiceStatus?.StatusName</span></td>
-                        <td style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.82rem; white-space:nowrap;">@item.Date.ToString("dd/MM/yy")</td>
-                        <td style="text-align:center; white-space:nowrap;">
-                            <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details" data-url="@Url.Action("Details", "Invoices", new { id = item.InvoiceId })"><i class="fa-solid fa-eye"></i></button>
-                            <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem; margin:0 2px; border-color:#FFB000; color:#FFB000;" title="Edit" data-url="@Url.Action("Edit", "Invoices", new { id = item.InvoiceId })"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn-cyber-danger btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Delete" data-url="@Url.Action("Delete", "Invoices", new { id = item.InvoiceId })"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    idx++;
-                }
-            </tbody>
         </table>
     </div>
 </div>
@@ -51,4 +31,56 @@
 </div>
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var table = $('#datatable').DataTable({
+                serverSide: true,
+                processing: true,
+                filter: true,
+                ajax: {
+                    url: '@Url.Action("Index_LoadData", "Invoices")',
+                    type: "POST",
+                    dataType: "JSON"
+                },
+                order: [[6, 'desc']], // Default order by Date descending
+                columns: [
+                    { data: null, name: null, sortable: false, render: (d, t, r, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                    { data: 'invoiceNo', name: 'InvoiceNo', render: d => `<span style="color:#FFF; font-family:'Rajdhani'; font-weight:600;"><i class="fa-solid fa-file-signature me-2 text-cyan"></i>${d}</span>` },
+                    { data: 'form', name: 'Form', render: d => `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d}</span>` },
+                    { data: 'series', name: 'Series', render: d => `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d}</span>` },
+                    { data: 'typeName', name: 'InvoiceType.TypeName', render: d => `<span style="color:#A0C0CE;">${d}</span>` },
+                    { data: 'statusName', name: 'InvoiceStatus.StatusName', render: d => `<span class="badge bg-info">${d}</span>` },
+                    { 
+                        data: 'date', 
+                        name: 'Date', 
+                        render: d => `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.82rem;">${d}</span>`
+                    },
+                    { 
+                        data: null, 
+                        searchable: false, 
+                        orderable: false, 
+                        render: function (d, t, r) { 
+                            var detailsUrl = '@Url.Action("Details", "Invoices")/' + r.invoiceId;
+                            var editUrl = '@Url.Action("Edit", "Invoices")/' + r.invoiceId;
+                            var deleteUrl = '@Url.Action("Delete", "Invoices")/' + r.invoiceId;
+                            return '<div style="text-align:center;">'
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
+                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'
+                                 + '</div>'; 
+                        } 
+                    }                        
+                ],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var json = api.ajax.json();
+                    if (json && json.recordsTotal !== undefined) {
+                        $('#totalRecordsCount').text(json.recordsTotal);
+                    }
+                }
+            });   
+        });
+    </script>
 }

@@ -1,9 +1,9 @@
 # ============================================================================
-# DigiPOSE (Digital Point of Sale Enterprise)
-# ASP.NET Core MVC (.NET 10) + SQL Server + EF Core
+# DigiPOSE Enterprise ERP & PoS System (.NET 10 / SQL Server / React / Next.js)
+# Official .gitignore Blueprint
 # ============================================================================
 
-# ── Build Artifacts ──
+# ── Build & Compilation Artifacts ──
 [Bb]in/
 [Oo]bj/
 [Dd]ebug/
@@ -12,6 +12,48 @@ x64/
 x86/
 build/
 bld/
+[Pp]ublish/
+publish/
+
+# ── Database Files ──
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.sqlite
+*.sqlite3
+
+# ── User File Uploads & Local Media ──
+source/DigiPOSE/wwwroot/uploads/*
+!source/DigiPOSE/wwwroot/uploads/.gitkeep
+
+# ── Environment & Secret Isolation ──
+*.env
+*.env.*
+!*.env.example
+!.env.example
+appsettings.Local.json
+appsettings.Production.json
+appsettings.Development.Secret.json
+!appsettings.json
+!appsettings.Development.json
+!appsettings.example.json
+
+# ── Secrets & Certificates ──
+*.pfx
+*.p12
+*.key
+*.pem
+*.cer
+*.crt
+
+# ── Client-Side Libraries & Node Dependencies ──
+**/wwwroot/lib/*
+!**/wwwroot/lib/.gitkeep
+node_modules/
+.next/
+out/
+dist/
 
 # ── NuGet Packages ──
 *.nupkg
@@ -21,25 +63,25 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# ── Visual Studio / Rider / VS Code ──
+# ── Visual Studio / VS Code / JetBrains Rider ──
 .vs/
 .vscode/
+.idea/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 *.rsuser
-.idea/
 *.DotSettings.user
 launchSettings.json
 
-# ── MSBuild ──
+# ── MSBuild & Logs ──
 *.log
 msbuild*.wrn
 msbuild*.err
 msbuild*.svclog
 
-# ── Test Results ──
+# ── Test Results & Code Coverage ──
 [Tt]est[Rr]esult*/
 [Dd]ebug[Pp]ublic/
 TestResults/
@@ -48,35 +90,9 @@ coverage*.json
 *.coverage
 *.coveragexml
 
-# ── Publish / Deploy ──
-publish/
-[Pp]ublish/
-*.Publish.xml
-*.azurePubxml
-*.pubxml
-*.publishproj
-web.config
-
-# ── User-specific & Environment ──
-*.env
-*.env.*
-!*.env.example
-appsettings.*.json
-!appsettings.json
-!appsettings.Development.json
-
-# ── OS Generated ──
+# ── OS Generated Files ──
 .DS_Store
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
-
-# ── LibMan ──
-**/wwwroot/lib/
-
-# ── Secrets & Certificates ──
-*.pfx
-*.p12
-*.key
-*.pem

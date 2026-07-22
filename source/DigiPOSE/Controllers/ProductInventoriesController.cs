@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DigiPOSE.Models;
 
+using System.Linq.Dynamic.Core;
+
 namespace DigiPOSE.Controllers
 {
     public class ProductInventoriesController : Controller
@@ -11,7 +13,60 @@ namespace DigiPOSE.Controllers
         public ProductInventoriesController(DigiPoseDbContext context) { _context = context; }
 
         public async Task<IActionResult> Index()
-            => View(await _context.ProductInventories.Include(p => p.Branch).Include(p => p.Product).ToListAsync());
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index_LoadData()
+        {
+            try
+            {
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                var query = _context.ProductInventories.Include(p => p.Branch).Include(p => p.Product).AsQueryable();
+
+                int totalRecords = query.Count();
+
+                // Searching
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m =>
+                        (m.Product != null && m.Product.ProductName != null && m.Product.ProductName.Contains(searchValue)) ||
+                        (m.Branch != null && m.Branch.BranchName != null && m.Branch.BranchName.Contains(searchValue)));
+                }
+
+                int filterRecords = query.Count();
+
+                // Sorting
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
+                {
+                    query = query.OrderBy(sortColumn + " " + sortColumnDirection);
+                }
+
+                // Paging & Mapping
+                var dataList = query.Skip(skip).Take(pageSize).Select(m => new {
+                    InventoryId = m.InventoryId,
+                    ProductName = m.Product != null ? m.Product.ProductName : "",
+                    BranchName = m.Branch != null ? m.Branch.BranchName : "",
+                    StockQuantity = m.StockQuantity,
+                    MinStockLevel = m.MinStockLevel
+                }).ToList();
+
+                return Json(new { draw = draw, recordsFiltered = filterRecords, recordsTotal = totalRecords, data = dataList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = "An error occurred while loading data. Error: " + ex.Message });
+            }
+        }
 
         public async Task<IActionResult> Details(int? id)
         {

@@ -19,13 +19,13 @@
             <i class="fa-solid fa-plus me-1"></i> ADD NEW 
         </button>
         <div style="font-family:'Roboto Mono'; font-size: 0.85rem; color: #00E5FF; white-space: nowrap;">
-            TOTAL CATEGORIES: <strong style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">@Model.Count()</strong>
+            TOTAL CATEGORIES: <strong id="totalRecordsCount" style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">--</strong>
         </div>
     </div>
 
     <!-- Categories List Table -->
     <div class="table-responsive">
-        <table class="table-cyber">
+        <table id="datatable" class="table-cyber w-100">
             <thead>
                 <tr>
                     <th style="width: 5%; text-align: center; white-space: nowrap;">#</th>
@@ -36,50 +36,6 @@
                     <th style="width: 20%; text-align: center; white-space: nowrap;">ACTIONS</th>
                 </tr>
             </thead>
-            <tbody>
-                @{ int idx = 1; }
-                @foreach (var item in Model) {
-                    <tr>
-                        <td style="font-family:'VT323'; font-size:1.2rem; color:#00E5FF; text-align: center; white-space: nowrap;">@idx.ToString("D2")</td>
-                        <td style="white-space: nowrap;">
-                            <strong style="color: #FFFFFF; font-family:'Rajdhani'; font-size:1.05rem;">
-                                <i class="fa-solid fa-folder me-2 text-cyan"></i>@item.CategoryName
-                            </strong>
-                        </td>
-                        <td style="white-space: nowrap;">
-                            <span style="color: #00E5FF; font-family:'Roboto Mono'; font-size:0.9rem;">
-                                @(string.IsNullOrEmpty(item.Slug) ? "N/A" : item.Slug)
-                            </span>
-                        </td>
-                        <td style="color: #A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="@item.Description">
-                            @(string.IsNullOrEmpty(item.Description) ? "N/A" : item.Description)
-                        </td>
-                        <td style="text-align:center; white-space:nowrap;">
-                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Categories" asp-route-id="@item.CategoryId" method="post" style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
-                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
-                                </button>
-                            </form>
-                        </td>
-                        <td style="text-align: center; white-space: nowrap;">
-                            <button type="button" class="btn-cyber-primary btn-show-modal me-1" style="padding: 4px 10px; font-size: 0.75rem; border-color:#00FF66; color:#00FF66;"
-                                    data-url="@Url.Action("Details", "Categories", new { id = item.CategoryId })">
-                                <i class="fa-solid fa-eye"></i> INFO
-                            </button>
-                            <button type="button" class="btn-cyber-primary btn-show-modal me-1" style="padding: 4px 10px; font-size: 0.75rem;" 
-                                    data-url="@Url.Action("Edit", "Categories", new { id = item.CategoryId })">
-                                <i class="fa-solid fa-pen-to-square"></i> EDIT
-                            </button>
-                            <button type="button" class="btn-cyber-danger btn-show-modal" style="padding: 4px 10px; font-size: 0.75rem;"
-                                    data-url="@Url.Action("Delete", "Categories", new { id = item.CategoryId })">
-                                <i class="fa-solid fa-trash"></i> DELETE
-                            </button>
-                        </td>
-                    </tr>
-                    idx++;
-                }
-            </tbody>
         </table>
     </div>
 </div>
@@ -93,4 +49,61 @@
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var table = $('#datatable').DataTable({
+                serverSide: true,
+                processing: true,
+                filter: true,
+                ajax: {
+                    url: '@Url.Action("Index_LoadData", "Categories")',
+                    type: "POST",
+                    dataType: "JSON"
+                },
+                columns: [
+                    { data: null, name: null, sortable: false, render: (d, t, r, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                    { data: 'categoryName', name: 'CategoryName', render: d => `<strong style="color: #FFFFFF; font-family:'Rajdhani'; font-size:1.05rem;"><i class="fa-solid fa-folder me-2 text-cyan"></i>${d}</strong>` },
+                    { data: 'slug', name: 'Slug', render: d => `<span style="color: #00E5FF; font-family:'Roboto Mono'; font-size:0.9rem;">${d ? d : "N/A"}</span>` },
+                    { data: 'description', name: 'Description', render: d => `<div style="color: #A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${d ? d : ""}">${d ? d : "N/A"}</div>` },
+                    { 
+                        data: 'isActive', 
+                        name: 'IsActive',
+                        render: (d, t, r) => {
+                            var antiForgery = $('input[name="__RequestVerificationToken"]').val() || '';
+                            return `<form class="toggle-active-form" action="/Categories/ToggleActive/${r.categoryId}" method="post" style="display:inline; text-align:center;">
+                                        <input name="__RequestVerificationToken" type="hidden" value="${antiForgery}" />
+                                        <button type="submit" class="badge ${d ? "bg-success" : "bg-secondary"} border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                            ${d ? "ACTIVE" : "INACTIVE"}
+                                        </button>
+                                    </form>`;
+                        }
+                    },                            
+                    { 
+                        data: null, 
+                        searchable: false, 
+                        orderable: false, 
+                        render: function (d, t, r) { 
+                            var detailsUrl = '@Url.Action("Details", "Categories")/' + r.categoryId;
+                            var editUrl = '@Url.Action("Edit", "Categories")/' + r.categoryId;
+                            var deleteUrl = '@Url.Action("Delete", "Categories")/' + r.categoryId;
+                            return '<div style="text-align:center;">'
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal me-1" data-url="' + detailsUrl + '" style="padding: 4px 10px; font-size: 0.75rem; border-color:#00FF66; color:#00FF66;"><i class="fa-solid fa-eye"></i> INFO</button> '
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal me-1" data-url="' + editUrl + '" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fa-solid fa-pen-to-square"></i> EDIT</button> ' 
+                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> DELETE</button>'
+                                 + '</div>'; 
+                        } 
+                    }                        
+                ],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var json = api.ajax.json();
+                    if (json && json.recordsTotal !== undefined) {
+                        $('#totalRecordsCount').text(json.recordsTotal);
+                    }
+                }
+            });   
+        });
+    </script>
 }

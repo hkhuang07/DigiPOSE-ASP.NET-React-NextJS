@@ -12,6 +12,7 @@
     <!-- Cyber-Cinematic Military HUD Custom CSS -->
     <link rel="stylesheet" href="~/css/cyber-hud.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <div id="app-wrapper">
@@ -345,7 +346,8 @@
     <!-- Shared Global Notification Modal -->
     @await Html.PartialAsync("_CyberNotificationModal")
 
-    <!-- Scripts -->
+    <!-- Scripts --> 
+    <script src="~/lib/ckeditor5/ckeditor.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/cyber-hud.js" asp-append-version="true"></script>

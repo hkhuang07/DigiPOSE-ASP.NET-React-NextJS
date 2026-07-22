@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DigiPOSE.Models;
 using DigiPOSE.Web.Helpers;
+using System.Linq.Dynamic.Core;
 
 namespace DigiPOSE.Controllers
 {
@@ -17,13 +18,81 @@ namespace DigiPOSE.Controllers
         }
 
         public async Task<IActionResult> Index()
-            => View(await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.ProductType)
-                .Include(p => p.Unit)
-                .Include(p => p.Manufacturer)
-                .Include(p => p.TaxType)
-                .ToListAsync());
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Index_LoadData()
+        {
+            try{
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? int.Parse(length) : 0;
+                int skip = start != null ? int.Parse(start) : 0;
+                
+                var query = _context.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.ProductType)
+                    .Include(p => p.Unit)
+                    .Include(p => p.Manufacturer)
+                    .Include(p => p.TaxType)
+                    .AsQueryable();
+                
+                int totalRecords = query.Count();
+
+                // Tìm kiếm (Searching)
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(p => 
+                        (p.ProductName != null && p.ProductName.Contains(searchValue)) ||
+                        (p.SKU != null && p.SKU.Contains(searchValue)) ||
+                        (p.Category != null && p.Category.CategoryName.Contains(searchValue)) ||
+                        (p.Unit != null && p.Unit.UnitName.Contains(searchValue)) ||
+                        (p.Manufacturer != null && p.Manufacturer.ManufacturerName.Contains(searchValue)) ||
+                        (p.ProductType != null && p.ProductType.TypeName.Contains(searchValue)) ||
+                        (p.TaxType != null && p.TaxType.TaxName.Contains(searchValue)));
+                }
+                int filterRecords = query.Count();
+
+                // Sắp xếp (Sorting) sử dụng System.Linq.Dynamic.Core
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
+                {
+                    query = query.OrderBy(sortColumn + " " + sortColumnDirection);
+                }
+
+                // Phân trang (Paging) và Map dữ liệu trả về
+                var dataList = query.Skip(skip).Take(pageSize).Select(p => new {
+                    ProductId = p.ProductId,
+                    ImageUrl = p.ImageUrl,
+                    SKU = p.SKU,
+                    Slug = p.Slug,
+                    ProductName = p.ProductName,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : "",
+                    ProductTypeName = p.ProductType != null ? p.ProductType.TypeName : "",
+                    UnitName = p.Unit != null ? p.Unit.UnitName : "",
+                    ManufacturerName = p.Manufacturer != null ? p.Manufacturer.ManufacturerName : "",
+                    TaxTypeName = p.TaxType != null ? p.TaxType.TaxName : "",
+                    CostPrice = p.CostPrice,
+                    BasePrice = p.BasePrice,
+                    Barcode = p.Barcode,
+                    MinStockLevel = p.MinStockLevel,
+                    MaxStockLevel = p.MaxStockLevel,
+                    Description = p.Description,
+                    RowVersion = p.RowVersion,
+                    IsActive = p.IsActive
+                }).ToList();
+
+                // Format Json Data
+                return Json(new { draw = draw, recordsFiltered = filterRecords, recordsTotal = totalRecords, data = dataList });
+            }
+            catch(Exception ex){
+                return Json(new { error = "An error occurred while loading product data. Please try again. Error: " + ex.Message });
+            }
+        }
 
         public async Task<IActionResult> Details(int? id)
         {

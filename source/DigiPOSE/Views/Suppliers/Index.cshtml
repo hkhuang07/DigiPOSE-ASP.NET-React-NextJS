@@ -7,10 +7,10 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <button type="button" class="btn-cyber-success btn-show-modal" data-url="@Url.Action("Create", "Suppliers")"><i class="fa-solid fa-plus me-1"></i> ADD NEW</button>
-        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">TOTAL: <strong style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">@Model.Count()</strong></div>
+        <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">TOTAL RECORDS: <strong id="totalRecordsCount" style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">--</strong></div>
     </div>
     <div class="table-responsive">
-        <table class="table-cyber">
+        <table id="datatable" class="table-cyber w-100">
             <thead>
                 <tr>
                     <th style="width:5%; text-align:center; white-space:nowrap;">#</th>
@@ -21,31 +21,6 @@
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
-            <tbody>
-                @{ int idx = 1; }
-                @foreach (var item in Model) {
-                    <tr>
-                        <td style="font-family:'VT323'; font-size:1.2rem; color:#00E5FF; text-align:center; white-space:nowrap;">@idx.ToString("D2")</td>
-                        <td style="font-family:'Rajdhani'; font-weight:600; color:#FFF; white-space:nowrap;"><i class="fa-solid fa-truck-fast me-2 text-cyan"></i>@item.SupplierName</td>
-                        <td style="color:#A0C0CE; white-space:nowrap;">@item.Phone</td>
-                        <td style="color:@(item.DebtBalance > 0 ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.1rem; text-align:right; white-space:nowrap;">@string.Format("{0:N0}", item.DebtBalance)</td>
-                        <td style="text-align:center; white-space:nowrap;">
-                            <form class="toggle-active-form" asp-action="ToggleActive" asp-controller="Suppliers" asp-route-id="@item.SupplierId" method="post" style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="badge @(item.IsActive ? "bg-success" : "bg-secondary") border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
-                                    @(item.IsActive ? "ACTIVE" : "INACTIVE")
-                                </button>
-                            </form>
-                        </td>
-                        <td style="text-align:center; white-space:nowrap;">
-                            <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Details" data-url="@Url.Action("Details", "Suppliers", new { id = item.SupplierId })"><i class="fa-solid fa-eye"></i></button>
-                            <button type="button" class="btn-cyber-primary btn-show-modal" style="padding:4px 8px; font-size:0.75rem; margin:0 2px; border-color:#FFB000; color:#FFB000;" title="Edit" data-url="@Url.Action("Edit", "Suppliers", new { id = item.SupplierId })"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn-cyber-danger btn-show-modal" style="padding:4px 8px; font-size:0.75rem;" title="Delete" data-url="@Url.Action("Delete", "Suppliers", new { id = item.SupplierId })"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    idx++;
-                }
-            </tbody>
         </table>
     </div>
 </div>
@@ -54,4 +29,83 @@
 </div>
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var table = $('#datatable').DataTable({
+                serverSide: true,
+                processing: true,
+                filter: true,
+                ajax: {
+                    url: '@Url.Action("Index_LoadData", "Suppliers")',
+                    type: "POST",
+                    dataType: "JSON"
+                },
+                columns: [
+                    { data: null, name: null, sortable: false, render: (d, t, r, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                    { data: 'supplierName', name: 'SupplierName', render: d => `<i class="fa-solid fa-truck-fast me-2 text-cyan"></i><span style="font-family:'Rajdhani'; font-weight:600; color:#FFF;">${d}</span>` },
+                    { data: 'phone', name: 'Phone', render: d => d ? `<span style="color:#A0C0CE;">${d}</span>` : '' },
+                    { 
+                        data: 'debtBalance', 
+                        name: 'DebtBalance', 
+                        render: d => {
+                            var color = d > 0 ? "#FF3333" : "#00FF66";
+                            return `<span style="color:${color}; font-family:'VT323'; font-size:1.1rem; float:right;">${$.fn.dataTable.render.number(',', '.', 0, '').display(d)}</span>`;
+                        } 
+                    },
+                    { 
+                        data: 'isActive', 
+                        name: 'IsActive',
+                        render: (d, t, r) => {
+                            var antiForgery = $('input[name="__RequestVerificationToken"]').val() || '';
+                            return `<form class="toggle-active-form" action="/Suppliers/ToggleActive/${r.supplierId}" method="post" style="display:inline; text-align:center;">
+                                        <input name="__RequestVerificationToken" type="hidden" value="${antiForgery}" />
+                                        <button type="submit" class="badge ${d ? "bg-success" : "bg-secondary"} border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                            ${d ? "ACTIVE" : "INACTIVE"}
+                                        </button>
+                                    </form>`;
+                        }
+                    },                            
+                    { 
+                        data: null, 
+                        searchable: false, 
+                        orderable: false, 
+                        render: function (d, t, r) { 
+                            var detailsUrl = '@Url.Action("Details", "Suppliers")/' + r.supplierId;
+                            var editUrl = '@Url.Action("Edit", "Suppliers")/' + r.supplierId;
+                            var deleteUrl = '@Url.Action("Delete", "Suppliers")/' + r.supplierId;
+                            return '<div style="text-align:center;">'
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
+                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'
+                                 + '</div>'; 
+                        } 
+                    }                        
+                ],
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var json = api.ajax.json();
+                    if (json && json.recordsTotal !== undefined) {
+                        $('#totalRecordsCount').text(json.recordsTotal);
+                    }
+                }
+            });   
+        });
+
+        $(document).on('shown.bs.modal', '#globalModal', function () {
+            var descEl = document.querySelector('#Description');
+            if (descEl && !descEl.classList.contains('ck-initialized')) {
+                ClassicEditor
+                    .create(descEl)
+                    .then(editor => {
+                        descEl.classList.add('ck-initialized');
+                        $(descEl).closest('form').off('submit.ckeditor').on('submit.ckeditor', function () {
+                            descEl.value = editor.getData();
+                        });
+                    })
+                    .catch(err => console.error('CKEditor initialization error:', err));
+            }
+        }); 
+    </script>
 }

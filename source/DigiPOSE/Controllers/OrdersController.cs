@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DigiPOSE.Models;
 
+using System.Linq.Dynamic.Core;
+
 
 namespace DigiPOSE.Controllers
 {
@@ -13,13 +15,70 @@ namespace DigiPOSE.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var data = await _context.Orders
-                .Include(x => x.Shift)
-                .Include(x => x.User)
-                .Include(x => x.Customer)
-                .Include(x => x.PaymentMethod)
-                .ToListAsync();
-            return View(data);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index_LoadData()
+        {
+            try
+            {
+                var draw = Request.Form["draw"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                var query = _context.Orders
+                    .Include(x => x.Shift)
+                    .Include(x => x.User)
+                    .Include(x => x.Customer)
+                    .Include(x => x.PaymentMethod)
+                    .Include(x => x.OrderStatus)
+                    .AsQueryable();
+
+                int totalRecords = query.Count();
+
+                // Searching
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    query = query.Where(m =>
+                        m.OrderId.ToString().Contains(searchValue) ||
+                        (m.SnapshotCustomerName != null && m.SnapshotCustomerName.Contains(searchValue)) ||
+                        (m.Customer != null && m.Customer.FullName != null && m.Customer.FullName.Contains(searchValue)) ||
+                        (m.OrderStatus != null && m.OrderStatus.StatusName != null && m.OrderStatus.StatusName.Contains(searchValue)));
+                }
+
+                int filterRecords = query.Count();
+
+                // Sorting
+                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
+                {
+                    query = query.OrderBy(sortColumn + " " + sortColumnDirection);
+                }
+                else
+                {
+                    query = query.OrderByDescending(v => v.CreatedAt);
+                }
+
+                // Paging & Mapping
+                var dataList = query.Skip(skip).Take(pageSize).Select(m => new {
+                    OrderId = m.OrderId,
+                    CustomerName = m.SnapshotCustomerName != null ? m.SnapshotCustomerName : (m.Customer != null ? m.Customer.FullName : "Walk-in"),
+                    StatusName = m.OrderStatus != null ? m.OrderStatus.StatusName : "",
+                    TotalAmount = m.TotalAmount,
+                    CreatedAt = m.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
+                }).ToList();
+
+                return Json(new { draw = draw, recordsFiltered = filterRecords, recordsTotal = totalRecords, data = dataList });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = "An error occurred while loading data. Error: " + ex.Message });
+            }
         }
 
         public async Task<IActionResult> Details(int? id)

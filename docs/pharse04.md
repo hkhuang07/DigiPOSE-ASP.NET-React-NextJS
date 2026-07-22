@@ -1,33 +1,59 @@
+# BUỔI 4: SẮP XẾP, TÌM KIẾM, PHÂN TRANG (DATATABLES), CKEDITOR VÀ BẢO MẬT BCRYPT
 
-BUỔI 4: TỐI ƯU HIỆU NĂNG BẢNG DỮ LIỆU (SERVER-SIDE DATATABLES) VÀ TÍCH HỢP CKEDITOR (DIGIPOSE)Bước 1: Cài đặt thư viện truy vấn độngĐể DataTables.net có thể tự động ánh xạ (map) các cột cần sắp xếp (Sort) từ chuỗi string được gửi lên thông qua Ajax request, ta cần cài đặt gói thư viện truy vấn động của LINQ. Mở Package Manager Console và chạy lệnh:  PowerShellInstall-Package System.Linq.Dynamic.Core
-Bước 2: Tích hợp thư viện UI của DataTables.net vào LayoutCập nhật file Views/Shared/_Layout.cshtml để bổ sung các file CSS và JS dùng cho DataTables và tính năng xuất file (Export Excel/Copy). Thêm RenderSection Styles vào trong thẻ <head>:  HTML<head>
-    <!-- ... các meta tags hiện có ... -->
-    <title>@ViewData["Title"] - DigiPOSE Admin</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
-    <!-- Dành cho các CSS nhúng thêm từ các View con -->
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-Bước 3: Tối ưu hóa phân trang Server-side cho bảng Hàng hóa (Product)Khi dữ liệu Hàng hóa phình to, ta không thể tải toàn bộ dữ liệu lên View cùng lúc. Ta sẽ tái cấu trúc ProductsController để xử lý Ajax Request.  1. Cập nhật Controllers/ProductsController.cs:
-Bổ sung hàm Index_LoadData với sự tích hợp của Manufacturer và lọc IsActive:  C#using System.Linq.Dynamic.Core; // Bắt buộc thêm thư viện này
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DigiPOSE.Web.Models;
+## 1. LÝ THUYẾT VÀ KIẾN TRÚC TỐI ƯU (ENTERPRISE STANDARD)
 
-namespace DigiPOSE.Web.Controllers
+### 1.1. Tại sao phải phân trang ở Server-side (Server-Side Pagination)?
+- **Vấn đề của Client-side:** Thông thường, thư viện DataTables sẽ load toàn bộ dữ liệu từ Server về HTML (ví dụ: 10,000 dòng), sau đó dùng Javascript để chia trang. Điều này làm tăng thời gian phản hồi (Latency), tốn băng thông và có thể làm crash trình duyệt của client.
+- **Giải pháp Server-side:** Khi click trang số 2, trình duyệt chỉ gửi yêu cầu lấy đúng 10 dòng của trang 2 về. 
+- **Cơ chế hoạt động của DataTables Server-Side:**
+  - DataTables sẽ gửi một `POST Request` (hoặc GET) lên Server chứa các tham số: `draw` (bộ đếm bảo đảm đồng bộ), `start` (dòng bắt đầu), `length` (số lượng dòng cần lấy), `search[value]` (từ khóa tìm kiếm) và thông tin cột cần sắp xếp.
+  - Server sử dụng Entity Framework kết hợp với thư viện `System.Linq.Dynamic.Core` để dịch các tham số string thành câu lệnh truy vấn SQL tương ứng (ví dụ: `.OrderBy("ProductName ASC").Skip(10).Take(10)`).
+  - Server trả về JSON chứa `data` (dữ liệu hiển thị) và `recordsTotal`, `recordsFiltered`.
+
+### 1.2. CKEditor (Rich Text Editor)
+- Với những nội dung dài cần định dạng (như Mô tả sản phẩm - Description), thẻ `<textarea>` truyền thống không đáp ứng được. CKEditor biến textarea thành một trình soạn thảo văn bản giống MS Word, sau đó tự động convert nội dung thành mã HTML để lưu vào Database.
+
+### 1.3. Băm mật khẩu (Password Hashing) với BCrypt
+- **Nguyên tắc Zero-Trust Security:** Mật khẩu của người dùng tuyệt đối KHÔNG được lưu dưới dạng Plain Text (chữ rõ ràng) trong Database. Nếu Database bị hack, hacker sẽ có toàn bộ mật khẩu.
+- **BCrypt:** Là thuật toán băm (hash) một chiều, tự động sinh ra `Salt` ngẫu nhiên cho mỗi lần băm. Dù 2 người dùng có cùng mật khẩu `123456`, chuỗi băm lưu trong CSDL vẫn sẽ khác biệt hoàn toàn.
+
+---
+
+## 2. HƯỚNG DẪN THỰC HÀNH (ÁP DỤNG VÀO DIGIPOSE)
+
+### Bước 1: Chuẩn bị thư viện cần thiết
+Mở Package Manager Console (Tools > NuGet Package Manager > Package Manager Console) và chạy 2 lệnh sau:
+```powershell
+Install-Package System.Linq.Dynamic.Core
+Install-Package BCrypt.Net-Next
+```
+*(Lưu ý: Source code DigiPOSE hiện tại có thể đã cài đặt sẵn BCrypt để phục vụ UsersController)*
+
+---
+
+### Bước 2: Tối ưu phân trang Server-side bảng Sản Phẩm (Products)
+
+**2.1. Cập nhật `Controllers/ProductsController.cs`**
+Ta sẽ giữ nguyên hàm `Index()` chỉ trả về View rỗng, và thêm hàm `Index_LoadData` để xử lý AJAX.
+
+```csharp
+using System.Linq.Dynamic.Core; // Bắt buộc thêm
+
+public class ProductsController : Controller
 {
-    public class ProductsController : Controller
+    // Cập nhật hàm Index chỉ trả về View (không query dữ liệu nữa)
+    public IActionResult Index()
     {
-        private readonly DigiPoseDbContext _context;
+        return View();
+    }
 
-        public ProductsController(DigiPoseDbContext context) { _context = context; }
-
-        public IActionResult Index() => View();
-
-        [HttpPost]
-        public IActionResult Index_LoadData()
+    // Thêm API xử lý Server-Side DataTables
+    [HttpPost]
+    public IActionResult Index_LoadData()
+    {
+        try
         {
+            // 1. Nhận các tham số từ DataTables
             var draw = Request.Form["draw"].FirstOrDefault();
             var start = Request.Form["start"].FirstOrDefault();
             var length = Request.Form["length"].FirstOrDefault();
@@ -38,329 +64,165 @@ namespace DigiPOSE.Web.Controllers
             int pageSize = length != null ? int.Parse(length) : 0;
             int skip = start != null ? int.Parse(start) : 0;
 
-            // Khởi tạo truy vấn gốc với Xóa mềm và Manufacturer
-            var productQuery = _context.Products
+            // 2. Query gốc
+            var query = _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.Unit)
-                .Include(p => p.Manufacturer)
-                .Where(p => p.IsActive) // Chỉ lấy hàng còn kinh doanh
                 .AsQueryable();
 
-            int totalRecords = productQuery.Count();
+            int totalRecords = query.Count();
 
-            // Lọc dữ liệu (Searching)
+            // 3. Tìm kiếm (Searching)
             if (!string.IsNullOrEmpty(searchValue))
             {
-                productQuery = productQuery.Where(p => 
+                query = query.Where(p => 
                     p.ProductName.Contains(searchValue) ||
                     p.SKU.Contains(searchValue) ||
-                    p.Category.CategoryName.Contains(searchValue) ||
-                    p.Manufacturer.ManufacturerName.Contains(searchValue));
+                    p.Category.CategoryName.Contains(searchValue));
             }
-            int filterRecords = productQuery.Count();
+            int filterRecords = query.Count();
 
-            // Sắp xếp dữ liệu (Sorting)
-            if (!string.IsNullOrEmpty(sortColumn))
+            // 4. Sắp xếp (Sorting) sử dụng System.Linq.Dynamic.Core
+            if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
             {
-                productQuery = productQuery.OrderBy(sortColumn + " " + sortColumnDirection);
+                query = query.OrderBy(sortColumn + " " + sortColumnDirection);
             }
 
-            // Lấy dữ liệu và trả về JSON
-            var dataList = productQuery.Skip(skip).Take(pageSize).Select(p => new {
-                p.ProductId,
-                p.SKU,
-                p.ProductName,
-                CategoryName = p.Category.CategoryName,
-                ManufacturerName = p.Manufacturer.ManufacturerName,
-                UnitName = p.Unit.UnitName,
-                p.BasePrice
+            // 5. Phân trang (Paging) và Map dữ liệu trả về
+            var dataList = query.Skip(skip).Take(pageSize).Select(p => new {
+                ProductId = p.ProductId,
+                ImageUrl = p.ImageUrl,
+                SKU = p.SKU,
+                ProductName = p.ProductName,
+                CategoryName = p.Category != null ? p.Category.CategoryName : "",
+                UnitName = p.Unit != null ? p.Unit.UnitName : "",
+                BasePrice = p.BasePrice,
+                IsActive = p.IsActive
             }).ToList();
 
-            return Json(new { draw, recordsFiltered = filterRecords, recordsTotal = totalRecords, data = dataList });
+            // 6. Format Json Data
+            return Json(new { draw = draw, recordsFiltered = filterRecords, recordsTotal = totalRecords, data = dataList });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { error = ex.Message });
         }
     }
 }
-2. Cập nhật Views/Products/Index.cshtml để gọi Ajax:
-Xóa vòng lặp cũ, cấu hình DataTables tương thích với Blueprint V2.0:  HTML@section Styles {
+```
+
+**2.2. Cập nhật `Views/Products/Index.cshtml`**
+Cập nhật HTML `<table id="datatable">` (xóa toàn bộ nội dung trong `<tbody>`) và thêm script khởi tạo DataTables:
+
+```html
+@section Styles {
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
 }
 
-<table id="datatable" class="table table-sm table-hover table-bordered mb-0 w-100">
-    <thead class="table-light">
+<table id="datatable" class="table-cyber w-100">
+    <thead>
         <tr>
-            <th>#</th><th>SKU</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Hãng SX</th><th>ĐVT</th><th>Giá cơ sở</th><th>Thao tác</th>
+            <th>#</th>
+            <th>Image</th>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Unit</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
 </table>
 
 @section Scripts {
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#datatable').DataTable({
                 serverSide: true,
-                ajax: { url: '@Url.Action("Index_LoadData", "Products")', type: 'POST' },
-                columns: [
-                    { data: null, render: (d, t, r, m) => m.row + 1, sortable: false },
-                    { data: 'sku', name: 'SKU' },
-                    { data: 'productName', name: 'ProductName' },
-                    { data: 'categoryName', name: 'CategoryName' },
-                    { data: 'manufacturerName', name: 'ManufacturerName' },
-                    { data: 'unitName', name: 'UnitName' },
-                    { data: 'basePrice', name: 'BasePrice', render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                    { data: 'productId', render: d => `<a href="/Products/Edit/${d}" class="btn btn-sm btn-outline-primary">Sửa</a>`, sortable: false }
-                ]
-            });
-        });
-    </script>
-}
-Bước 4: Tích hợp CKEditor  Áp dụng cho các trường ghi chú dài như mô tả sản phẩm hoặc biên bản kho. Sếp nhúng thư viện từ wwwroot/lib/ckeditor5/ và khởi tạo như cũ trong @section Scripts của View cần sử dụng.  
-
-
-# OLD VERSION
-BUỔI 4: TỐI ƯU HIỆU NĂNG BẢNG DỮ LIỆU (SERVER-SIDE DATATABLES) VÀ TÍCH HỢP CKEDITOR (DIGIPOSE)
-Bước 1: Cài đặt thư viện truy vấn độngĐể DataTables.net có thể tự động ánh xạ (map) các cột cần sắp xếp (Sort) từ chuỗi string được gửi lên thông qua Ajax request, ta cần cài đặt gói thư viện truy vấn động của LINQ.  Mở Package Manager Console và chạy lệnh:PowerShellInstall-Package System.Linq.Dynamic.Core
-Bước 2: Tích hợp thư viện UI của DataTables.net vào LayoutCập nhật file Views/Shared/_Layout.cshtml để bổ sung các file CSS và JS dùng cho DataTables và tính năng xuất file (Export Excel/Copy).  Thêm RenderSection Styles vào trong thẻ <head>:  HTML<head>
-    <!-- ... các meta tags hiện có ... -->
-    <title>@ViewData["Title"] - DigiPOSE Admin</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
-    <!-- Dành cho các CSS nhúng thêm từ các View con -->
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-Bước 3: Tối ưu hóa phân trang Server-side cho bảng Hàng hóa (Product)Khi dữ liệu Hàng hóa phình to, ta không thể tải toàn bộ dữ liệu lên View cùng lúc. Ta sẽ tái cấu trúc ProductsController để xử lý Ajax Request.  1. Cập nhật Controllers/ProductsController.cs:
-Bổ sung hàm Index_LoadData để nhận các tham số phân trang, tìm kiếm từ DataTables.  C#using System.Linq.Dynamic.Core; // Bắt buộc thêm thư viện này
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DigiPOSE.Web.Models;
-
-namespace DigiPOSE.Web.Controllers
-{
-    public class ProductsController : Controller
-    {
-        private readonly DigiPoseDbContext _context;
-        // ... (các hàm hiện có giữ nguyên) ...
-
-        // GET: Products
-        public IActionResult Index()
-        {
-            // Không truyền dữ liệu ở đây nữa, View sẽ tự gọi Ajax
-            return View();
-        }
-
-        // POST: Products/Index_LoadData
-        [HttpPost]
-        public IActionResult Index_LoadData()
-        {
-            try
-            {
-                // Nhận tham số từ DataTables gửi lên
-                var draw = Request.Form["draw"].FirstOrDefault();
-                var start = Request.Form["start"].FirstOrDefault();
-                var length = Request.Form["length"].FirstOrDefault();
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
-                
-                int pageSize = length != null ? int.Parse(length) : 0;
-                int skip = start != null ? int.Parse(start) : 0;
-                int totalRecords = 0;
-                int filterRecords = 0;
-
-                // Khởi tạo truy vấn gốc
-                var productQuery = _context.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Unit)
-                    .AsQueryable();
-
-                totalRecords = productQuery.Count();
-
-                // Lọc dữ liệu (Searching)
-                if (!string.IsNullOrEmpty(searchValue) && !string.IsNullOrWhiteSpace(searchValue))
-                {
-                    productQuery = productQuery.Where(p => 
-                        p.ProductName.Contains(searchValue) ||
-                        p.SKU.Contains(searchValue) ||
-                        p.Category.CategoryName.Contains(searchValue) ||
-                        p.BasePrice.ToString().Contains(searchValue));
-                }
-                filterRecords = productQuery.Count();
-
-                // Sắp xếp dữ liệu (Sorting)
-                if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortColumnDirection))
-                {
-                    productQuery = productQuery.OrderBy(sortColumn + " " + sortColumnDirection);
-                }
-
-                // Phân trang (Pagination) và lấy dữ liệu
-                var dataList = productQuery.Skip(skip).Take(pageSize).Select(p => new {
-                    ProductId = p.ProductId,
-                    SKU = p.SKU,
-                    ProductName = p.ProductName,
-                    CategoryName = p.Category.CategoryName,
-                    UnitName = p.Unit.UnitName,
-                    BasePrice = p.BasePrice
-                }).ToList();
-
-                // Trả về JSON theo chuẩn của DataTables
-                var jsonData = new
-                {
-                    draw = draw,
-                    recordsFiltered = filterRecords,
-                    recordsTotal = totalRecords,
-                    data = dataList
-                };
-
-                return Json(jsonData);
-            }
-            catch (Exception ex)
-            {
-                // Có thể tích hợp NLog hoặc Serilog ở đây để log lỗi
-                throw new Exception("Lỗi truy xuất dữ liệu: " + ex.Message);
-            }
-        }
-    }
-}
-2. Cập nhật Views/Products/Index.cshtml để gọi Ajax:
-Xóa vòng lặp @foreach cũ, cấu hình thẻ <table> chỉ với <thead> và nhúng mã JavaScript để kích hoạt Server-side.  HTML@{
-    ViewData["Title"] = "Hàng hóa";
-}
-
-@section Styles {
-    <!-- CDN DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
-}
-
-<div class="card border-0 shadow-sm">
-    <h5 class="card-header bg-success text-white">@ViewData["Title"]</h5>
-    <div class="card-body">
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> Thêm hàng hóa</a>
-            </div>
-            <div class="col-md-6 text-end">
-                <div id="export-buttons"></div> <!-- Khu vực render nút Xuất Excel -->
-            </div>
-        </div>
-        
-        <table id="datatable" class="table table-sm table-hover table-bordered mb-0 w-100">
-            <thead class="table-light">
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="15%">Mã SKU</th>
-                    <th>Tên sản phẩm</th>
-                    <th width="15%">Danh mục</th>
-                    <th width="10%">ĐVT</th>
-                    <th width="15%" class="text-end">Giá cơ sở</th>
-                    <th width="10%" class="text-center">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dữ liệu sẽ được render bằng Ajax qua DataTables -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-@section Scripts {
-    <!-- CDN DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            var table = $('#datatable').DataTable({
-                language: {
-                    processing: 'Đang xử lý...',
-                    lengthMenu: 'Hiển thị _MENU_ dòng',
-                    zeroRecords: 'Không tìm thấy dòng nào phù hợp',
-                    info: 'Đang xem _START_ đến _END_ trong tổng số _TOTAL_ dòng',
-                    infoEmpty: 'Đang xem 0 đến 0 trong tổng số 0 dòng',
-                    emptyTable: 'Không có dữ liệu',
-                    infoFiltered: '(được lọc từ _MAX_ dòng)',
-                    search: 'Tìm kiếm:',
-                    paginate: {
-                        first: 'Đầu',
-                        last: 'Cuối',
-                        next: 'Sau',
-                        previous: 'Trước'
-                    }
-                },
-                buttons: [
-                    {
-                        extend: 'excelHtml5',
-                        text: 'Xuất Excel',
-                        className: 'btn btn-info btn-sm',
-                        title: 'DanhSachHangHoa_DigiPOSE'
-                    }
-                ],
                 processing: true,
-                serverSide: true, // Kích hoạt Server-side
-                filter: true, // Bật thanh Tìm kiếm
-                orderMulti: false,
+                filter: true,
                 ajax: {
                     url: '@Url.Action("Index_LoadData", "Products")',
                     type: 'POST',
                     datatype: 'json'
                 },
-                columnDefs: [
-                    { targets: [0, 6], sortable: false }, // Không sort cột STT và Thao tác
-                    { targets: [1, 6], className: 'text-center' },
-                    { targets: [5], className: 'text-end text-danger fw-bold' }
-                ],
                 columns: [
+                    { data: null, name: null, sortable: false, render: (d,t,r,meta) => meta.row + meta.settings._iDisplayStart + 1 },
                     { 
-                        data: null, 
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1; // Tạo số STT ảo
+                        data: 'imageUrl', 
+                        name: 'ImageUrl', 
+                        sortable: false, 
+                        render: function(d) {
+                            if(d) return `<img src="/uploads/products/${d}" style="width:38px; height:38px; object-fit:cover; border:1px solid #00E5FF;" />`;
+                            return `<i class="fa-solid fa-image text-muted"></i>`;
                         }
                     },
-                    { data: 'SKU', name: 'SKU' },
-                    { data: 'ProductName', name: 'ProductName' },
-                    { data: 'CategoryName', name: 'CategoryName' },
-                    { data: 'UnitName', name: 'UnitName' },
+                    { data: 'sku', name: 'SKU' },
+                    { data: 'productName', name: 'ProductName' },
+                    { data: 'categoryName', name: 'Category.CategoryName' },
+                    { data: 'unitName', name: 'Unit.UnitName' },
+                    { data: 'basePrice', name: 'BasePrice', render: $.fn.dataTable.render.number(',', '.', 0, '') },
                     { 
-                        data: 'BasePrice', 
-                        name: 'BasePrice',
-                        render: $.fn.dataTable.render.number(',', '.', 0, '') // Format VNĐ
+                        data: 'isActive', 
+                        name: 'IsActive',
+                        render: d => d ? '<span class="badge bg-success">ACTIVE</span>' : '<span class="badge bg-secondary">INACTIVE</span>'
                     },
-                    { 
+                    {
                         data: null,
-                        render: function (data, type, row, meta) {
-                            var editUrl = '/Products/Edit/' + row.ProductId;
-                            return '<a href="' + editUrl + '" class="btn btn-sm btn-outline-primary">Sửa</a>';
+                        sortable: false,
+                        render: function(d,t,row) {
+                            return `<button class="btn-cyber-primary btn-show-modal" data-url="/Products/Edit/${row.productId}"><i class="fa-solid fa-pen"></i></button>`;
                         }
                     }
-                ],
-                initComplete: function () {
-                    // Dời nút Export lên góc trên
-                    table.buttons().container().appendTo('#export-buttons');
-                    $('#datatable').wrap('<div class="table-responsive"></div>');
-                }
+                ]
             });
         });
     </script>
 }
-Bước 4: Tích hợp CKEditor (Mở rộng cho các ghi chú dài)Mặc dù bảng Product của PoS thường không cần mô tả rườm rà, Sếp có thể tạo thêm trường Description hoặc áp dụng chức năng này cho bảng StockVoucher (Chứng từ kho) để lưu lại lý do/biên bản kiểm kê nếu cần.  Cách áp dụng vào file View (ví dụ: Create/Edit View):  Tải bộ nguồn CKEditor5 và bỏ vào thư mục wwwroot/lib/ckeditor5/.  Bổ sung script vào khối @section Scripts ở cuối file View cần áp dụng:  HTML@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    
-    <!-- Nhúng script thư viện CKEditor -->
-    <script src="~/lib/ckeditor5/ckeditor.js"></script>
-    <script>
-        // Target vào ID của thẻ textarea muốn biến thành CKEditor
-        ClassicEditor.create(document.querySelector('#Mota_Hoac_GhiChu'), {
-            licenseKey: ''
-        }).then(editor => {
-            window.editor = editor;
-        }).catch(error => {
-            console.error(error);
-        });
-    </script>
+```
+
+---
+
+### Bước 3: Nhúng CKEditor vào Form Sản Phẩm
+
+**3.1. Cập nhật `Views/Products/_CreateOrEditPartial.cshtml`**
+Trong trường `Description`, ta sẽ loại bỏ thẻ `<textarea>` cơ bản và cấu hình bằng ID riêng để CKEditor nhận diện. (Chú ý: vì ở DigiPOSE ta đang dùng Bootstrap Modal (PartialView) để load form, nên việc Init CKEditor phải làm tại logic Javascript load Modal).
+
+Thêm vào `_Layout.cshtml` hoặc `Index.cshtml` phần script của CKEditor:
+```html
+<script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+```
+
+Trong View gọi Modal, bổ sung logic khởi tạo:
+```javascript
+ClassicEditor.create(document.querySelector('#Description'))
+    .catch(error => { console.error(error); });
+```
+
+---
+
+### Bước 4: Kiểm chứng tính năng Bảo Mật (BCrypt) tại UsersController
+
+Source code hiện tại của DigiPOSE **đã hoàn thiện trước** tính năng này. Hãy mở file `Controllers/UsersController.cs` và xem logic tại hàm `Create` và `Edit`:
+
+```csharp
+using BC = BCrypt.Net.BCrypt;
+
+[HttpPost, ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(User model)
+{
+    // ... validation
+    // Hash the raw password before saving
+    if (!string.IsNullOrWhiteSpace(model.PasswordHash))
+        model.PasswordHash = BC.HashPassword(model.PasswordHash); // <-- Băm mật khẩu 1 chiều
+
+    _context.Add(model);
+    await _context.SaveChangesAsync();
 }
+```
+**Nhận xét:**
+Việc mật khẩu đã được tự động Hash từ Phase 02 chứng tỏ hệ thống được thiết kế Secure-by-default (Bảo mật từ trong trứng nước). Tuy nhiên tài liệu cũ thiếu ghi chép việc này.
