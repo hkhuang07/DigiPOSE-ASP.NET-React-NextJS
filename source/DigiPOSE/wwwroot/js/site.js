@@ -248,17 +248,17 @@ $(document).ready(function () {
     if ($.fn.DataTable) {
         var cyberProcHtml = `
             <div class="cyber-proc-box">
-                <div class="cyber-proc-header">ENCRYPTING</div>
+                <div class="cyber-proc-header" style="background:#00FF00; color:#000000;">SEARCHING <span class="cyber-proc-dots">...</span></div>
                 <div class="cyber-proc-content">
                     <div class="cyber-proc-status-row">
-                        <span class="cyber-proc-status-title">STATUS:</span>
-                        <span class="cyber-proc-status-pct cyber-proc-pct-val">40%</span>
+                        <span class="cyber-proc-status-title" style="color:#00FF00;">STATUS:</span>
+                        <span class="cyber-proc-status-pct cyber-proc-pct-val" style="color:#00FF00;">0%</span>
                     </div>
-                    <div class="cyber-proc-bar-frame">
-                        <div class="cyber-proc-bar-fill cyber-proc-fill-val" style="width: 40%;"></div>
+                    <div class="cyber-proc-bar-frame" style="border:1px solid #00FF00;">
+                        <div class="cyber-proc-bar-fill cyber-proc-fill-val" style="width: 0%;"></div>
                     </div>
                     <div class="cyber-proc-logs">
-                        <div class="cyber-proc-log-line">> TELEMETRY: SYNCING DATABASE CLUSTER...</div>
+                        <div class="cyber-proc-log-line" style="color:#00FF00;">> TELEMETRY: SEARCHING DATABASE CLUSTER...</div>
                     </div>
                 </div>
             </div>`;
@@ -280,26 +280,32 @@ $(document).ready(function () {
             }
         });
 
-        // Dynamic Processing HUD Animation Ticker
+        // Dynamic Processing HUD Real-Time Progress Ticker (0% -> 100%)
         $(document).on('processing.dt', function (e, settings, processing) {
             var $wrapper = $(settings.nTableWrapper);
             var $proc = $wrapper.find('.dataTables_processing');
+            if (!$proc.length) return;
+
+            var timer = $proc.data('cyber-timer');
+            if (timer) clearInterval(timer);
+
             if (processing) {
-                var pct = 25;
+                var pct = 10;
                 var logs = [
                     "> SYSTEM_INIT: CONNECTING SQL CLUSTER...",
+                    "> QUERY_EXEC: FILTERING INDEXED DATASET...",
                     "> DATA_STREAM: DE-SERIALIZING RECORD STREAM...",
-                    "> SECURITY_CHECK: VERIFYING TELEMETRY SIGNATURE...",
-                    "> STATUS: 100% SUCCESS"
+                    "> SECURITY_CHECK: VERIFYING TELEMETRY SIGNATURE..."
                 ];
                 var logIdx = 0;
 
-                $proc.find('.cyber-proc-pct-val').text('25%');
-                $proc.find('.cyber-proc-fill-val').css('width', '25%');
+                $proc.find('.cyber-proc-pct-val').text(pct + '%');
+                $proc.find('.cyber-proc-fill-val').css('width', pct + '%');
+                $proc.find('.cyber-proc-log-line').text(logs[0]);
 
-                var timer = setInterval(function () {
-                    pct += Math.floor(Math.random() * 25) + 15;
-                    if (pct > 95) pct = 95;
+                timer = setInterval(function () {
+                    pct += Math.floor(Math.random() * 15) + 10;
+                    if (pct > 92) pct = 92;
 
                     $proc.find('.cyber-proc-pct-val').text(pct + '%');
                     $proc.find('.cyber-proc-fill-val').css('width', pct + '%');
@@ -308,12 +314,23 @@ $(document).ready(function () {
                         $proc.find('.cyber-proc-log-line').text(logs[logIdx]);
                         logIdx++;
                     }
-                }, 100);
+                }, 80);
 
                 $proc.data('cyber-timer', timer);
+                $proc.css('display', 'block');
             } else {
-                var timer = $proc.data('cyber-timer');
-                if (timer) clearInterval(timer);
+                // Complete progress bar to 100% on processing finish
+                $proc.find('.cyber-proc-pct-val').text('100%');
+                $proc.find('.cyber-proc-fill-val').css('width', '100%');
+                $proc.find('.cyber-proc-log-line').text('> STATUS: 100% SEARCH COMPLETED');
+
+                setTimeout(function () {
+                    $proc.fadeOut(200, function() {
+                        // Reset fill to 0% for next search
+                        $proc.find('.cyber-proc-pct-val').text('0%');
+                        $proc.find('.cyber-proc-fill-val').css('width', '0%');
+                    });
+                }, 300);
             }
         });
     }

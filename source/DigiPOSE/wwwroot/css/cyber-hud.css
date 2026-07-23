@@ -14,16 +14,23 @@
 :root {
     --bg-void: #000000;
     --bg-surface: #0A0A0A;
-    --bg-panel: rgba(10, 10, 10, 0.85);
+    --bg-panel: rgba(10, 10, 10, 0.88);
     --bg-panel-hover: rgba(0, 229, 255, 0.08);
     
-    --primary-cyan: #00E5FF;
-    --primary-cyan-dim: rgba(0, 229, 255, 0.25);
-    --primary-cyan-glow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.2);
-    
+    /* System Palette - Cyber-Cinematic Tech */
+    --primary-green: #00FF00;
     --bio-emerald: #00FF66;
+    --digital-blue: #0088FF;
+    --primary-cyan: #00E5FF;
     --amber-warning: #FFB000;
     --crimson-danger: #FF3333;
+    --alice-blue: #F0F8FF;
+    --text-white: #FFFFFF;
+    --text-gray: #A0C0CE;
+    
+    --primary-cyan-dim: rgba(0, 229, 255, 0.25);
+    --primary-cyan-glow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 20px rgba(0, 229, 255, 0.2);
+    --primary-green-glow: 0 0 10px rgba(0, 255, 0, 0.6), 0 0 20px rgba(0, 255, 0, 0.3);
     
     --border-neon: 1px solid rgba(0, 229, 255, 0.4);
     --border-active: 1px solid #00E5FF;
@@ -106,7 +113,7 @@ body.light-theme {
 .hud-navbar {
     height: var(--navbar-height);
     background: var(--bg-surface);
-    border-bottom: var(--border-neon);
+    border-bottom: 1px solid #00E5FF !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -117,7 +124,7 @@ body.light-theme {
     right: 0;
     z-index: 1050;
     backdrop-filter: blur(12px);
-    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.25) !important;
 }
 
 .hud-navbar-left, .hud-navbar-right {
@@ -195,6 +202,7 @@ body.light-theme {
 }
 
 /* Right Navbar Icon Buttons (Square Icon Only, No Text, No Arrows) */
+/* Right Navbar Icon & Language Buttons */
 .hud-nav-icon-btn, .hud-notif-btn {
     background: #000000;
     border: 1px solid #00E5FF;
@@ -209,7 +217,34 @@ body.light-theme {
     cursor: pointer;
     position: relative;
     transition: all 0.2s ease;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.hud-lang-btn {
+    background: #000000;
+    border-top: 1px solid #00FF00;
+    border-bottom: 1px solid #00FF00;
+    border-left: none;
+    border-right: none;
+    color: #00FF00;
+    height: 42px;
+    padding: 0 14px;
+    font-family: var(--font-header);
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    text-transform: uppercase;
+}
+
+.hud-lang-btn:hover {
+    background: #00FF00;
+    color: #000000;
+    box-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
 }
 
 .hud-nav-icon-btn:hover, .hud-notif-btn:hover {
@@ -223,25 +258,30 @@ body.light-theme {
     display: none !important;
 }
 
-.hud-notif-btn:hover {
-    border-color: #00E5FF;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
-    background: rgba(0, 229, 255, 0.1);
+.hud-notif-wrapper {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.hud-notif-btn {
+    overflow: visible !important;
 }
 
 .hud-notif-badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: #FF3333;
-    color: #FFFFFF;
-    font-family: 'VT323', 'Roboto Mono', monospace;
-    font-size: 0.85rem;
-    font-weight: bold;
-    padding: 1px 6px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px #FF3333, 0 0 15px rgba(255, 51, 51, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    position: absolute !important;
+    top: -6px !important;
+    right: -6px !important;
+    background: #FF3333 !important;
+    color: #FFFFFF !important;
+    font-family: 'VT323', 'Roboto Mono', monospace !important;
+    font-size: 0.85rem !important;
+    font-weight: bold !important;
+    padding: 2px 7px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 12px #FF3333, 0 0 18px rgba(255, 51, 51, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    z-index: 1050 !important;
+    pointer-events: none;
 }
 
 /* Profile Dropdown Trigger (Matching Reference Image) */
@@ -429,7 +469,7 @@ body.sidebar-collapsed .hud-main-content {
     align-items: center;
     gap: 12px;
     padding: 9px 14px;
-    color: #A0C0CE;
+    color: #A0C0CE !important;
     text-decoration: none;
     font-family: 'Rajdhani', sans-serif;
     font-size: 0.95rem;
@@ -437,6 +477,8 @@ body.sidebar-collapsed .hud-main-content {
     border: 1px solid transparent;
     transition: all 0.2s ease;
     position: relative;
+    background: #000000 !important;
+    background-color: #000000 !important;
 }
 
 .hud-menu-link i {
@@ -448,27 +490,43 @@ body.sidebar-collapsed .hud-main-content {
 }
 
 .hud-menu-link:hover {
-    color: #FFFFFF;
-    background: var(--bg-panel-hover);
-    border-color: rgba(0, 229, 255, 0.3);
-    padding-left: 18px;
+    color: #FFFFFF !important;
+    background: #0A0A0A !important;
+    background-color: #0A0A0A !important;
+    border-color: rgba(0, 229, 255, 0.3) !important;
+    padding-left: 18px !important;
 }
 
 .hud-menu-link:hover i {
-    color: var(--primary-cyan);
-    filter: drop-shadow(0 0 5px #00E5FF);
+    color: var(--primary-cyan) !important;
+    filter: drop-shadow(0 0 5px #00E5FF) !important;
 }
 
-.hud-menu-link.active {
-    color: var(--primary-cyan);
-    background: rgba(0, 229, 255, 0.12);
-    border: var(--border-active);
-    box-shadow: inset 3px 0 0 var(--primary-cyan), var(--primary-cyan-glow);
+/* Sidebar Active Navigation Item Override - Pure Dark Black Terminal (#000000) */
+.hud-sidebar .hud-menu-link.active,
+.hud-sidebar .hud-menu-item.active > .hud-menu-link,
+a.hud-menu-link.active,
+.hud-menu-link.active,
+.hud-menu-link.active:hover,
+.hud-menu-link.active:focus {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    color: #00E5FF !important;
+    border: 1px solid aliceblue !important;
+    box-shadow: 0 0 12px aliceblue, inset 3px 0 0 #00E5FF !important;
 }
 
-.hud-menu-link.active i {
-    color: var(--primary-cyan);
-    filter: drop-shadow(0 0 8px #00E5FF);
+.hud-sidebar .hud-menu-link.active i,
+a.hud-menu-link.active i {
+    color: aliceblue !important;
+    filter: drop-shadow(0 0 8px aliceblue) !important;
+}
+
+.hud-sidebar .hud-menu-link.active .hud-menu-badge,
+a.hud-menu-link.active .hud-menu-badge {
+    background: #000000 !important;
+    border-color: #00E5FF !important;
+    color: #00E5FF !important;
 }
 
 .hud-menu-badge {
@@ -493,11 +551,11 @@ body.sidebar-collapsed .hud-main-content {
 /* Cyber Glass Panel Container */
 .cyber-panel {
     background: var(--bg-panel);
-    border: var(--border-neon);
+    border: 1px solid rgba(0, 229, 255, 0.4) !important;
     padding: 1.5rem;
     position: relative;
     backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 229, 255, 0.15) !important;
     margin-bottom: 1.5rem;
     min-width: 0 !important;
     width: 100% !important;
@@ -612,50 +670,49 @@ body.sidebar-collapsed .hud-main-content {
     white-space: nowrap;
 }
 
+/* Modal Detail Table Description & Long Text Wrapping Fix */
+.modal-cyber table,
+.modal-body table,
+.modal-cyber .table-cyber,
+.modal-body .table-cyber {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.modal-cyber .table-cyber td,
+.modal-body .table-cyber td,
+.modal-cyber table td,
+.modal-body table td,
+.hud-detail-table td {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+
 .table-cyber tbody tr:hover td {
     background: rgba(0, 229, 255, 0.05);
     color: #FFFFFF;
 }
 
-/* Action Buttons */
-.btn-cyber-primary {
-    background: rgba(0, 229, 255, 0.15);
-    border: 1px solid var(--primary-cyan);
-    color: var(--primary-cyan);
+/* Action Buttons - Parallelogram Shape with Top-Bottom Borders */
+.btn-cyber-primary, .btn-cyber-success {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    border-top: 1px solid #00FF00 !important;
+    border-bottom: 1px solid #00FF00 !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #00FF00 !important;
     font-family: var(--font-header);
     font-size: 0.8rem;
     font-weight: 700;
-    padding: 8px 18px;
+    padding: 8px 20px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.2s ease;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-cyber-primary:hover {
-    background: var(--primary-cyan);
-    color: #000000;
-    box-shadow: var(--primary-cyan-glow);
-}
-
-.btn-cyber-success {
-    background: rgba(0, 255, 102, 0.15);
-    border: 1px solid var(--bio-emerald);
-    color: var(--bio-emerald);
-    font-family: var(--font-header);
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 8px 18px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -663,34 +720,204 @@ body.sidebar-collapsed .hud-main-content {
 }
 
 .btn-cyber-success:hover {
-    background: var(--bio-emerald);
-    color: #000000;
-    box-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+    background: #00FF00 !important;
+    background-color: #00FF00 !important;
+    color: #000000 !important;
+    border-top-color: #00FF00 !important;
+    border-bottom-color: #00FF00 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7) !important;
 }
 
-.btn-cyber-danger {
-    background: rgba(255, 51, 51, 0.15);
-    border: 1px solid var(--crimson-danger);
-    color: var(--crimson-danger);
+/* Universal Deactivate Button Override - Dark Orange BG (#331a00) + Orange Border & Text (#FFB000) */
+button[type="submit"]:has(.fa-toggle-off),
+button[type="submit"]:has(.fa-toggle-on),
+.btn-cyber-warning,
+.btn-cyber-deactivate,
+.btn-cyber-orange {
+    background: #331a00 !important;
+    background-color: #331a00 !important;
+    border-top: 1px solid #FFB000 !important;
+    border-bottom: 1px solid #FFB000 !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #FFB000 !important;
     font-family: var(--font-header);
     font-size: 0.8rem;
     font-weight: 700;
-    padding: 8px 18px;
+    padding: 8px 20px;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.2s ease;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
 }
 
-.btn-cyber-danger:hover {
-    background: var(--crimson-danger);
-    color: #FFFFFF;
-    box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+button[type="submit"]:has(.fa-toggle-off):hover,
+button[type="submit"]:has(.fa-toggle-on):hover,
+.btn-cyber-warning:hover,
+.btn-cyber-deactivate:hover,
+.btn-cyber-orange:hover {
+    background: #FFB000 !important;
+    background-color: #FFB000 !important;
+    color: #000000 !important;
+    border-top-color: #FFB000 !important;
+    border-bottom-color: #FFB000 !important;
+    box-shadow: 0 0 15px rgba(255, 176, 0, 0.7) !important;
+}
+
+.btn-cyber-danger, .btn-cyber-delete {
+    background: #330000 !important;
+    border-top: 1px solid #FF3333 !important;
+    border-bottom: 1px solid #FF3333 !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #FF3333 !important;
+    font-family: var(--font-header);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cyber-danger:hover, .btn-cyber-delete:hover {
+    background: #FF3333 !important;
+    color: #000000 !important;
+    border-top-color: #FF3333 !important;
+    border-bottom-color: #FF3333 !important;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.7);
+}
+
+.btn-cyber-cancel {
+    background: #222222 !important;
+    background-color: #222222 !important;
+    border-top: 1px solid aliceblue !important;
+    border-bottom: 1px solid aliceblue !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: aliceblue !important;
+    font-family: var(--font-header);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-cyber-cancel:hover {
+    background: aliceblue !important;
+    background-color: aliceblue !important;
+    color: #151515 !important;
+    border-top-color: #222222 !important;
+    border-bottom-color: #222222 !important;
+    box-shadow: 0 0 15px rgba(240, 248, 255, 0.7) !important;
+}
+
+.btn-cyber-info {
+    background: #001a2b !important;
+    border-top: 1px solid #00E5FF !important;
+    border-bottom: 1px solid #00E5FF !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #00E5FF !important;
+    font-family: var(--font-header);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-cyber-info:hover {
+    background: #00E5FF !important;
+    color: #000000 !important;
+    border-top-color: #00E5FF !important;
+    border-bottom-color: #00E5FF !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.7) !important;
+}
+
+/* Universal Modal Cancel / Dismiss / Close Button Override (Aliceblue + Dark Grey BG) */
+.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning),
+.modal button[data-bs-dismiss="modal"].btn-cyber-primary,
+.modal button[data-bs-dismiss="modal"].btn-secondary {
+    background: #222222 !important;
+    background-color: #222222 !important;
+    border-top: 1px solid aliceblue !important;
+    border-bottom: 1px solid aliceblue !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: aliceblue !important;
+    font-family: var(--font-header);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning):hover,
+.modal button[data-bs-dismiss="modal"].btn-cyber-primary:hover,
+.modal button[data-bs-dismiss="modal"].btn-secondary:hover {
+    background: aliceblue !important;
+    background-color: aliceblue !important;
+    color: #151515 !important;
+    border-top-color: #222222 !important;
+    border-bottom-color: #222222 !important;
+    box-shadow: 0 0 15px rgba(240, 248, 255, 0.7) !important;
+}
+
+/* DataTables Action Column View Detail Button Override (Cyan Blue) */
+.btn-cyber-primary:has(.fa-eye),
+button:has(.fa-eye),
+.btn-show-modal:has(.fa-eye) {
+    background: #001a2b !important;
+    border-top: 1px solid #00E5FF !important;
+    border-bottom: 1px solid #00E5FF !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #00E5FF !important;
+}
+
+.btn-cyber-primary:has(.fa-eye):hover,
+button:has(.fa-eye):hover,
+.btn-show-modal:has(.fa-eye):hover {
+    background: #00E5FF !important;
+    color: #000000 !important;
+    border-top-color: #00E5FF !important;
+    border-bottom-color: #00E5FF !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.7) !important;
 }
 
 /* Status Badges */
@@ -729,7 +956,7 @@ body.sidebar-collapsed .hud-main-content {
 .hud-footer {
     height: 36px;
     background: var(--bg-surface);
-    border-top: var(--border-neon);
+    border-top: 1px solid rgba(0, 229, 255, 0.4) !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1052,26 +1279,31 @@ option:disabled {
 
 /* ====================================================================
    CYBER-CINEMATIC PROCESSBAR & ENCRYPTION STATUS OVERLAY
-   (Matching encryptstatus.jpg & cyber-processbar-ui-design.jpg)
+/* ====================================================================
+   CYBER-CINEMATIC PROCESSBAR & SEARCHING STATUS OVERLAY
+   (Parallelogram shape with Green Top-Bottom Borders)
    ==================================================================== */
 div.dataTables_processing {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 420px !important;
+    width: 440px !important;
     max-width: 95% !important;
     height: auto !important;
     background: rgba(0, 0, 0, 0.95) !important;
-    border: 1px solid #FF3333 !important;
-    box-shadow: 0 0 30px rgba(255, 51, 51, 0.5), inset 0 0 15px rgba(255, 51, 51, 0.2) !important;
+    border-top: 2px solid #00FF00 !important;
+    border-bottom: 2px solid #00FF00 !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.4), inset 0 0 15px rgba(0, 255, 0, 0.15) !important;
     padding: 0 !important;
     margin: 0 !important;
     z-index: 1050 !important;
-    color: #00E5FF !important;
+    color: #00FF00 !important;
     font-family: 'Roboto Mono', 'VT323', monospace !important;
     backdrop-filter: blur(14px) !important;
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)) !important;
+    clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%) !important;
 }
 
 .cyber-proc-box {
@@ -1081,7 +1313,7 @@ div.dataTables_processing {
 }
 
 .cyber-proc-header {
-    background: #FF3333;
+    background: #00FF00;
     color: #000000;
     font-family: 'Orbitron', sans-serif;
     font-size: 1.15rem;
@@ -1090,7 +1322,7 @@ div.dataTables_processing {
     padding: 8px 15px;
     letter-spacing: 5px;
     text-transform: uppercase;
-    box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
 }
 
 .cyber-proc-content {
@@ -1108,25 +1340,25 @@ div.dataTables_processing {
 }
 
 .cyber-proc-status-title {
-    color: #00E5FF;
+    color: #00FF00 !important;
     letter-spacing: 3px;
 }
 
 .cyber-proc-status-pct {
-    color: #00FF66;
+    color: #00FF00 !important;
     font-weight: bold;
-    text-shadow: 0 0 12px #00FF66;
+    text-shadow: 0 0 12px #00FF00;
 }
 
 .cyber-proc-bar-frame {
     background: rgba(10, 20, 30, 0.9);
-    border: 1px solid #00E5FF;
+    border: 1px solid #00FF00 !important;
     height: 24px;
     padding: 3px;
     position: relative;
     clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
     margin-bottom: 15px;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) inset;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3) inset;
 }
 
 .cyber-proc-bar-fill {
@@ -1140,10 +1372,15 @@ div.dataTables_processing {
 .cyber-proc-logs {
     font-family: 'VT323', monospace;
     font-size: 0.95rem;
-    color: #00FF66;
-    border-top: 1px dashed rgba(0, 229, 255, 0.3);
+    color: #00FF00;
+    border-top: 1px dashed rgba(0, 255, 0, 0.3);
     padding-top: 10px;
     min-height: 40px;
     line-height: 1.2;
-    text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+    text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+}
+
+.cyber-proc-dots {
+    color: #00FF00 !important;
+    font-weight: bold;
 }

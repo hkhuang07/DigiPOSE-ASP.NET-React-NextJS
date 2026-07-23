@@ -1,7 +1,7 @@
 @model DigiPOSE.Models.LoginViewModel
 @{
     Layout = null;
-    ViewData["Title"] = "SYSTEM LOGIN";
+    ViewData["Title"] = "SYSTEM LOGIN - DIGIPOSE";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -9,174 +9,203 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
-    <style>
-        body {
-            background-color: #000;
-            color: #00E5FF;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .terminal-box {
-            width: 450px;
-            padding: 2px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #005f73;
-            box-shadow: inset 0 0 10px #00E5FF, 0 0 15px rgba(0,229,255,0.4);
-            position: relative;
-        }
-        .terminal-header {
-            background-color: #005f73;
-            color: #000;
-            font-weight: bold;
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-        .terminal-content {
-            padding: 30px;
-            border: 1px solid #00E5FF;
-            margin: 2px;
-        }
-        .form-label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #00E5FF;
-        }
-        .form-control {
-            background: transparent !important;
-            border: none !important;
-            border-bottom: 2px solid #005f73 !important;
-            color: #FFF !important;
-            border-radius: 0;
-            box-shadow: none !important;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 5px 0;
-            font-size: 1.1rem;
-        }
-        .form-control:focus {
-            border-bottom-color: #00E5FF !important;
-        }
-        .btn-terminal {
-            background: transparent;
-            color: #00E5FF;
-            border: 1px solid #00E5FF;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            letter-spacing: 2px;
-            padding: 10px 20px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-        .btn-terminal:hover {
-            background: #00E5FF;
-            color: #000;
-            box-shadow: 0 0 10px #00E5FF;
-        }
-        .btn-cancel {
-            border-color: #FF3333;
-            color: #FF3333;
-        }
-        .btn-cancel:hover {
-            background: #FF3333;
-            color: #000;
-            box-shadow: 0 0 10px #FF3333;
-        }
-        .nav-link {
-            color: #005f73;
-            font-size: 0.8rem;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.2s;
-        }
-        .nav-link:hover {
-            color: #00E5FF;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/cyber-hud.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cyber-auth.css" asp-append-version="true" />
 </head>
-<body>
-    
-    <div class="terminal-box">
-        <div class="terminal-header">
-            <span>> SYSTEM LOGIN _</span>
-            <span><i class="fa-solid fa-xmark"></i></span>
-        </div>
-        <div class="terminal-content">
-            <div class="text-center mb-4">
-                <i class="fa-solid fa-fingerprint mb-3" style="font-size: 3rem; color: #005f73;"></i>
-                <h4 style="margin: 0; font-weight: bold; letter-spacing: 4px; color: #00E5FF;">DIGIPOSE</h4>
-                <div style="font-size: 0.7rem; color: #005f73; margin-top: 5px;">SECURE ACCESS PROTOCOL</div>
-            </div>
+<body class="auth-page auth-login-bg">
 
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger" style="background: rgba(255, 51, 51, 0.1); border: 1px solid #FF3333; color: #FF3333; font-size: 0.85rem; border-radius: 0;" role="alert">
-                    > WARNING: @TempData["ErrorMessage"]
-                </div>
-            }
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success" style="background: rgba(0, 255, 102, 0.1); border: 1px solid #00FF66; color: #00FF66; font-size: 0.85rem; border-radius: 0;" role="alert">
-                    > SUCCESS: @TempData["SuccessMessage"]
-                </div>
-            }
-
-            <form asp-area="" asp-controller="Auth" asp-action="Login" method="post">
-                <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
-                
-                <div class="mb-4 row align-items-center">
-                    <label asp-for="Username" class="col-sm-4 col-form-label form-label text-end">USERNAME:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="Username" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="Username" class="text-danger" style="font-size: 0.75rem;"></span>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Left Image Panel -->
+            <div class="auth-panel-left login-panel-bg">
+                <div class="auth-panel-left-overlay"></div>
+                <div class="auth-panel-left-content">
+                    <svg class="auth-brand-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,5 95,27 95,73 50,95 5,73 5,27" stroke="#00E5FF" stroke-width="4" fill="rgba(0, 229, 255, 0.1)"/>
+                        <circle cx="50" cy="50" r="24" stroke="#00E5FF" stroke-width="3" stroke-dasharray="6 4"/>
+                        <circle cx="50" cy="50" r="8" fill="#00E5FF"/>
+                        <line x1="50" y1="15" x2="50" y2="35" stroke="#00E5FF" stroke-width="3"/>
+                        <line x1="50" y1="65" x2="50" y2="85" stroke="#00E5FF" stroke-width="3"/>
+                    </svg>
+                    <div class="auth-brand-title">Digi<span>POSE</span></div>
+                    <div class="auth-brand-slogan">
+                        MULTI-PROVIDER INTEGRATION STATION<br/>
+                        <span style="color:#00E5FF; font-size:0.75rem;">MY CONFIDENCE, YOUR CONVENIENCE</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="mb-5 row align-items-center">
-                    <label asp-for="Password" class="col-sm-4 col-form-label form-label text-end">PASSWORD:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger" style="font-size: 0.75rem;"></span>
+            <!-- Right Form Panel - Gradient Left (Transparent) -> Right (#000624) -->
+            <div class="auth-panel-right">
+                <div>
+                    <div class="auth-header-row">
+                        <a href="@Url.Content("~/")" class="btn-back-home" tabindex="6">
+                            <i class="fa-solid fa-arrow-left"></i> BACK
+                        </a>
+                        <div class="node-tag">
+                            <i class="fa-solid fa-shield-halved me-1"></i> SECURE NODE
+                        </div>
                     </div>
+
+                    <h3 class="auth-form-title">LOGIN</h3>
+                    <div class="auth-form-sub">> SYSTEM ACCESS PROTOCOL</div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger" style="background: rgba(255, 51, 51, 0.15); border: 1px solid #FF3333; color: #FF3333; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; border-radius: 0;" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> @TempData["ErrorMessage"]
+                        </div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success" style="background: rgba(0, 229, 255, 0.15); border: 1px solid #00E5FF; color: #00E5FF; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; border-radius: 0;" role="alert">
+                            <i class="fa-solid fa-circle-check me-1"></i> @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <form id="loginForm" asp-area="" asp-controller="Auth" asp-action="Login" method="post">
+                        <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+
+                        <div class="form-cyber-group">
+                            <label asp-for="Username">USERNAME</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-user"></i>
+                                <input asp-for="Username" class="form-cyber-input" autocomplete="off" placeholder="operator@digipose.vn" tabindex="1" autofocus />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="form-cyber-group mb-3">
+                            <label asp-for="Password">PASSWORD</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input asp-for="Password" type="password" class="form-cyber-input" placeholder="••••••••••••" tabindex="2" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="auth-options-row">
+                            <label class="cyber-checkbox-label">
+                                <input type="checkbox" class="cyber-checkbox" id="rememberMe" name="RememberMe" value="true" />
+                                <span>Remember choice</span>
+                            </label>
+                            <a asp-action="ForgotPassword" class="link-forgot" tabindex="5">Forgot password?</a>
+                        </div>
+
+                        <div class="auth-btn-row">
+                            <a href="@Url.Content("~/")" class="btn btn-cyber-cancel" tabindex="4">
+                                <i class="fa-solid fa-xmark"></i> CANCEL
+                            </a>
+                            <button type="submit" class="btn btn-cyber-submit" id="loginSubmitBtn" tabindex="3">
+                                <i class="fa-solid fa-power-off"></i> LOGIN
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="reset" class="btn btn-terminal btn-cancel w-45">
-                        [ CANCEL ]
-                    </button>
-                    <button type="submit" class="btn btn-terminal w-45">
-                        [ LOGIN ]
-                    </button>
+                <div class="link-signup-row">
+                    Do not have an account yet? <a asp-action="Register" tabindex="5">Sign Up</a>
                 </div>
-            </form>
-            
-            <div class="mt-4 text-center">
-                <a asp-action="Register" class="nav-link d-inline-block me-3">> REQUEST ACCESS (SIGN UP)</a>
-                <a asp-action="ForgotPassword" class="nav-link d-inline-block">> RESET OVERRIDE (FORGOT PASS)</a>
             </div>
         </div>
-    </div>  
+    </div>
+
+    <!-- Cinematic Auth Progress Bar Simulation Overlay -->
+    <div id="authProgressOverlay">
+        <div class="cyber-proc-box" style="width: 460px; max-width: 90%; background: #000000; border-top: 2px solid #00E5FF; border-bottom: 2px solid #00E5FF; clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%); box-shadow: 0 0 35px rgba(0, 229, 255, 0.5);">
+            <div class="cyber-proc-header" style="background:#00E5FF; color:#000000;">AUTHENTICATING...</div>
+            <div class="cyber-proc-content" style="padding: 24px;">
+                <div class="cyber-proc-status-row">
+                    <span class="cyber-proc-status-title" style="color:#00E5FF;">STATUS:</span>
+                    <span class="cyber-proc-status-pct" id="authPctVal" style="color:#00FF66;">15%</span>
+                </div>
+                <div class="cyber-proc-bar-frame" style="border:1px solid #00E5FF;">
+                    <div class="cyber-proc-bar-fill" id="authBarFill" style="width: 15%;"></div>
+                </div>
+                <div class="cyber-proc-logs" style="color:#00FF66;">
+                    <div id="authLogLine">> AUTHENTICATING ACCESS PROTOCOL...</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Textfield Filled State Manager (Default: Aliceblue | Filled: Cyan Blue #00E5FF)
+            function updateInputFilledState(input) {
+                const wrapper = input.closest('.input-icon-wrapper') || input.parentElement;
+                if (input.value.trim().length > 0) {
+                    input.classList.add('is-filled');
+                    if (wrapper) wrapper.classList.add('is-filled');
+                } else {
+                    input.classList.remove('is-filled');
+                    if (wrapper) wrapper.classList.remove('is-filled');
+                }
+            }
+
+            document.querySelectorAll('.form-cyber-input').forEach(input => {
+                updateInputFilledState(input);
+                input.addEventListener('input', function() { updateInputFilledState(this); });
+                input.addEventListener('blur', function() { updateInputFilledState(this); });
+            });
+
+            // Auth Submission Progress Bar Simulation
+            const loginForm = document.getElementById("loginForm");
+            const overlay = document.getElementById("authProgressOverlay");
+            const pctVal = document.getElementById("authPctVal");
+            const barFill = document.getElementById("authBarFill");
+            const logLine = document.getElementById("authLogLine");
+
+            if (loginForm) {
+                loginForm.addEventListener("submit", function (e) {
+                    const username = document.getElementById("Username") ? document.getElementById("Username").value : "";
+                    const password = document.getElementById("Password") ? document.getElementById("Password").value : "";
+
+                    if (!username || !password) return; // Allow client validation to run
+
+                    e.preventDefault();
+                    overlay.style.display = "flex";
+
+                    const logs = [
+                        "> AUTHENTICATING ACCESS PROTOCOL...",
+                        "> VERIFYING CREDENTIALS...",
+                        "> SEARCHING DATA CLUSTER...",
+                        "> FOUND USER MATCH: " + username.toUpperCase(),
+                        "> SELECTING USER ROLE PROTOCOL...",
+                        "> CHECKING ROLE PERMISSIONS...",
+                        "> ACCESS GRANTED - REDIRECTING..."
+                    ];
+
+                    let currentPct = 15;
+                    let logIdx = 0;
+
+                    const interval = setInterval(function () {
+                        currentPct += Math.floor(Math.random() * 20) + 15;
+                        if (currentPct > 98) currentPct = 98;
+
+                        pctVal.textContent = currentPct + "%";
+                        barFill.style.width = currentPct + "%";
+
+                        if (logIdx < logs.length) {
+                            logLine.textContent = logs[logIdx];
+                            logIdx++;
+                        }
+
+                        if (currentPct >= 98 && logIdx >= logs.length) {
+                            clearInterval(interval);
+                            setTimeout(function () {
+                                loginForm.submit();
+                            }, 250);
+                        }
+                    }, 120);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

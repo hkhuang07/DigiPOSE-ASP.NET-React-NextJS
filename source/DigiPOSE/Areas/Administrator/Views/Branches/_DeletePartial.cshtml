@@ -18,7 +18,7 @@
         <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
         <form class="ajax-modal-form d-inline" asp-action="ToggleActive" asp-controller="Branches" asp-route-id="@Model.BranchId" method="post">
             @Html.AntiForgeryToken()
-            <button type="submit" class="btn-cyber-primary" style="border-color:#FFB000;color:#FFB000;">
+            <button type="submit" class="btn-cyber-warning" style="border-color:#FFB000;color:#FFB000;">
                 <i class="fa-solid fa-toggle-off me-1"></i> @(Model.IsActive ? "DEACTIVATE" : "ACTIVATE")
             </button>
         </form>

@@ -43,17 +43,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 3. Language Selector Toggle (Icon Only)
+    // 3. Language Selector Toggle (Icon + Text Label)
     const langToggleBtn = document.getElementById("langToggleBtn");
+    const langText = document.getElementById("langText");
     let currentLang = localStorage.getItem("digipose_lang") || "EN";
 
+    function applyLangState(lang) {
+        if (langText) {
+            langText.textContent = lang === "VI" ? "Tiếng Việt" : "English";
+        }
+        if (langToggleBtn) {
+            langToggleBtn.title = `Switch Language (Current: ${lang === "VI" ? "Tiếng Việt" : "English"})`;
+        }
+    }
+    applyLangState(currentLang);
+
     if (langToggleBtn) {
-        langToggleBtn.title = `Switch Language (Current: ${currentLang})`;
         langToggleBtn.addEventListener("click", function () {
             currentLang = currentLang === "EN" ? "VI" : "EN";
             localStorage.setItem("digipose_lang", currentLang);
-            langToggleBtn.title = `Switch Language (Current: ${currentLang})`;
+            applyLangState(currentLang);
         });
+    }
+
+    // 3b. Profile Dropdown Caret Single Icon Toggle (Up when open, Down when closed)
+    const profileDropdownEl = document.getElementById("profileDropdown");
+    const profileCaret = document.getElementById("hudProfileCaret");
+    if (profileDropdownEl && profileCaret) {
+        const parentDropdown = profileDropdownEl.closest('.dropdown');
+        if (parentDropdown) {
+            parentDropdown.addEventListener('show.bs.dropdown', function () {
+                profileCaret.className = "fa-solid fa-caret-up text-cyan ms-2";
+            });
+            parentDropdown.addEventListener('hide.bs.dropdown', function () {
+                profileCaret.className = "fa-solid fa-caret-down text-cyan ms-2";
+            });
+        }
     }
 
     // 4. Live Telemetry Clock in Footer

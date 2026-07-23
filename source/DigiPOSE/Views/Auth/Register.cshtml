@@ -1,7 +1,7 @@
 @model DigiPOSE.Models.RegisterViewModel
 @{
     Layout = null;
-    ViewData["Title"] = "SYSTEM REGISTRATION";
+    ViewData["Title"] = "SYSTEM REGISTRATION - DIGIPOSE";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -9,184 +9,213 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
-    <style>
-        body {
-            background-color: #000;
-            color: #00E5FF;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-        .terminal-box {
-            width: 500px;
-            padding: 2px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #005f73;
-            box-shadow: inset 0 0 10px #00E5FF, 0 0 15px rgba(0,229,255,0.4);
-            position: relative;
-        }
-        .terminal-header {
-            background-color: #005f73;
-            color: #000;
-            font-weight: bold;
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-        .terminal-content {
-            padding: 30px;
-            border: 1px solid #00E5FF;
-            margin: 2px;
-        }
-        .form-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #00E5FF;
-        }
-        .form-control {
-            background: transparent !important;
-            border: none !important;
-            border-bottom: 2px solid #005f73 !important;
-            color: #FFF !important;
-            border-radius: 0;
-            box-shadow: none !important;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 5px 0;
-            font-size: 1rem;
-        }
-        .form-control:focus {
-            border-bottom-color: #00E5FF !important;
-        }
-        .btn-terminal {
-            background: transparent;
-            color: #00E5FF;
-            border: 1px solid #00E5FF;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            letter-spacing: 2px;
-            padding: 10px 20px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-        .btn-terminal:hover {
-            background: #00E5FF;
-            color: #000;
-            box-shadow: 0 0 10px #00E5FF;
-        }
-        .btn-cancel {
-            border-color: #FF3333;
-            color: #FF3333;
-        }
-        .btn-cancel:hover {
-            background: #FF3333;
-            color: #000;
-            box-shadow: 0 0 10px #FF3333;
-        }
-        .nav-link {
-            color: #005f73;
-            font-size: 0.8rem;
-            text-decoration: none;
-            letter-spacing: 1px;
-            transition: color 0.2s;
-        }
-        .nav-link:hover {
-            color: #00E5FF;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/cyber-hud.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cyber-auth.css" asp-append-version="true" />
 </head>
-<body>
-    
-    <div class="terminal-box">
-        <div class="terminal-header">
-            <span>> SYSTEM REGISTRATION _</span>
-            <span><i class="fa-solid fa-xmark"></i></span>
-        </div>
-        <div class="terminal-content">
-            <div class="text-center mb-4">
-                <i class="fa-solid fa-user-plus mb-3" style="font-size: 2.5rem; color: #005f73;"></i>
-                <h5 style="margin: 0; font-weight: bold; letter-spacing: 4px; color: #00E5FF;">NEW OPERATOR PROFILE</h5>
+<body class="auth-page auth-register-bg">
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Left Image Panel -->
+            <div class="auth-panel-left register-panel-bg">
+                <div class="auth-panel-left-overlay"></div>
+                <div class="auth-panel-left-content">
+                    <svg class="auth-brand-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,5 95,27 95,73 50,95 5,73 5,27" stroke="#00E5FF" stroke-width="4" fill="rgba(0, 229, 255, 0.1)"/>
+                        <circle cx="50" cy="50" r="24" stroke="#00E5FF" stroke-width="3" stroke-dasharray="6 4"/>
+                        <circle cx="50" cy="50" r="8" fill="#00E5FF"/>
+                    </svg>
+                    <div class="auth-brand-title">Digi<span>POSE</span></div>
+                    <div class="auth-brand-slogan">
+                        OPERATOR PROFILE PROVISIONING<br/>
+                        <span style="color:#00E5FF; font-size:0.75rem;">MY CONFIDENCE, YOUR CONVENIENCE</span>
+                    </div>
+                </div>
             </div>
 
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger" style="background: rgba(255, 51, 51, 0.1); border: 1px solid #FF3333; color: #FF3333; font-size: 0.85rem; border-radius: 0;" role="alert">
-                    > WARNING: @TempData["ErrorMessage"]
-                </div>
-            }
-
-            <form asp-area="" asp-controller="Auth" asp-action="Register" method="post">
-                <div class="mb-3 row align-items-center">
-                    <label asp-for="Username" class="col-sm-4 col-form-label form-label text-end">USERNAME:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="Username" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="Username" class="text-danger" style="font-size: 0.75rem;"></span>
+            <!-- Right Form Panel - Gradient Left (Transparent) -> Right (#000624) -->
+            <div class="auth-panel-right">
+                <div>
+                    <div class="auth-header-row">
+                        <a href="@Url.Content("~/")" class="btn-back-home" tabindex="8">
+                            <i class="fa-solid fa-arrow-left"></i> BACK
+                        </a>
+                        <div class="node-tag">
+                            <i class="fa-solid fa-user-plus me-1"></i> NEW REGISTRATION
+                        </div>
                     </div>
+
+                    <h3 class="auth-form-title">SIGN UP</h3>
+                    <div class="auth-form-sub">> CREATE OPERATOR CREDENTIALS</div>
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger" style="background: rgba(255, 51, 51, 0.15); border: 1px solid #FF3333; color: #FF3333; font-family: 'Roboto Mono', monospace; font-size: 0.82rem; border-radius: 0; padding: 6px 12px; margin-bottom: 10px;" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <form id="registerForm" asp-area="" asp-controller="Auth" asp-action="Register" method="post">
+                        <div class="form-cyber-group">
+                            <label asp-for="Username">USERNAME</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-user-gear"></i>
+                                <input asp-for="Username" class="form-cyber-input" autocomplete="off" placeholder="operator_id" tabindex="1" autofocus />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="form-cyber-group">
+                            <label asp-for="FullName">FULL NAME</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input asp-for="FullName" class="form-cyber-input" autocomplete="off" placeholder="Operator Name" tabindex="2" />
+                            </div>
+                            <span asp-validation-for="FullName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="form-cyber-group">
+                            <label asp-for="Email">EMAIL ADDRESS</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input asp-for="Email" type="email" class="form-cyber-input" autocomplete="off" placeholder="name@digipose.vn" tabindex="3" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="form-cyber-group">
+                            <label asp-for="Password">PASSWORD</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-key"></i>
+                                <input asp-for="Password" type="password" class="form-cyber-input" placeholder="••••••••••••" tabindex="4" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="form-cyber-group">
+                            <label asp-for="ConfirmPassword">CONFIRM PASSWORD</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-check-double"></i>
+                                <input asp-for="ConfirmPassword" type="password" class="form-cyber-input" placeholder="••••••••••••" tabindex="5" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.75rem;"></span>
+                        </div>
+
+                        <div class="auth-btn-row">
+                            <a asp-action="Login" class="btn btn-cyber-cancel" tabindex="7">
+                                <i class="fa-solid fa-xmark"></i> CANCEL
+                            </a>
+                            <button type="submit" class="btn btn-cyber-submit" id="registerSubmitBtn" tabindex="6">
+                                <i class="fa-solid fa-user-check"></i> REGISTER
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="mb-3 row align-items-center">
-                    <label asp-for="FullName" class="col-sm-4 col-form-label form-label text-end">FULL NAME:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="FullName" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="FullName" class="text-danger" style="font-size: 0.75rem;"></span>
-                    </div>
+                <div class="link-signup-row">
+                    Already have an account? <a asp-action="Login" tabindex="8">Sign In</a>
                 </div>
-
-                <div class="mb-3 row align-items-center">
-                    <label asp-for="Email" class="col-sm-4 col-form-label form-label text-end">EMAIL:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="Email" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="Email" class="text-danger" style="font-size: 0.75rem;"></span>
-                    </div>
-                </div>
-
-                <div class="mb-3 row align-items-center">
-                    <label asp-for="Password" class="col-sm-4 col-form-label form-label text-end">PASSWORD:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger" style="font-size: 0.75rem;"></span>
-                    </div>
-                </div>
-
-                <div class="mb-4 row align-items-center">
-                    <label asp-for="ConfirmPassword" class="col-sm-4 col-form-label form-label text-end">CONFIRM:</label>
-                    <div class="col-sm-8">
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size: 0.75rem;"></span>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Login" class="btn btn-terminal btn-cancel w-45 text-center" style="text-decoration: none;">
-                        [ CANCEL ]
-                    </a>
-                    <button type="submit" class="btn btn-terminal w-45">
-                        [ REGISTER ]
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>  
+    </div>
+
+    <!-- Cinematic Auth Progress Bar Simulation Overlay -->
+    <div id="authProgressOverlay">
+        <div class="cyber-proc-box" style="width: 460px; max-width: 90%; background: #000000; border-top: 2px solid #00E5FF; border-bottom: 2px solid #00E5FF; clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%); box-shadow: 0 0 35px rgba(0, 229, 255, 0.5);">
+            <div class="cyber-proc-header" style="background:#00E5FF; color:#000000;">PROVISIONING...</div>
+            <div class="cyber-proc-content" style="padding: 24px;">
+                <div class="cyber-proc-status-row">
+                    <span class="cyber-proc-status-title" style="color:#00E5FF;">STATUS:</span>
+                    <span class="cyber-proc-status-pct" id="authPctVal" style="color:#00FF66;">15%</span>
+                </div>
+                <div class="cyber-proc-bar-frame" style="border:1px solid #00E5FF;">
+                    <div class="cyber-proc-bar-fill" id="authBarFill" style="width: 15%;"></div>
+                </div>
+                <div class="cyber-proc-logs" style="color:#00FF66;">
+                    <div id="authLogLine">> INITIALIZING REGISTRATION PROTOCOL...</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Textfield Filled State Manager (Default: Aliceblue | Filled: Cyan Blue #00E5FF)
+            function updateInputFilledState(input) {
+                const wrapper = input.closest('.input-icon-wrapper') || input.parentElement;
+                if (input.value.trim().length > 0) {
+                    input.classList.add('is-filled');
+                    if (wrapper) wrapper.classList.add('is-filled');
+                } else {
+                    input.classList.remove('is-filled');
+                    if (wrapper) wrapper.classList.remove('is-filled');
+                }
+            }
+
+            document.querySelectorAll('.form-cyber-input').forEach(input => {
+                updateInputFilledState(input);
+                input.addEventListener('input', function() { updateInputFilledState(this); });
+                input.addEventListener('blur', function() { updateInputFilledState(this); });
+            });
+
+            // Auth Submission Progress Bar Simulation
+            const registerForm = document.getElementById("registerForm");
+            const overlay = document.getElementById("authProgressOverlay");
+            const pctVal = document.getElementById("authPctVal");
+            const barFill = document.getElementById("authBarFill");
+            const logLine = document.getElementById("authLogLine");
+
+            if (registerForm) {
+                registerForm.addEventListener("submit", function (e) {
+                    const username = document.getElementById("Username") ? document.getElementById("Username").value : "";
+                    const email = document.getElementById("Email") ? document.getElementById("Email").value : "";
+                    const password = document.getElementById("Password") ? document.getElementById("Password").value : "";
+
+                    if (!username || !email || !password) return;
+
+                    e.preventDefault();
+                    overlay.style.display = "flex";
+
+                    const logs = [
+                        "> INITIALIZING REGISTRATION PROTOCOL...",
+                        "> VERIFYING EMAIL & USERNAME UNIQUE CONSTRAINTS...",
+                        "> CREATING OPERATOR PROFILE IN DB...",
+                        "> PROVISIONING SECURITY SHA-256 SALT...",
+                        "> ASSIGNING OPERATOR DEFAULT ROLE...",
+                        "> GRANTING PERMISSIONS...",
+                        "> REGISTRATION COMPLETED - REDIRECTING..."
+                    ];
+
+                    let currentPct = 15;
+                    let logIdx = 0;
+
+                    const interval = setInterval(function () {
+                        currentPct += Math.floor(Math.random() * 20) + 15;
+                        if (currentPct > 98) currentPct = 98;
+
+                        pctVal.textContent = currentPct + "%";
+                        barFill.style.width = currentPct + "%";
+
+                        if (logIdx < logs.length) {
+                            logLine.textContent = logs[logIdx];
+                            logIdx++;
+                        }
+
+                        if (currentPct >= 98 && logIdx >= logs.length) {
+                            clearInterval(interval);
+                            setTimeout(function () {
+                                registerForm.submit();
+                            }, 250);
+                        }
+                    }, 120);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

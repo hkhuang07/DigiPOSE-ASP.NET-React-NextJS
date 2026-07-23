@@ -13,51 +13,42 @@
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
+    <!-- 5 Module Widgets Container in 1 Single Row with Horizontal Scrollbar -->
+    <div class="hud-widget-slider mb-4" style="display: flex; gap: 15px; overflow-x: auto; overflow-y: hidden; padding-bottom: 14px; scrollbar-width: thin;">
         @foreach (var mod in Model.Modules)
         {
-            var borderColor = mod.ModuleId switch
+            var (accentColor, borderColor) = mod.ModuleName.ToUpper() switch
             {
-                "MOD-01" => "rgba(0, 229, 255, 0.4)",
-                "MOD-02" => "rgba(0, 255, 102, 0.4)",
-                "MOD-03" => "rgba(255, 176, 0, 0.4)",
-                "MOD-04" => "rgba(240, 248, 255, 0.5)",
-                _ => "rgba(0, 229, 255, 0.4)"
+                "SYSTEM" => ("#F0F8FF", "rgba(240, 248, 255, 0.5)"),
+                "POS" => ("#00FF66", "rgba(0, 255, 102, 0.4)"),
+                "WAREHOUSE" => ("#FFB000", "rgba(255, 176, 0, 0.4)"),
+                "CATALOG" => ("#0088FF", "rgba(0, 136, 255, 0.4)"),
+                "FINANCE" => ("#FFD700", "rgba(255, 215, 0, 0.5)"),
+                _ => ("#00E5FF", "rgba(0, 229, 255, 0.4)")
             };
 
-            var accentColor = mod.ModuleId switch
-            {
-                "MOD-01" => "#00E5FF",
-                "MOD-02" => "#00FF66",
-                "MOD-03" => "#FFB000",
-                "MOD-04" => "#F0F8FF",
-                _ => "#00E5FF"
-            };
+            <div class="hud-module-card" style="min-width: 240px; flex: 1 0 240px; height: 160px; background: rgba(10, 10, 10, 0.9); border: 1px solid @borderColor; padding: 1.1rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; backdrop-filter: blur(8px);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; min-height: 42px;">
+                    <span style="font-family:'Orbitron'; font-size: 0.76rem; font-weight: 700; color: @accentColor; text-transform: uppercase; letter-spacing: 0.8px; line-height: 1.3;">
+                        @mod.ModuleName
+                    </span>
+                    <span style="font-family:'Roboto Mono'; font-size: 0.65rem; background: rgba(0, 0, 0, 0.5); color: @accentColor; border: 1px solid @borderColor; padding: 2px 6px; white-space: nowrap; flex-shrink: 0;">
+                        @mod.ModuleId
+                    </span>
+                </div>
 
-            <div class="col-lg-3 col-md-6">
-                <div class="hud-module-card" style="height: 160px; background: rgba(10, 10, 10, 0.9); border: 1px solid @borderColor; padding: 1.1rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; backdrop-filter: blur(8px);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; min-height: 42px;">
-                        <span style="font-family:'Orbitron'; font-size: 0.76rem; font-weight: 700; color: @accentColor; text-transform: uppercase; letter-spacing: 0.8px; line-height: 1.3;">
-                            @mod.ModuleName
-                        </span>
-                        <span style="font-family:'Roboto Mono'; font-size: 0.65rem; background: rgba(0, 229, 255, 0.15); color: @accentColor; border: 1px solid @borderColor; padding: 2px 6px; white-space: nowrap; flex-shrink: 0;">
-                            @mod.ModuleId
-                        </span>
-                    </div>
+                <div style="display: flex; align-items: baseline; gap: 10px; margin: 4px 0;">
+                    <span style="font-family:'VT323'; font-size: 2.3rem; color: #FFFFFF; line-height: 1; text-shadow: 0 0 10px @accentColor;">
+                        @mod.TableCount.ToString("D2")
+                    </span>
+                    <span style="font-family:'Rajdhani'; font-size: 0.8rem; color: #A0C0CE; font-weight: 600; text-transform: uppercase; white-space: nowrap;">
+                        MANAGED TABLES
+                    </span>
+                </div>
 
-                    <div style="display: flex; align-items: baseline; gap: 10px; margin: 4px 0;">
-                        <span style="font-family:'VT323'; font-size: 2.3rem; color: #FFFFFF; line-height: 1; text-shadow: 0 0 10px @accentColor;">
-                            @mod.TableCount.ToString("D2")
-                        </span>
-                        <span style="font-family:'Rajdhani'; font-size: 0.8rem; color: #A0C0CE; font-weight: 600; text-transform: uppercase; white-space: nowrap;">
-                            MANAGED TABLES
-                        </span>
-                    </div>
-
-                    <div style="font-family:'Roboto Mono'; font-size: 0.72rem; color: #00FF66; display: flex; align-items: center; justify-content: space-between; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 6px; margin-top: auto;">
-                        <span><i class="fa-solid fa-database me-1"></i> Live Records:</span>
-                        <strong style="color: #FFFFFF; font-family:'VT323'; font-size: 1.2rem;">@mod.TotalRecordCount</strong>
-                    </div>
+                <div style="font-family:'Roboto Mono'; font-size: 0.72rem; color: @accentColor; display: flex; align-items: center; justify-content: space-between; border-top: 1px dashed rgba(255, 255, 255, 0.1); padding-top: 6px; margin-top: auto;">
+                    <span><i class="fa-solid fa-database me-1"></i> Live Records:</span>
+                    <strong style="color: #FFFFFF; font-family:'VT323'; font-size: 1.2rem;">@mod.TotalRecordCount</strong>
                 </div>
             </div>
         }

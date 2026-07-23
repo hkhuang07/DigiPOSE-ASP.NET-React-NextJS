@@ -1,17 +1,31 @@
 @model DigiPOSE.Models.Role
+
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title"><i class="fa-solid fa-shield-halved text-cyan me-2"></i> ROLE DETAILS</h5>
-        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
     <div class="modal-body">
-        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.RoleId)</td><td>@Model.RoleId</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.RoleName)</td><td style="font-weight:600;">@Model.RoleName</td></tr>
-            <tr><td style="color:#00E5FF;">DESCRIPTION</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
-        </table>
+        <div style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 229, 255, 0.3); padding: 1.25rem;">
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">Role ID:</div>
+                <div class="col-8" style="font-family:'VT323'; font-size:1.4rem; color:#FFF;">#@Model.RoleId.ToString("D4")</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">Role Name:</div>
+                <div class="col-8" style="font-family:'Rajdhani'; font-size:1.1rem; font-weight:bold; color:#FFF;">@Model.RoleName</div>
+            </div>
+            <div class="row align-items-start">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">Description:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE; line-height:1.5; word-break:break-word;">@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark me-1"></i> CLOSE
+        </button>
     </div>
 </div>
