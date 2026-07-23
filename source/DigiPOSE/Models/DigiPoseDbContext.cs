@@ -8,6 +8,9 @@ namespace DigiPOSE.Models
 
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<SystemModule> SystemModules { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionRole> PermissionRoles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Counter> Counters { get; set; }
         public DbSet<Shift> Shifts { get; set; }
@@ -44,10 +47,14 @@ namespace DigiPOSE.Models
 
             // ====================================================================
             // 0. EXPLICIT TABLE MAPPING (ARCHITECTURE STANDARDS)
-            // Đảm bảo chính xác 26 Bảng trong Model hiện tại, không phụ thuộc Convention
+            // Đảm bảo chính xác 28 Bảng trong Model hiện tại, không phụ thuộc Convention
             // ====================================================================
             modelBuilder.Entity<Branch>().ToTable("Branches");
             modelBuilder.Entity<Role>().ToTable("Roles");
+            modelBuilder.Entity<SystemModule>().ToTable("SystemModules");
+            modelBuilder.Entity<Permission>().ToTable("Permissions");
+            modelBuilder.Entity<PermissionRole>().ToTable("PermissionRoles")
+                .HasKey(pr => new { pr.RoleId, pr.PermissionId });
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Counter>().ToTable("Counters");
             modelBuilder.Entity<Shift>().ToTable("Shifts");
@@ -109,6 +116,7 @@ namespace DigiPOSE.Models
             modelBuilder.Entity<Supplier>().HasIndex(s => s.SupplierName).IsUnique();
             modelBuilder.Entity<ShiftStatus>().HasIndex(s => s.StatusName).IsUnique();
             modelBuilder.Entity<Role>().HasIndex(r => r.RoleName).IsUnique();
+            modelBuilder.Entity<Permission>().HasIndex(p => p.PermissionName).IsUnique();
             modelBuilder.Entity<ProductType>().HasIndex(p => p.TypeName).IsUnique();
             modelBuilder.Entity<PaymentMethod>().HasIndex(p => p.MethodName).IsUnique();
             modelBuilder.Entity<OrderStatus>().HasIndex(o => o.StatusName).IsUnique();
@@ -137,6 +145,9 @@ namespace DigiPOSE.Models
                     property.SetColumnType("decimal(18,4)");
                 }
             }
+            
+            // 5. Seed Initial Data
+            modelBuilder.SeedData();
         }
     }
 }

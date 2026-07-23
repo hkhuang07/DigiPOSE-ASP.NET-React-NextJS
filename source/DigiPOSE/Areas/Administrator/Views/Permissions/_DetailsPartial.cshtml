@@ -1,0 +1,22 @@
+@model DigiPOSE.Models.Permission
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-key text-cyan me-2"></i> PERMISSION DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <dl class="row" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.PermissionName)</dt>
+            <dd class="col-sm-8" style="color:#FFF; font-weight:bold;">@Html.DisplayFor(model => model.PermissionName)</dd>
+
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.SystemModuleId)</dt>
+            <dd class="col-sm-8" style="color:#FFB000;">[@(Model.Module != null ? Model.Module.ModuleName : "GLOBAL")]</dd>
+
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class="col-sm-8" style="color:#FFF;">@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</dd>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>

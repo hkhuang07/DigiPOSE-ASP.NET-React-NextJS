@@ -15,5 +15,6 @@ namespace DigiPOSE.Models
         [Display(Name = "Description")] 
         public string? Description { get; set; }
         public ICollection<User>? Users { get; set; }
+        public ICollection<PermissionRole>? PermissionRoles { get; set; }
     }
 }

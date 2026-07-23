@@ -1,0 +1,29 @@
+@model DigiPOSE.Models.Permission
+<div class="modal-content" style="border-color:#FF3333; box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);">
+    <div class="modal-header">
+        <h5 class="modal-title" style="color:#FF3333;"><i class="fa-solid fa-triangle-exclamation me-2"></i> SYSTEM WARNING: DELETION</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="Delete" asp-controller="Permissions" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PermissionId" />
+        <div class="modal-body" style="text-align:center;">
+            <div style="font-size:3rem; color:#FF3333; margin-bottom:15px;">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <p style="font-family:'Roboto Mono'; font-size:1rem; color:#A0C0CE;">
+                Are you sure you want to permanently delete this permission?
+            </p>
+            <div style="font-family:'Rajdhani'; font-size:1.5rem; font-weight:bold; color:#FFF; margin-bottom:10px;">
+                @Model.PermissionName
+            </div>
+            <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#FF3333;">
+                [CRITICAL] This action cannot be undone and may revoke access for assigned users.
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal" style="width:120px;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-danger" style="width:120px;"><i class="fa-solid fa-trash me-1"></i> DELETE</button>
+        </div>
+    </form>
+</div>

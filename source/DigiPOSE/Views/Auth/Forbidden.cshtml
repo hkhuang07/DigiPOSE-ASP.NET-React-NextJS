@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "ACCESS DENIED - 403 FORBIDDEN";
+}
+<div class="container text-center py-5">
+    <div class="hud-card mx-auto" style="max-width: 500px; padding: 3rem; background: rgba(10, 10, 10, 0.9); border: 1px solid #FF3333;">
+        <i class="fa-solid fa-user-slash text-danger mb-3" style="font-size: 4rem;"></i>
+        <h2 style="font-family: 'Orbitron'; color: #FF3333;">ACCESS FORBIDDEN (403)</h2>
+            <p class="text-secondary mt-3">The current account does not have sufficient privileges (Role Clearance) to access this function.</p>        <a asp-area="Administrator" asp-controller="Home" asp-action="Index" class="btn btn-outline-info mt-3">
+            <i class="fa-solid fa-house me-2"></i>Back to Dashboard
+        </a>
+    </div>
+</div>

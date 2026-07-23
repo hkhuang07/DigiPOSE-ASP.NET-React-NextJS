@@ -1,0 +1,27 @@
+@model DigiPOSE.Models.SystemModule
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-cogs text-cyan me-2"></i> SYSTEM MODULE DETAILS</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+        <dl class="row" style="font-family:'Roboto Mono'; font-size:0.9rem;">
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.ModuleName)</dt>
+            <dd class="col-sm-8" style="color:#FFF; font-weight:bold;">@Html.DisplayFor(model => model.ModuleName)</dd>
+
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.Icon)</dt>
+            <dd class="col-sm-8" style="color:#FFB000;"><i class="@Html.DisplayFor(model => model.Icon) text-cyan me-1"></i> [@Html.DisplayFor(model => model.Icon)]</dd>
+
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.SortOrder)</dt>
+            <dd class="col-sm-8" style="color:#FFF;">@Html.DisplayFor(model => model.SortOrder)</dd>
+
+            <dt class="col-sm-4" style="color:#A0C0CE;">@Html.DisplayNameFor(model => model.IsActive)</dt>
+            <dd class="col-sm-8">
+                @if(Model.IsActive) { <span style="color:#00FF66;">[ ACTIVE ]</span> } else { <span style="color:#FF3333;">[ INACTIVE ]</span> }
+            </dd>
+        </dl>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+    </div>
+</div>

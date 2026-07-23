@@ -1,0 +1,192 @@
+@model DigiPOSE.Models.RegisterViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "SYSTEM REGISTRATION";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <style>
+        body {
+            background-color: #000;
+            color: #00E5FF;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .terminal-box {
+            width: 500px;
+            padding: 2px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #005f73;
+            box-shadow: inset 0 0 10px #00E5FF, 0 0 15px rgba(0,229,255,0.4);
+            position: relative;
+        }
+        .terminal-header {
+            background-color: #005f73;
+            color: #000;
+            font-weight: bold;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        .terminal-content {
+            padding: 30px;
+            border: 1px solid #00E5FF;
+            margin: 2px;
+        }
+        .form-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00E5FF;
+        }
+        .form-control {
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 2px solid #005f73 !important;
+            color: #FFF !important;
+            border-radius: 0;
+            box-shadow: none !important;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 5px 0;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            border-bottom-color: #00E5FF !important;
+        }
+        .btn-terminal {
+            background: transparent;
+            color: #00E5FF;
+            border: 1px solid #00E5FF;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .btn-terminal:hover {
+            background: #00E5FF;
+            color: #000;
+            box-shadow: 0 0 10px #00E5FF;
+        }
+        .btn-cancel {
+            border-color: #FF3333;
+            color: #FF3333;
+        }
+        .btn-cancel:hover {
+            background: #FF3333;
+            color: #000;
+            box-shadow: 0 0 10px #FF3333;
+        }
+        .nav-link {
+            color: #005f73;
+            font-size: 0.8rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #00E5FF;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>> SYSTEM REGISTRATION _</span>
+            <span><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div class="terminal-content">
+            <div class="text-center mb-4">
+                <i class="fa-solid fa-user-plus mb-3" style="font-size: 2.5rem; color: #005f73;"></i>
+                <h5 style="margin: 0; font-weight: bold; letter-spacing: 4px; color: #00E5FF;">NEW OPERATOR PROFILE</h5>
+            </div>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger" style="background: rgba(255, 51, 51, 0.1); border: 1px solid #FF3333; color: #FF3333; font-size: 0.85rem; border-radius: 0;" role="alert">
+                    > WARNING: @TempData["ErrorMessage"]
+                </div>
+            }
+
+            <form asp-area="" asp-controller="Auth" asp-action="Register" method="post">
+                <div class="mb-3 row align-items-center">
+                    <label asp-for="Username" class="col-sm-4 col-form-label form-label text-end">USERNAME:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Username" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Username" class="text-danger" style="font-size: 0.75rem;"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label asp-for="FullName" class="col-sm-4 col-form-label form-label text-end">FULL NAME:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="FullName" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="FullName" class="text-danger" style="font-size: 0.75rem;"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label asp-for="Email" class="col-sm-4 col-form-label form-label text-end">EMAIL:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Email" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Email" class="text-danger" style="font-size: 0.75rem;"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <label asp-for="Password" class="col-sm-4 col-form-label form-label text-end">PASSWORD:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger" style="font-size: 0.75rem;"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4 row align-items-center">
+                    <label asp-for="ConfirmPassword" class="col-sm-4 col-form-label form-label text-end">CONFIRM:</label>
+                    <div class="col-sm-8">
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size: 0.75rem;"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Login" class="btn btn-terminal btn-cancel w-45 text-center" style="text-decoration: none;">
+                        [ CANCEL ]
+                    </a>
+                    <button type="submit" class="btn btn-terminal w-45">
+                        [ REGISTER ]
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>  
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

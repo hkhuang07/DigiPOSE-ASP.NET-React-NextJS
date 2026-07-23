@@ -108,6 +108,24 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Electronics",
+                            Description = "Electronic devices and accessories",
+                            IsActive = true,
+                            Slug = "electronics"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Home Appliances",
+                            Description = "Appliances for home use",
+                            IsActive = true,
+                            Slug = "home-appliances"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Counter", b =>
@@ -162,6 +180,20 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("CustomerTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            CustomeTypeId = 1,
+                            Description = "Standard one-time buyers",
+                            TypeName = "Walk-in Customer"
+                        },
+                        new
+                        {
+                            CustomeTypeId = 2,
+                            Description = "Loyal customers with membership benefits",
+                            TypeName = "VIP Member"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Customer", b =>
@@ -339,6 +371,26 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("InvoiceStatuses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            InvoiceStatusId = 1,
+                            Description = "Fully paid invoice",
+                            StatusName = "Paid"
+                        },
+                        new
+                        {
+                            InvoiceStatusId = 2,
+                            Description = "Payment pending",
+                            StatusName = "Unpaid"
+                        },
+                        new
+                        {
+                            InvoiceStatusId = 3,
+                            Description = "Canceled invoice",
+                            StatusName = "Void"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.InvoiceType", b =>
@@ -364,6 +416,20 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("InvoiceTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            InvoiceTypeId = 1,
+                            Description = "Standard POS checkout",
+                            TypeName = "Standard Sale"
+                        },
+                        new
+                        {
+                            InvoiceTypeId = 2,
+                            Description = "Customer return invoice",
+                            TypeName = "Return"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.ItemNature", b =>
@@ -392,6 +458,22 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("ItemNatures", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            NatureId = 1,
+                            IsActive = true,
+                            NatureName = "Physical Goods",
+                            TaxXmlCode = "1"
+                        },
+                        new
+                        {
+                            NatureId = 2,
+                            IsActive = true,
+                            NatureName = "Digital Service",
+                            TaxXmlCode = "2"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Manufacturer", b =>
@@ -452,6 +534,24 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Manufacturers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ManufacturerId = 1,
+                            Description = "Sony Electronics Corporation",
+                            IsActive = true,
+                            ManufacturerName = "Sony",
+                            Slug = "sony"
+                        },
+                        new
+                        {
+                            ManufacturerId = 2,
+                            Description = "Samsung Electronics",
+                            IsActive = true,
+                            ManufacturerName = "Samsung",
+                            Slug = "samsung"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Order", b =>
@@ -632,6 +732,20 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("OrderStatuses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            StatusId = 1,
+                            Description = "Order finalized and delivered",
+                            StatusName = "Completed"
+                        },
+                        new
+                        {
+                            StatusId = 2,
+                            Description = "Order awaiting payment",
+                            StatusName = "Pending"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.PaymentMethod", b =>
@@ -657,6 +771,440 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("PaymentMethods", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PaymentMethodId = 1,
+                            Description = "Cash payment at counter",
+                            MethodName = "Cash"
+                        },
+                        new
+                        {
+                            PaymentMethodId = 2,
+                            Description = "Visa/Mastercard",
+                            MethodName = "Credit Card"
+                        },
+                        new
+                        {
+                            PaymentMethodId = 3,
+                            Description = "Momo, ZaloPay, etc.",
+                            MethodName = "E-Wallet"
+                        });
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.Permission", b =>
+                {
+                    b.Property<int>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("PermissionName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("SystemModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionId");
+
+                    b.HasIndex("PermissionName")
+                        .IsUnique();
+
+                    b.HasIndex("SystemModuleId");
+
+                    b.ToTable("Permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            PermissionId = 1,
+                            Description = "Manage global system configurations and settings.",
+                            PermissionName = "System.Config.Manage",
+                            SystemModuleId = 1
+                        },
+                        new
+                        {
+                            PermissionId = 2,
+                            Description = "Create, edit, and delete branches and counters.",
+                            PermissionName = "System.Branch.Manage",
+                            SystemModuleId = 1
+                        },
+                        new
+                        {
+                            PermissionId = 3,
+                            Description = "Create, edit, and delete user roles and permissions.",
+                            PermissionName = "System.Role.Manage",
+                            SystemModuleId = 1
+                        },
+                        new
+                        {
+                            PermissionId = 4,
+                            Description = "Manage user accounts, reset passwords, and assign roles.",
+                            PermissionName = "System.User.Manage",
+                            SystemModuleId = 1
+                        },
+                        new
+                        {
+                            PermissionId = 5,
+                            Description = "Open a new cashier shift and declare starting cash.",
+                            PermissionName = "POS.Shift.Open",
+                            SystemModuleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 6,
+                            Description = "Close an active shift and declare ending cash.",
+                            PermissionName = "POS.Shift.Close",
+                            SystemModuleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 7,
+                            Description = "Create new retail orders and process payments.",
+                            PermissionName = "POS.Order.Create",
+                            SystemModuleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 8,
+                            Description = "Cancel or void a completed order/invoice.",
+                            PermissionName = "POS.Order.Void",
+                            SystemModuleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 9,
+                            Description = "Apply special discounts beyond standard limits.",
+                            PermissionName = "POS.Discount.Apply",
+                            SystemModuleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 10,
+                            Description = "View current product stock levels.",
+                            PermissionName = "Warehouse.Inventory.View",
+                            SystemModuleId = 3
+                        },
+                        new
+                        {
+                            PermissionId = 11,
+                            Description = "Create stock-in, stock-out, or transfer vouchers.",
+                            PermissionName = "Warehouse.Voucher.Create",
+                            SystemModuleId = 3
+                        },
+                        new
+                        {
+                            PermissionId = 12,
+                            Description = "Approve pending stock vouchers for processing.",
+                            PermissionName = "Warehouse.Voucher.Approve",
+                            SystemModuleId = 3
+                        },
+                        new
+                        {
+                            PermissionId = 13,
+                            Description = "Adjust stock quantities after physical counting.",
+                            PermissionName = "Warehouse.Inventory.Adjust",
+                            SystemModuleId = 3
+                        },
+                        new
+                        {
+                            PermissionId = 14,
+                            Description = "Manage supplier profiles and information.",
+                            PermissionName = "Warehouse.Supplier.Manage",
+                            SystemModuleId = 3
+                        },
+                        new
+                        {
+                            PermissionId = 15,
+                            Description = "Create, edit, or disable product records.",
+                            PermissionName = "Catalog.Product.Manage",
+                            SystemModuleId = 4
+                        },
+                        new
+                        {
+                            PermissionId = 16,
+                            Description = "Manage product categories, types, and units.",
+                            PermissionName = "Catalog.Category.Manage",
+                            SystemModuleId = 4
+                        },
+                        new
+                        {
+                            PermissionId = 17,
+                            Description = "Update base prices and tax settings for products.",
+                            PermissionName = "Catalog.Price.Manage",
+                            SystemModuleId = 4
+                        },
+                        new
+                        {
+                            PermissionId = 18,
+                            Description = "View financial dashboards and revenue reports.",
+                            PermissionName = "Finance.Report.View",
+                            SystemModuleId = 5
+                        },
+                        new
+                        {
+                            PermissionId = 19,
+                            Description = "View and search all historical invoices and receipts.",
+                            PermissionName = "Finance.Invoice.View",
+                            SystemModuleId = 5
+                        },
+                        new
+                        {
+                            PermissionId = 20,
+                            Description = "Export financial data and audit logs for tax purposes.",
+                            PermissionName = "Finance.Audit.Export",
+                            SystemModuleId = 5
+                        });
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.PermissionRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("PermissionRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 15
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 16
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 17
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 18
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 19
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 20
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 18
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 19
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            PermissionId = 15
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            PermissionId = 16
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            PermissionId = 17
+                        },
+                        new
+                        {
+                            RoleId = 6,
+                            PermissionId = 18
+                        },
+                        new
+                        {
+                            RoleId = 6,
+                            PermissionId = 19
+                        },
+                        new
+                        {
+                            RoleId = 6,
+                            PermissionId = 20
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Product", b =>
@@ -806,6 +1354,22 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ProductTypeId = 1,
+                            IsActive = true,
+                            IsInventoryTracked = true,
+                            TypeName = "Standard Product"
+                        },
+                        new
+                        {
+                            ProductTypeId = 2,
+                            IsActive = true,
+                            IsInventoryTracked = false,
+                            TypeName = "Bundle"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Role", b =>
@@ -831,6 +1395,44 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            Description = "The person with the highest authority, managing the overall data infrastructure.",
+                            RoleName = "Super Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            Description = "Responsible for operations at a specific branch.",
+                            RoleName = "Branch Manager"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            Description = "The person directly at the counter to handle sales transactions.",
+                            RoleName = "POS Operator"
+                        },
+                        new
+                        {
+                            RoleId = 4,
+                            Description = "Responsible for managing goods, receiving/shipping/stocking.",
+                            RoleName = "Warehouse"
+                        },
+                        new
+                        {
+                            RoleId = 5,
+                            Description = "Personnel responsible for maintaining product information.",
+                            RoleName = "Catalog"
+                        },
+                        new
+                        {
+                            RoleId = 6,
+                            Description = "Controls cash flow, tax reporting, and reconciles data.",
+                            RoleName = "Accountant"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Shift", b =>
@@ -896,6 +1498,20 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("ShiftStatuses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            StatusId = 1,
+                            Description = "Shift is currently open",
+                            StatusName = "Active"
+                        },
+                        new
+                        {
+                            StatusId = 2,
+                            Description = "Shift has ended and cash declared",
+                            StatusName = "Closed"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.StockVoucher", b =>
@@ -1034,6 +1650,94 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Suppliers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            SupplierId = 1,
+                            DebtBalance = 0m,
+                            Email = "contact@globalsupply.com",
+                            IsActive = true,
+                            SupplierName = "Global Supply Co."
+                        },
+                        new
+                        {
+                            SupplierId = 2,
+                            DebtBalance = 0m,
+                            Email = "sales@techdist.com",
+                            IsActive = true,
+                            SupplierName = "Tech Distributors"
+                        });
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.SystemModule", b =>
+                {
+                    b.Property<int>("ModuleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModuleId"));
+
+                    b.Property<string>("Icon")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModuleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("ModuleId");
+
+                    b.ToTable("SystemModules", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ModuleId = 1,
+                            Icon = "fa-solid fa-cogs",
+                            IsActive = true,
+                            ModuleName = "System",
+                            SortOrder = 1
+                        },
+                        new
+                        {
+                            ModuleId = 2,
+                            Icon = "fa-solid fa-cash-register",
+                            IsActive = true,
+                            ModuleName = "POS",
+                            SortOrder = 2
+                        },
+                        new
+                        {
+                            ModuleId = 3,
+                            Icon = "fa-solid fa-warehouse",
+                            IsActive = true,
+                            ModuleName = "Warehouse",
+                            SortOrder = 3
+                        },
+                        new
+                        {
+                            ModuleId = 4,
+                            Icon = "fa-solid fa-tags",
+                            IsActive = true,
+                            ModuleName = "Catalog",
+                            SortOrder = 4
+                        },
+                        new
+                        {
+                            ModuleId = 5,
+                            Icon = "fa-solid fa-file-invoice-dollar",
+                            IsActive = true,
+                            ModuleName = "Finance",
+                            SortOrder = 5
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.TaxType", b =>
@@ -1066,6 +1770,32 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("TaxTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            TaxTypeId = 1,
+                            IsActive = true,
+                            TaxName = "VAT 10%",
+                            TaxPercentage = 10m,
+                            TaxXmlCode = "10"
+                        },
+                        new
+                        {
+                            TaxTypeId = 2,
+                            IsActive = true,
+                            TaxName = "VAT 8%",
+                            TaxPercentage = 8m,
+                            TaxXmlCode = "8"
+                        },
+                        new
+                        {
+                            TaxTypeId = 3,
+                            IsActive = true,
+                            TaxName = "Tax Free",
+                            TaxPercentage = 0m,
+                            TaxXmlCode = "0"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Unit", b =>
@@ -1091,6 +1821,26 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Units", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UnitId = 1,
+                            Description = "Single unit",
+                            UnitName = "Piece"
+                        },
+                        new
+                        {
+                            UnitId = 2,
+                            Description = "Packaged box",
+                            UnitName = "Box"
+                        },
+                        new
+                        {
+                            UnitId = 3,
+                            Description = "Kilogram",
+                            UnitName = "Kg"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.User", b =>
@@ -1269,6 +2019,35 @@ namespace DigiPOSE.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("TaxType");
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.Permission", b =>
+                {
+                    b.HasOne("DigiPOSE.Models.SystemModule", "Module")
+                        .WithMany("Permissions")
+                        .HasForeignKey("SystemModuleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Module");
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.PermissionRole", b =>
+                {
+                    b.HasOne("DigiPOSE.Models.Permission", "Permission")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DigiPOSE.Models.Role", "Role")
+                        .WithMany("PermissionRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Product", b =>
@@ -1480,6 +2259,11 @@ namespace DigiPOSE.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("DigiPOSE.Models.Permission", b =>
+                {
+                    b.Navigation("PermissionRoles");
+                });
+
             modelBuilder.Entity("DigiPOSE.Models.Product", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -1496,6 +2280,8 @@ namespace DigiPOSE.Migrations
 
             modelBuilder.Entity("DigiPOSE.Models.Role", b =>
                 {
+                    b.Navigation("PermissionRoles");
+
                     b.Navigation("Users");
                 });
 
@@ -1512,6 +2298,11 @@ namespace DigiPOSE.Migrations
             modelBuilder.Entity("DigiPOSE.Models.Supplier", b =>
                 {
                     b.Navigation("StockVouchers");
+                });
+
+            modelBuilder.Entity("DigiPOSE.Models.SystemModule", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.TaxType", b =>

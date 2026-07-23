@@ -1,0 +1,31 @@
+@model DigiPOSE.Models.PermissionRole
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-users-gear text-cyan me-2"></i> ASSIGN PERMISSION TO ROLE</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="Create" asp-controller="PermissionRoles" method="post">
+        @Html.AntiForgeryToken()
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
+            <div class="mb-3">
+                <label asp-for="RoleId" class="form-cyber-label"></label>
+                <select asp-for="RoleId" class="form-control form-cyber-control" asp-items="ViewBag.RoleId">
+                    <option value="">-- Select Role --</option>
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PermissionId" class="form-cyber-label"></label>
+                <select asp-for="PermissionId" class="form-control form-cyber-control" asp-items="ViewBag.PermissionId">
+                    <option value="">-- Select Permission --</option>
+                </select>
+                <span asp-validation-for="PermissionId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> ASSIGN</button>
+        </div>
+    </form>
+</div>

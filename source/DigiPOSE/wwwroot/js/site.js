@@ -244,6 +244,38 @@ $(document).ready(function () {
         lockFormSubmit($form);
     });
 
+    // 5. GLOBAL DATATABLES INITIALIZATION
+    if ($.fn.DataTable && $('.datatable').length > 0) {
+        $('.datatable').DataTable({
+            language: {
+                search: "Search:",
+                lengthMenu: "Show _MENU_ entries",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                infoFiltered: "(filtered from _MAX_ total entries)",
+                paginate: {
+                    first: "First",
+                    last: "Last",
+                    next: "Next",
+                    previous: "Previous"
+                }
+            },
+            dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4 text-center'B><'col-sm-12 col-md-4'f>>" +
+                 "<'row'<'col-sm-12'tr>>" +
+                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            buttons: [
+                {
+                    extend: 'copy',
+                    text: '<i class="fa-solid fa-copy"></i> Copy',
+                    className: 'btn btn-sm btn-outline-info me-1'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fa-solid fa-file-excel"></i> Excel',
+                    className: 'btn btn-sm btn-outline-success'
+                }
+            ]
+        });
+    }
+
 });
-
-

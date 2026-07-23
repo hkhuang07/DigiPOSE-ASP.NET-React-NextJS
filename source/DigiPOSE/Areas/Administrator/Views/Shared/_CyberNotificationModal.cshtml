@@ -1,0 +1,187 @@
+<!-- GLOBAL CYBER CINEMATIC NOTIFICATION & CONFIRMATION MODAL -->
+<div class="modal fade modal-cyber" id="cyberNotificationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content" id="cyberNotifyCard" style="background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(16px); border: 1px solid #00E5FF; border-radius: 2px;">
+            <div class="modal-header" id="cyberNotifyHeader" style="border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding: 12px 20px;">
+                <h5 class="modal-title" id="cyberNotifyTitle" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; font-weight: 700; color: #00E5FF; text-transform: uppercase; letter-spacing: 1px;">
+                    <i id="cyberNotifyIcon" class="fa-solid fa-circle-info me-2"></i> <span id="cyberNotifyTitleText">SYSTEM NOTIFICATION</span>
+                </h5>
+                <button type="button" class="btn-close-cyber" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div id="cyberNotifyBox" style="background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(0, 229, 255, 0.2); padding: 16px; position: relative;">
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 0.72rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; margin-bottom: 8px;">
+                        NOTIFICATION
+                    </div>
+                    <div id="cyberNotifyMessage" style="font-family: 'Roboto Mono', monospace; font-size: 0.9rem; color: #FFFFFF; line-height: 1.5; word-break: break-word;">
+                        Message content...
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="cyberNotifyFooter" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 20px; gap: 8px;">
+                <button type="button" class="btn-cyber-primary" id="cyberNotifyCancelBtn" data-bs-dismiss="modal" style="display:none; padding: 6px 20px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-xmark me-1"></i> CANCEL
+                </button>
+                <button type="button" class="btn-cyber-primary" id="cyberNotifyConfirmBtn" data-bs-dismiss="modal" style="padding: 6px 20px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-check me-1"></i> ACKNOWLEDGE
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * Global Cyber-Cinematic Notification Modal Launcher
+     * param {string} title - Modal header title
+     * param {string} message - Message body
+     * param {string} type - 'success' (#00FF66), 'error'/'danger' (#FF3333), 'warning'/'orange' (#FFB000), or 'info' (#00E5FF)
+     */
+    function showCyberNotify(title, message, type = 'info') {
+        var card = document.getElementById('cyberNotifyCard');
+        var header = document.getElementById('cyberNotifyHeader');
+        var titleText = document.getElementById('cyberNotifyTitleText');
+        var icon = document.getElementById('cyberNotifyIcon');
+        var msgBox = document.getElementById('cyberNotifyMessage');
+        var box = document.getElementById('cyberNotifyBox');
+        var confirmBtn = document.getElementById('cyberNotifyConfirmBtn');
+        var cancelBtn = document.getElementById('cyberNotifyCancelBtn');
+
+        if (cancelBtn) cancelBtn.style.display = 'none';
+
+        titleText.textContent = title ? title.toUpperCase() : 'SYSTEM NOTIFICATION';
+        msgBox.innerHTML = message ? message.replace(/\n/g, '<br/>') : '';
+
+        // Reset styling to Default Cyan Info
+        card.style.borderColor = '#00E5FF';
+        header.style.borderBottomColor = 'rgba(0, 229, 255, 0.3)';
+        box.style.borderColor = 'rgba(0, 229, 255, 0.2)';
+        titleText.style.color = '#00E5FF';
+        confirmBtn.innerHTML = '<i class="fa-solid fa-check me-1"></i> ACKNOWLEDGE';
+
+        if (type === 'success' || type === 'green') {
+            card.style.borderColor = '#00FF66';
+            header.style.borderBottomColor = 'rgba(0, 255, 102, 0.3)';
+            box.style.borderColor = 'rgba(0, 255, 102, 0.3)';
+            titleText.style.color = '#00FF66';
+            icon.className = 'fa-solid fa-circle-check me-2';
+            icon.style.color = '#00FF66';
+            confirmBtn.className = 'btn-cyber-success';
+        } else if (type === 'error' || type === 'danger' || type === 'red') {
+            card.style.borderColor = '#FF3333';
+            header.style.borderBottomColor = 'rgba(255, 51, 51, 0.3)';
+            box.style.borderColor = 'rgba(255, 51, 51, 0.3)';
+            titleText.style.color = '#FF3333';
+            icon.className = 'fa-solid fa-triangle-exclamation me-2';
+            icon.style.color = '#FF3333';
+            confirmBtn.className = 'btn-cyber-danger';
+        } else if (type === 'warning' || type === 'orange' || type === 'amber') {
+            card.style.borderColor = '#FFB000';
+            header.style.borderBottomColor = 'rgba(255, 176, 0, 0.3)';
+            box.style.borderColor = 'rgba(255, 176, 0, 0.3)';
+            titleText.style.color = '#FFB000';
+            icon.className = 'fa-solid fa-triangle-exclamation me-2';
+            icon.style.color = '#FFB000';
+            confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.style.borderColor = '#FFB000';
+            confirmBtn.style.color = '#FFB000';
+        } else {
+            icon.className = 'fa-solid fa-circle-info me-2';
+            icon.style.color = '#00E5FF';
+            confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.style.borderColor = '';
+            confirmBtn.style.color = '';
+        }
+
+        var modalEl = document.getElementById('cyberNotificationModal');
+        var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
+    /**
+     * Global Cyber-Cinematic Confirmation Modal Launcher
+     * param {string} title - Modal header title
+     * param {string} message - Message body
+     * param {string} type - 'success'/'green', 'warning'/'orange', 'danger'/'red', 'info'/'cyan'
+     * param {function} onConfirm - Function executed when user clicks confirm
+     * param {string} confirmText - Button label (default: CONFIRM)
+     * param {string} cancelText - Button label (default: CANCEL)
+     */
+    function showCyberConfirm(title, message, type = 'warning', onConfirm, confirmText = 'CONFIRM', cancelText = 'CANCEL') {
+        var card = document.getElementById('cyberNotifyCard');
+        var header = document.getElementById('cyberNotifyHeader');
+        var titleText = document.getElementById('cyberNotifyTitleText');
+        var icon = document.getElementById('cyberNotifyIcon');
+        var msgBox = document.getElementById('cyberNotifyMessage');
+        var box = document.getElementById('cyberNotifyBox');
+        var oldConfirmBtn = document.getElementById('cyberNotifyConfirmBtn');
+        var cancelBtn = document.getElementById('cyberNotifyCancelBtn');
+
+        if (cancelBtn) {
+            cancelBtn.style.display = 'inline-flex';
+            cancelBtn.innerHTML = '<i class="fa-solid fa-xmark me-1"></i> ' + cancelText.toUpperCase();
+        }
+
+        titleText.textContent = title ? title.toUpperCase() : 'CONFIRM ACTION';
+        msgBox.innerHTML = message ? message.replace(/\n/g, '<br/>') : '';
+
+        // Clone confirm button to remove old click listeners
+        var confirmBtn = oldConfirmBtn.cloneNode(true);
+        oldConfirmBtn.parentNode.replaceChild(confirmBtn, oldConfirmBtn);
+
+        confirmBtn.innerHTML = '<i class="fa-solid fa-check me-1"></i> ' + confirmText.toUpperCase();
+
+        if (type === 'success' || type === 'green') {
+            card.style.borderColor = '#00FF66';
+            header.style.borderBottomColor = 'rgba(0, 255, 102, 0.3)';
+            box.style.borderColor = 'rgba(0, 255, 102, 0.3)';
+            titleText.style.color = '#00FF66';
+            icon.className = 'fa-solid fa-circle-check me-2';
+            icon.style.color = '#00FF66';
+            confirmBtn.className = 'btn-cyber-success';
+        } else if (type === 'danger' || type === 'red' || type === 'error') {
+            card.style.borderColor = '#FF3333';
+            header.style.borderBottomColor = 'rgba(255, 51, 51, 0.3)';
+            box.style.borderColor = 'rgba(255, 51, 51, 0.3)';
+            titleText.style.color = '#FF3333';
+            icon.className = 'fa-solid fa-triangle-exclamation me-2';
+            icon.style.color = '#FF3333';
+            confirmBtn.className = 'btn-cyber-danger';
+        } else if (type === 'warning' || type === 'orange' || type === 'amber') {
+            card.style.borderColor = '#FFB000';
+            header.style.borderBottomColor = 'rgba(255, 176, 0, 0.3)';
+            box.style.borderColor = 'rgba(255, 176, 0, 0.3)';
+            titleText.style.color = '#FFB000';
+            icon.className = 'fa-solid fa-triangle-exclamation me-2';
+            icon.style.color = '#FFB000';
+            confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.style.borderColor = '#FFB000';
+            confirmBtn.style.color = '#FFB000';
+        } else {
+            card.style.borderColor = '#00E5FF';
+            header.style.borderBottomColor = 'rgba(0, 229, 255, 0.3)';
+            box.style.borderColor = 'rgba(0, 229, 255, 0.2)';
+            titleText.style.color = '#00E5FF';
+            icon.className = 'fa-solid fa-circle-question me-2';
+            icon.style.color = '#00E5FF';
+            confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.style.borderColor = '';
+            confirmBtn.style.color = '';
+        }
+
+        var modalEl = document.getElementById('cyberNotificationModal');
+        var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+
+        confirmBtn.addEventListener('click', function () {
+            modal.hide();
+            if (typeof onConfirm === 'function') {
+                onConfirm();
+            }
+        });
+
+        modal.show();
+    }
+</script>
+

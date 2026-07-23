@@ -1,5 +1,8 @@
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
 using DigiPOSE.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,20 +10,42 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
 });
-
+ 
 // Sử dụng DbContextPooling để tái sử dụng DbContext Instance, giảm tối đa chi phí cấp phát bộ nhớ (GC Pressure) khi xử lý hàng ngàn request/giây
-builder.Services.AddDbContextPool<DigiPoseDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? builder.Configuration.GetConnectionString("DigiPoseConnection") 
+    ?? builder.Configuration.GetConnectionString("DigiPoseDbContext");
+
+builder.Services.AddDbContextPool<DigiPoseDbContext>(options => 
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DigiPoseConnection"),
-        sqlOptions =>
-        {
-            sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 3,
-                maxRetryDelay: TimeSpan.FromSeconds(5),
-                errorNumbersToAdd: null);
-        });
+    options.Cookie.Name = "DigiPOSE.Auth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Auth/Forbidden";
 });
+
+builder.Services.AddAuthorization(options =>
+{
+    var permissions = new[] {
+        "System.Config.Manage", "System.Branch.Manage", "System.Role.Manage", "System.User.Manage",
+        "POS.Shift.Open", "POS.Shift.Close", "POS.Order.Create", "POS.Order.Void", "POS.Discount.Apply",
+        "Warehouse.Inventory.View", "Warehouse.Voucher.Create", "Warehouse.Voucher.Approve", "Warehouse.Inventory.Adjust", "Warehouse.Supplier.Manage",
+        "Catalog.Product.Manage", "Catalog.Category.Manage", "Catalog.Price.Manage",
+        "Finance.Report.View", "Finance.Invoice.View", "Finance.Audit.Export"
+    };
+    
+    foreach (var p in permissions)
+    {
+        options.AddPolicy(p, policy => policy.RequireClaim("Permission", p));
+    }
+});
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -32,7 +57,13 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "administratorarea",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapControllerRoute(
     name: "default",

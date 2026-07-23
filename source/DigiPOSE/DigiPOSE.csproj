@@ -25,4 +25,12 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Administrator\Controllers\" />
+    <Folder Include="Areas\Administrator\Data\" />
+    <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\Administrator\Views\Auth\" />
+    <Folder Include="Areas\Administrator\Views\Home\" />
+    <Folder Include="Areas\Administrator\Views\Shared\" />
+  </ItemGroup>
 </Project>

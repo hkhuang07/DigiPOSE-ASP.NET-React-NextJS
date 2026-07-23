@@ -1,0 +1,35 @@
+@model DigiPOSE.Models.Permission
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-key text-cyan me-2"></i> @(Model.PermissionId == 0 ? "ADD NEW" : "EDIT") PERMISSION</h5>
+        <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form class="ajax-modal-form" asp-action="@(Model.PermissionId == 0 ? "Create" : "Edit")" asp-controller="Permissions" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PermissionId" />
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
+            <div class="mb-3">
+                <label asp-for="PermissionName" class="form-cyber-label">@Html.DisplayNameFor(model => model.PermissionName) <span style="color:#FF3333;">*</span></label>
+                <input asp-for="PermissionName" class="form-control form-cyber-control" placeholder="e.g. Invoice.Create, Inventory.View" />
+                <span asp-validation-for="PermissionName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SystemModuleId" class="form-cyber-label"></label>
+                <select asp-for="SystemModuleId" class="form-control form-cyber-control" asp-items="ViewBag.SystemModuleId">
+                    <option value="">-- Select Module --</option>
+                </select>
+                <span asp-validation-for="SystemModuleId" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="Description" class="form-cyber-label"></label>
+                <textarea asp-for="Description" class="form-control form-cyber-control" rows="2" placeholder="Permission scope description..."></textarea>
+                <span asp-validation-for="Description" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE</button>
+        </div>
+    </form>
+</div>
