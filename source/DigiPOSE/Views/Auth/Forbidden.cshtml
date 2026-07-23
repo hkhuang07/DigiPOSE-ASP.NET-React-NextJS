@@ -1,12 +1,99 @@
 @{
+    Layout = null;
     ViewData["Title"] = "ACCESS DENIED - 403 FORBIDDEN";
 }
-<div class="container text-center py-5">
-    <div class="hud-card mx-auto" style="max-width: 500px; padding: 3rem; background: rgba(10, 10, 10, 0.9); border: 1px solid #FF3333;">
-        <i class="fa-solid fa-user-slash text-danger mb-3" style="font-size: 4rem;"></i>
-        <h2 style="font-family: 'Orbitron'; color: #FF3333;">ACCESS FORBIDDEN (403)</h2>
-            <p class="text-secondary mt-3">The current account does not have sufficient privileges (Role Clearance) to access this function.</p>        <a asp-area="Administrator" asp-controller="Home" asp-action="Index" class="btn btn-outline-info mt-3">
-            <i class="fa-solid fa-house me-2"></i>Back to Dashboard
-        </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <style>
+        body {
+            background-color: #000;
+            color: #00E5FF;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .terminal-box {
+            width: 550px;
+            padding: 2px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #FF3333;
+            box-shadow: inset 0 0 10px #FF3333, 0 0 15px rgba(255,51,51,0.4);
+            position: relative;
+        }
+        .terminal-header {
+            background-color: #FF3333;
+            color: #000;
+            font-weight: bold;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        .terminal-content {
+            padding: 40px 30px;
+            border: 1px solid #FF3333;
+            margin: 2px;
+            text-align: center;
+        }
+        .btn-terminal {
+            background: transparent;
+            color: #00E5FF;
+            border: 1px solid #00E5FF;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .btn-terminal:hover {
+            background: #00E5FF;
+            color: #000;
+            box-shadow: 0 0 10px #00E5FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-box">
+        <div class="terminal-header">
+            <span>> SYSTEM ERROR _</span>
+            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
+        </div>
+        <div class="terminal-content">
+            <i class="fa-solid fa-user-slash mb-3" style="font-size: 4rem; color: #FF3333;"></i>
+            <h2 style="font-weight: bold; letter-spacing: 2px; color: #FF3333; margin-top: 15px;">ACCESS FORBIDDEN (403)</h2>
+            <div style="font-size: 0.85rem; color: #A0C0CE; margin: 20px 0 30px 0; line-height: 1.5;">
+                > THE CURRENT ACCOUNT DOES NOT HAVE SUFFICIENT PRIVILEGES<br/>
+                > (ROLE CLEARANCE) TO ACCESS THIS FUNCTION.
+            </div>
+            
+            <a href="/Administrator" class="btn-terminal">
+                [ BACK TO DASHBOARD ]
+            </a>
+        </div>
     </div>
-</div>
+</body>
+</html>

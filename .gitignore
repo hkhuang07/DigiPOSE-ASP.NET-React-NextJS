@@ -35,8 +35,9 @@ source/DigiPOSE/wwwroot/uploads/*
 appsettings.Local.json
 appsettings.Production.json
 appsettings.Development.Secret.json
-!appsettings.json
-!appsettings.Development.json
+ModelBuilderExtensions.cs
+appsettings.json
+appsettings.Development.json
 !appsettings.example.json
 
 # ── Secrets & Certificates ──

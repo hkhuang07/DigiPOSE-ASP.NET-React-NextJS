@@ -72,6 +72,19 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Branches", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            BranchId = 1,
+                            Address = "123 Cyber St, District 1",
+                            BranchName = "HQ Main Branch",
+                            ContactPhone = "0987654321",
+                            Email = "hq@digipose.com",
+                            IsActive = true,
+                            ManagerName = "System Administrator",
+                            Slug = "hq-main"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Category", b =>
@@ -1432,6 +1445,12 @@ namespace DigiPOSE.Migrations
                             RoleId = 6,
                             Description = "Controls cash flow, tax reporting, and reconciles data.",
                             RoleName = "Accountant"
+                        },
+                        new
+                        {
+                            RoleId = 99,
+                            Description = "New registered account, waiting for Admin approval.",
+                            RoleName = "Pending Approval"
                         });
                 });
 
@@ -1896,6 +1915,74 @@ namespace DigiPOSE.Migrations
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            BranchId = 1,
+                            Email = "admin@digipose.com",
+                            FullName = "System Administrator",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 1,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            BranchId = 1,
+                            Email = "manager@digipose.com",
+                            FullName = "Branch Manager",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 2,
+                            UserName = "manager"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            BranchId = 1,
+                            Email = "operator@digipose.com",
+                            FullName = "POS Operator",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 3,
+                            UserName = "operator"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            BranchId = 1,
+                            Email = "warehouse@digipose.com",
+                            FullName = "Warehouse Staff",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 4,
+                            UserName = "warehouse"
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            BranchId = 1,
+                            Email = "catalog@digipose.com",
+                            FullName = "Catalog Editor",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 5,
+                            UserName = "catalog"
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            BranchId = 1,
+                            Email = "accountant@digipose.com",
+                            FullName = "Accountant",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$52dnIehGY21mgcCkfCIs8.qC1uFqHJgjFPdMuQTDQR3RmYJxG6dv.",
+                            RoleId = 6,
+                            UserName = "accountant"
+                        });
                 });
 
             modelBuilder.Entity("DigiPOSE.Models.Counter", b =>

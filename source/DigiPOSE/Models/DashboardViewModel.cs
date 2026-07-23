@@ -19,7 +19,7 @@ namespace DigiPOSE.Models
 
     public class DashboardViewModel
     {
-        public int TotalTables { get; set; } = 26;
+        public int TotalTables { get; set; }
         public int TotalSystemRecords { get; set; }
         public List<ModuleTelemetryInfo> Modules { get; set; } = new();
     }

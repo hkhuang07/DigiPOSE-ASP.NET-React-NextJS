@@ -956,3 +956,194 @@ option:disabled {
 .btn-cyber-primary, .btn-cyber-success, .btn-cyber-danger {
     white-space: nowrap !important;
 }
+
+/* ====================================================================
+   CYBER-CINEMATIC DATATABLES STYLING (HUD PAGINATION & PROCESS BAR)
+   ==================================================================== */
+.dataTables_wrapper {
+    background: transparent !important;
+    color: #00E5FF !important;
+    font-family: var(--font-mono) !important;
+    position: relative !important;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    background-color: #000000 !important;
+    color: #00E5FF !important;
+    border: 1px solid rgba(0, 229, 255, 0.4) !important;
+    border-radius: 0px !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.85rem !important;
+    padding: 4px 10px !important;
+    outline: none !important;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+    border-color: #00E5FF !important;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.5) !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+    color: #A0C0CE !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.8rem !important;
+    padding-top: 12px !important;
+}
+
+/* Cyber Parallelogram Pagination Buttons */
+.dataTables_wrapper .pagination,
+.dataTables_wrapper .dataTables_paginate {
+    margin-top: 15px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+.dataTables_wrapper .pagination .page-item .page-link,
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background: rgba(10, 10, 10, 0.95) !important;
+    color: #00E5FF !important;
+    border: 1px solid rgba(0, 229, 255, 0.4) !important;
+    font-family: 'Orbitron', 'Roboto Mono', monospace !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    padding: 6px 14px !important;
+    margin: 0 3px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease-in-out !important;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%) !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+}
+
+.dataTables_wrapper .pagination .page-item .page-link:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: rgba(0, 229, 255, 0.25) !important;
+    color: #FFFFFF !important;
+    border-color: #00E5FF !important;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.6) !important;
+}
+
+.dataTables_wrapper .pagination .page-item.active .page-link,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #00E5FF !important;
+    color: #000000 !important;
+    border-color: #00E5FF !important;
+    font-weight: 900 !important;
+    box-shadow: 0 0 15px #00E5FF, 0 0 25px rgba(0, 229, 255, 0.5) !important;
+}
+
+.dataTables_wrapper .pagination .page-item.disabled .page-link,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    background: rgba(5, 5, 5, 0.6) !important;
+    color: rgba(0, 229, 255, 0.3) !important;
+    border-color: rgba(0, 229, 255, 0.15) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+    box-shadow: none !important;
+}
+
+/* ====================================================================
+   CYBER-CINEMATIC PROCESSBAR & ENCRYPTION STATUS OVERLAY
+   (Matching encryptstatus.jpg & cyber-processbar-ui-design.jpg)
+   ==================================================================== */
+div.dataTables_processing {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 420px !important;
+    max-width: 95% !important;
+    height: auto !important;
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 1px solid #FF3333 !important;
+    box-shadow: 0 0 30px rgba(255, 51, 51, 0.5), inset 0 0 15px rgba(255, 51, 51, 0.2) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 1050 !important;
+    color: #00E5FF !important;
+    font-family: 'Roboto Mono', 'VT323', monospace !important;
+    backdrop-filter: blur(14px) !important;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)) !important;
+}
+
+.cyber-proc-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.cyber-proc-header {
+    background: #FF3333;
+    color: #000000;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 900;
+    text-align: center;
+    padding: 8px 15px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+}
+
+.cyber-proc-content {
+    padding: 20px;
+}
+
+.cyber-proc-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+}
+
+.cyber-proc-status-title {
+    color: #00E5FF;
+    letter-spacing: 3px;
+}
+
+.cyber-proc-status-pct {
+    color: #00FF66;
+    font-weight: bold;
+    text-shadow: 0 0 12px #00FF66;
+}
+
+.cyber-proc-bar-frame {
+    background: rgba(10, 20, 30, 0.9);
+    border: 1px solid #00E5FF;
+    height: 24px;
+    padding: 3px;
+    position: relative;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3) inset;
+}
+
+.cyber-proc-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00FF66 0%, #00E5FF 60%, #FFB000 100%);
+    box-shadow: 0 0 15px #00FF66;
+    transition: width 0.25s linear;
+    clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+
+.cyber-proc-logs {
+    font-family: 'VT323', monospace;
+    font-size: 0.95rem;
+    color: #00FF66;
+    border-top: 1px dashed rgba(0, 229, 255, 0.3);
+    padding-top: 10px;
+    min-height: 40px;
+    line-height: 1.2;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+}

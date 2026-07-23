@@ -9,7 +9,7 @@ using System.Linq.Dynamic.Core;
 namespace DigiPOSE.Areas.Administrator.Controllers
 {
     [Area("Administrator")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Super Admin, Administrator, Branch Manager")]
     public class UsersController : Controller
     {
         private readonly DigiPoseDbContext _context;

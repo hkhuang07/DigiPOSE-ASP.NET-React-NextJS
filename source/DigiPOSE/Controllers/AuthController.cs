@@ -24,10 +24,10 @@ namespace DigiPOSE.Controllers
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return LocalRedirect(returnUrl ?? "/Administrator");
+                return LocalRedirect(returnUrl ?? "/Home/DashboardRouter");
             }
 
-            ViewBag.ReturnUrl = returnUrl ?? "/Administrator";
+            ViewBag.ReturnUrl = returnUrl ?? "/Home/DashboardRouter";
             return View();
         }
 
@@ -39,17 +39,23 @@ namespace DigiPOSE.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra tài khoản tồn tại và phải đang Active (Xóa mềm Check)
+                // Kiểm tra tài khoản tồn tại (không xét IsActive ngay ở đây để lấy thông báo chi tiết)
                 var user = await _context.Users
                     .Include(u => u.Role)
                         .ThenInclude(r => r!.PermissionRoles!)
                             .ThenInclude(pr => pr.Permission)
                     .Include(u => u.Branch)
-                    .SingleOrDefaultAsync(u => u.UserName == model.Username && u.IsActive);
+                    .SingleOrDefaultAsync(u => u.UserName == model.Username);
 
                 if (user == null || !BC.Verify(model.Password, user.PasswordHash))
                 {
-                    TempData["ErrorMessage"] = "Account does not exist, is disabled, or password is incorrect.";
+                    TempData["ErrorMessage"] = "Sai tên đăng nhập hoặc mật khẩu.";
+                    return View(model);
+                }
+
+                if (!user.IsActive)
+                {
+                    TempData["ErrorMessage"] = "Tài khoản của bạn đang chờ Quản trị viên phê duyệt.";
                     return View(model);
                 }
 
@@ -89,7 +95,7 @@ namespace DigiPOSE.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                return LocalRedirect(model.ReturnUrl ?? "/Administrator");
+                return LocalRedirect(model.ReturnUrl ?? "/Home/DashboardRouter");
             }
 
             return View(model);
@@ -121,22 +127,21 @@ namespace DigiPOSE.Controllers
                     return View(model);
                 }
 
-                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
-                
                 var newUser = new User
                 {
                     UserName = model.Username,
                     FullName = model.FullName,
                     Email = model.Email,
                     PasswordHash = BC.HashPassword(model.Password),
-                    IsActive = true,
-                    RoleId = defaultRole?.RoleId ?? 0
+                    IsActive = false,
+                    RoleId = 99,
+                    BranchId = 1 // Default HQ branch
                 };
                 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
                 
-                TempData["SuccessMessage"] = "Registration successful. Please login.";
+                TempData["SuccessMessage"] = "Registration successful! Please wait for administrator account approval.";
                 return RedirectToAction("Login");
             }
             return View(model);

@@ -244,37 +244,77 @@ $(document).ready(function () {
         lockFormSubmit($form);
     });
 
-    // 5. GLOBAL DATATABLES INITIALIZATION
-    if ($.fn.DataTable && $('.datatable').length > 0) {
-        $('.datatable').DataTable({
+    // 5. GLOBAL DATATABLES CYBER HUD OVERRIDES & INITIALIZATION
+    if ($.fn.DataTable) {
+        var cyberProcHtml = `
+            <div class="cyber-proc-box">
+                <div class="cyber-proc-header">ENCRYPTING</div>
+                <div class="cyber-proc-content">
+                    <div class="cyber-proc-status-row">
+                        <span class="cyber-proc-status-title">STATUS:</span>
+                        <span class="cyber-proc-status-pct cyber-proc-pct-val">40%</span>
+                    </div>
+                    <div class="cyber-proc-bar-frame">
+                        <div class="cyber-proc-bar-fill cyber-proc-fill-val" style="width: 40%;"></div>
+                    </div>
+                    <div class="cyber-proc-logs">
+                        <div class="cyber-proc-log-line">> TELEMETRY: SYNCING DATABASE CLUSTER...</div>
+                    </div>
+                </div>
+            </div>`;
+
+        $.extend(true, $.fn.dataTable.defaults, {
             language: {
-                search: "Search:",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "Showing 0 to 0 of 0 entries",
-                infoFiltered: "(filtered from _MAX_ total entries)",
+                processing: cyberProcHtml,
+                search: "SEARCH:",
+                lengthMenu: "SHOW _MENU_ RECORDS",
+                info: "SHOWING _START_ TO _END_ OF _TOTAL_ ENTITIES",
+                infoEmpty: "SHOWING 0 TO 0 OF 0 ENTITIES",
+                infoFiltered: "(FILTERED FROM _MAX_ TOTAL ENTITIES)",
                 paginate: {
-                    first: "First",
-                    last: "Last",
-                    next: "Next",
-                    previous: "Previous"
+                    first: "FIRST",
+                    last: "LAST",
+                    next: "NEXT",
+                    previous: "PREV"
                 }
-            },
-            dom: "<'row'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4 text-center'B><'col-sm-12 col-md-4'f>>" +
-                 "<'row'<'col-sm-12'tr>>" +
-                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            buttons: [
-                {
-                    extend: 'copy',
-                    text: '<i class="fa-solid fa-copy"></i> Copy',
-                    className: 'btn btn-sm btn-outline-info me-1'
-                },
-                {
-                    extend: 'excel',
-                    text: '<i class="fa-solid fa-file-excel"></i> Excel',
-                    className: 'btn btn-sm btn-outline-success'
-                }
-            ]
+            }
+        });
+
+        // Dynamic Processing HUD Animation Ticker
+        $(document).on('processing.dt', function (e, settings, processing) {
+            var $wrapper = $(settings.nTableWrapper);
+            var $proc = $wrapper.find('.dataTables_processing');
+            if (processing) {
+                var pct = 25;
+                var logs = [
+                    "> SYSTEM_INIT: CONNECTING SQL CLUSTER...",
+                    "> DATA_STREAM: DE-SERIALIZING RECORD STREAM...",
+                    "> SECURITY_CHECK: VERIFYING TELEMETRY SIGNATURE...",
+                    "> STATUS: 100% SUCCESS"
+                ];
+                var logIdx = 0;
+
+                $proc.find('.cyber-proc-pct-val').text('25%');
+                $proc.find('.cyber-proc-fill-val').css('width', '25%');
+
+                var timer = setInterval(function () {
+                    pct += Math.floor(Math.random() * 25) + 15;
+                    if (pct > 95) pct = 95;
+
+                    $proc.find('.cyber-proc-pct-val').text(pct + '%');
+                    $proc.find('.cyber-proc-fill-val').css('width', pct + '%');
+
+                    if (logIdx < logs.length) {
+                        $proc.find('.cyber-proc-log-line').text(logs[logIdx]);
+                        logIdx++;
+                    }
+                }, 100);
+
+                $proc.data('cyber-timer', timer);
+            } else {
+                var timer = $proc.data('cyber-timer');
+                if (timer) clearInterval(timer);
+            }
         });
     }
 

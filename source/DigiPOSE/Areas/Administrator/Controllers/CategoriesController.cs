@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 namespace DigiPOSE.Areas.Administrator.Controllers
 {
     [Area("Administrator")]
-    [Authorize(Roles = "Administrator, Branch Manager")]
+    [Authorize(Roles = "Super Admin, Administrator, Branch Manager, POS Operator, Warehouse, Catalog, Accountant")]
     public class CategoriesController : Controller
     {
         private readonly DigiPoseDbContext _context;
