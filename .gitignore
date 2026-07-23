@@ -97,3 +97,6 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# Ignore EF Core Migrations
+source/DigiPOSE/Migrations/
