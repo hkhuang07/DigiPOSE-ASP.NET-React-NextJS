@@ -40,6 +40,7 @@ namespace DigiPOSE.Models
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceStatus> InvoiceStatuses { get; set; }
         public DbSet<InvoiceType> InvoiceTypes { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,6 +84,7 @@ namespace DigiPOSE.Models
             modelBuilder.Entity<Invoice>().ToTable("Invoices");
             modelBuilder.Entity<InvoiceStatus>().ToTable("InvoiceStatuses");
             modelBuilder.Entity<InvoiceType>().ToTable("InvoiceTypes");
+            modelBuilder.Entity<Subscription>().ToTable("Subscriptions");
 
             // 1. CHỐNG XÓA DÂY CHUYỀN (NO CASCADE DELETE) - BẢO VỆ DỮ LIỆU KẾ TOÁN
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -130,6 +132,7 @@ namespace DigiPOSE.Models
             // Tìm kiếm nhanh
             modelBuilder.Entity<Customer>().HasIndex(c => c.PhoneNumber);
             modelBuilder.Entity<Customer>().HasIndex(c => c.TaxCode);
+            modelBuilder.Entity<Subscription>().HasIndex(s => new { s.CustomerId, s.ProductId });
 
             // 4. CHUẨN HÓA TỰ ĐỘNG DECIMAL (CHỐNG LỖI ROUND-OFF KẾ TOÁN)
             foreach (var property in modelBuilder.Model.GetEntityTypes()

@@ -1,4 +1,4 @@
-﻿@model DigiPOSE.Models.InvoiceType
+@model DigiPOSE.Models.InvoiceType
 <div class="modal-content" style="border-color:rgba(255,51,51,0.6);">
     <div class="modal-header" style="border-bottom-color:rgba(255,51,51,0.4);">
         <h5 class="modal-title" style="color:#FF3333;"><i class="fa-solid fa-triangle-exclamation me-2"></i> CONFIRM REMOVAL</h5>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="modal-footer" style="gap:8px;">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
         <form class="ajax-modal-form d-inline" asp-action="Delete" asp-controller="InvoiceTypes" asp-route-id="@Model.InvoiceTypeId" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn-cyber-danger">
@@ -24,5 +24,6 @@
         </form>
     </div>
 </div>
+
 
 

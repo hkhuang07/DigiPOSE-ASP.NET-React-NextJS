@@ -88,9 +88,9 @@
                     <input asp-for="DebtBalance" class="form-control form-cyber-control" type="number" step="any" placeholder="0.00" />
                     <span asp-validation-for="DebtBalance" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-6 mb-2">
+                <div class="col-md-12 mb-2 mt-3 pt-3" style="border-top: 1px dashed rgba(0, 229, 255, 0.3);">
                     <label asp-for="Notes" class="form-cyber-label">NOTES / REMARKS</label>
-                    <textarea asp-for="Notes" class="form-control form-cyber-control" rows="2" placeholder="Customer notes"></textarea>
+                    <textarea asp-for="Notes" class="form-control form-cyber-control" rows="3" placeholder="Customer notes"></textarea>
                     <span asp-validation-for="Notes" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
             </div>
@@ -101,10 +101,11 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
             <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE CUSTOMER</button>
         </div>
     </form>
 </div>
+
 
 

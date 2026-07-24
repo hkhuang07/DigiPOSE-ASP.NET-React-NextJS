@@ -5,15 +5,33 @@
         <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:40%;">@Html.DisplayNameFor(model => model.InventoryId)</td><td>@Model.InventoryId</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Product)</td><td style="font-weight:600;">@Model.Product?.ProductName</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Branch)</td><td>@Model.Branch?.BranchName</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.StockQuantity)</td><td style="color:@(Model.StockQuantity <= Model.MinStockLevel ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.3rem;">@Model.StockQuantity</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.MinStockLevel)</td><td style="color:#FFB000; font-family:'VT323'; font-size:1.3rem;">@Model.MinStockLevel</td></tr>
-        </table>
+        <div style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 229, 255, 0.3); padding: 1.25rem;">
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">INVENTORY ID:</div>
+                <div class="col-8" style="font-family:'VT323'; font-size:1.4rem; color:#FFF;">#@Model.InventoryId.ToString("D4")</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">PRODUCT:</div>
+                <div class="col-8" style="font-family:'Rajdhani'; font-size:1.1rem; font-weight:bold; color:#FFF;">@(Model.Product != null ? Model.Product.ProductName : "N/A")</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">BRANCH:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#FFF;">@(Model.Branch != null ? Model.Branch.BranchName : "N/A")</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">STOCK QUANTITY:</div>
+                <div class="col-8" style="color:@(Model.StockQuantity <= Model.MinStockLevel ? "#FF3333" : "#00FF66"); font-family:'VT323'; font-size:1.3rem;">@Model.StockQuantity</div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">MIN STOCK LEVEL:</div>
+                <div class="col-8" style="color:#FFB000; font-family:'VT323'; font-size:1.3rem;">@Model.MinStockLevel</div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark me-1"></i> CLOSE
+        </button>
     </div>
 </div>
+

@@ -93,7 +93,11 @@ namespace DigiPOSE.Areas.Administrator.Controllers
         public IActionResult Create()
         {
             LoadViewBags();
-            return PartialView("_CreateOrEditPartial", new Shift());
+            var now = DateTime.Now;
+            return PartialView("_CreateOrEditPartial", new Shift { 
+                StartTime = new DateTime(now.Year, now.Month, now.Day, 7, 0, 0),
+                EndTime = new DateTime(now.Year, now.Month, now.Day, 23, 0, 0)
+            });
         }
 
         [HttpPost, ValidateAntiForgeryToken]

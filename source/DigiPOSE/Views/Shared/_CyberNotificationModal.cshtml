@@ -57,8 +57,9 @@
             box.style.borderColor = 'rgba(0, 255, 0, 0.3)';
             titleText.style.color = '#00FF00';
             icon.className = 'fa-solid fa-circle-check me-2';
-            icon.style.color = '#00FF00';
+            icon.style.color = '#00FF66';
             confirmBtn.className = 'btn-cyber-success';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00FF66 !important; border-bottom: 1px solid #00FF66 !important; border-left: none !important; border-right: none !important; color: #00FF66 !important; background: #0A0A0A !important;');
         } else if (type === 'error' || type === 'danger' || type === 'red') {
             card.style.borderColor = '#FF3333';
             header.style.borderBottomColor = 'rgba(255, 51, 51, 0.3)';
@@ -66,8 +67,14 @@
             titleText.style.color = '#FF3333';
             icon.className = 'fa-solid fa-triangle-exclamation me-2';
             icon.style.color = '#FF3333';
-            confirmBtn.className = 'btn-cyber-danger';
-        } else if (type === 'warning' || type === 'orange' || type === 'amber') {
+            if (title && title.toUpperCase().indexOf('NETWORK FAULT') !== -1) {
+                confirmBtn.className = 'btn-cyber-success';
+                confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00FF66 !important; border-bottom: 1px solid #00FF66 !important; border-left: none !important; border-right: none !important; color: #00FF66 !important; background: #0A0A0A !important;');
+            } else {
+                confirmBtn.className = 'btn-cyber-danger';
+                confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #FF3333 !important; border-bottom: 1px solid #FF3333 !important; border-left: none !important; border-right: none !important; color: #FF3333 !important; background: #330000 !important;');
+            }
+        } else if (type === 'warning' || type === 'orange' || type === 'amber' || type === 'deactivate') {
             card.style.borderColor = '#FFB000';
             header.style.borderBottomColor = 'rgba(255, 176, 0, 0.3)';
             box.style.borderColor = 'rgba(255, 176, 0, 0.3)';
@@ -75,6 +82,7 @@
             icon.className = 'fa-solid fa-triangle-exclamation me-2';
             icon.style.color = '#FFB000';
             confirmBtn.className = 'btn-cyber-warning';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #FFB000 !important; border-bottom: 1px solid #FFB000 !important; border-left: none !important; border-right: none !important; color: #FFB000 !important; background: #331a00 !important;');
         } else {
             card.style.borderColor = '#00E5FF';
             header.style.borderBottomColor = 'rgba(0, 229, 255, 0.3)';
@@ -83,6 +91,7 @@
             icon.className = 'fa-solid fa-circle-info me-2';
             icon.style.color = '#00E5FF';
             confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00E5FF !important; border-bottom: 1px solid #00E5FF !important; border-left: none !important; border-right: none !important; color: #00E5FF !important; background: #001a2b !important;');
         }
 
         var modalEl = document.getElementById('cyberNotificationModal');
@@ -104,8 +113,8 @@
         var cancelBtn = document.getElementById('cyberNotifyCancelBtn');
 
         if (cancelBtn) {
-            cancelBtn.style.display = 'inline-flex';
             cancelBtn.className = 'btn-cyber-cancel';
+            cancelBtn.setAttribute('style', 'display: inline-flex !important; padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;');
             cancelBtn.innerHTML = '<i class="fa-solid fa-xmark me-1"></i> ' + cancelText.toUpperCase();
         }
 
@@ -125,6 +134,7 @@
             icon.className = 'fa-solid fa-circle-check me-2';
             icon.style.color = '#00FF00';
             confirmBtn.className = 'btn-cyber-success';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00FF00 !important; border-bottom: 1px solid #00FF00 !important; border-left: none !important; border-right: none !important; color: #00FF00 !important; background: #000000 !important;');
         } else if (type === 'danger' || type === 'red' || type === 'error') {
             card.style.borderColor = '#FF3333';
             header.style.borderBottomColor = 'rgba(255, 51, 51, 0.3)';
@@ -132,8 +142,14 @@
             titleText.style.color = '#FF3333';
             icon.className = 'fa-solid fa-triangle-exclamation me-2';
             icon.style.color = '#FF3333';
-            confirmBtn.className = 'btn-cyber-danger';
-        } else if (type === 'warning' || type === 'orange' || type === 'amber') {
+            if (title && title.toUpperCase().indexOf('NETWORK FAULT') !== -1) {
+                confirmBtn.className = 'btn-cyber-success';
+                confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00FF66 !important; border-bottom: 1px solid #00FF66 !important; border-left: none !important; border-right: none !important; color: #00FF66 !important; background: #0A0A0A !important;');
+            } else {
+                confirmBtn.className = 'btn-cyber-danger';
+                confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #FF3333 !important; border-bottom: 1px solid #FF3333 !important; border-left: none !important; border-right: none !important; color: #FF3333 !important; background: #330000 !important;');
+            }
+        } else if (type === 'warning' || type === 'orange' || type === 'amber' || type === 'deactivate' || (confirmText && confirmText.toUpperCase().indexOf('DEACTIVAT') !== -1)) {
             card.style.borderColor = '#FFB000';
             header.style.borderBottomColor = 'rgba(255, 176, 0, 0.3)';
             box.style.borderColor = 'rgba(255, 176, 0, 0.3)';
@@ -141,6 +157,7 @@
             icon.className = 'fa-solid fa-triangle-exclamation me-2';
             icon.style.color = '#FFB000';
             confirmBtn.className = 'btn-cyber-warning';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #FFB000 !important; border-bottom: 1px solid #FFB000 !important; border-left: none !important; border-right: none !important; color: #FFB000 !important; background: #331a00 !important;');
         } else {
             card.style.borderColor = '#00E5FF';
             header.style.borderBottomColor = 'rgba(0, 229, 255, 0.3)';
@@ -149,6 +166,7 @@
             icon.className = 'fa-solid fa-circle-question me-2';
             icon.style.color = '#00E5FF';
             confirmBtn.className = 'btn-cyber-primary';
+            confirmBtn.setAttribute('style', 'padding: 6px 20px; font-size: 0.85rem; border-top: 1px solid #00E5FF !important; border-bottom: 1px solid #00E5FF !important; border-left: none !important; border-right: none !important; color: #00E5FF !important; background: #001a2b !important;');
         }
 
         var modalEl = document.getElementById('cyberNotificationModal');

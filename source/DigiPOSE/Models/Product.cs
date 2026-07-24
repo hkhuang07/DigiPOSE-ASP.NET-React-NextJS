@@ -74,10 +74,10 @@ namespace DigiPOSE.Models
         [DataType(DataType.MultilineText)]        
         public string? Description { get; set; }
 
-        [Display(Name = "Min Stock Level")] 
-        public int MinStockLevel { get; set; } = 0;
-        [Display(Name = "Max Stock Level")] 
-        public int MaxStockLevel { get; set; } = 1000;
+        //[Display(Name = "Min Stock Level")] 
+        //public int MinStockLevel { get; set; } = 0;
+        //[Display(Name = "Max Stock Level")] 
+        //public int MaxStockLevel { get; set; } = 1000;
 
         [Display(Name = "Business status")]
         public bool IsActive { get; set; } = true;

@@ -14,17 +14,17 @@
         <div class="modal-body">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3" style="font-family:'Roboto Mono'; font-size:0.85rem;"></div>
             <div class="row g-2">
-                <div class="col-md-4 mb-2">
+                <div class="col-md-6 mb-2">
                     <label asp-for="SKU" class="form-cyber-label">@Html.DisplayNameFor(model => model.SKU) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="SKU" class="form-control form-cyber-control" placeholder="e.g. SKU-001" />
                     <span asp-validation-for="SKU" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-6 mb-2">
                     <label asp-for="Barcode" class="form-cyber-label"></label>
                     <input asp-for="Barcode" class="form-control form-cyber-control" placeholder="Barcode" />
                     <span asp-validation-for="Barcode" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-6 mb-2">
                     <label asp-for="BasePrice" class="form-cyber-label">@Html.DisplayNameFor(model => model.BasePrice) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="BasePrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="BasePrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
@@ -34,26 +34,12 @@
                     <input asp-for="CostPrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="CostPrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-3 mb-2">
-                    <label asp-for="MinStockLevel" class="form-cyber-label"></label>
-                    <input asp-for="MinStockLevel" class="form-control form-cyber-control" type="number" min="0" />
-                    <span asp-validation-for="MinStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <label asp-for="MaxStockLevel" class="form-cyber-label"></label>
-                    <input asp-for="MaxStockLevel" class="form-control form-cyber-control" type="number" min="0" />
-                    <span asp-validation-for="MaxStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
-                </div>
                 <div class="col-12 mb-2">
                     <label asp-for="ProductName" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductName) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="ProductName" class="form-control form-cyber-control" placeholder="Full product name" id="productNameInput" />
                     <span asp-validation-for="ProductName" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-12 mb-2">
-                    <label asp-for="Description" class="form-cyber-label"></label>
-                    <textarea asp-for="Description" class="form-control form-cyber-control" rows="2" placeholder="Product details / specifications"></textarea>
-                    <span asp-validation-for="Description" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
-                </div>
+
                 <div class="col-md-6 mb-2">
                     <label asp-for="CategoryId" class="form-cyber-label">@Html.DisplayNameFor(model => model.CategoryId) <span style="color:#FF3333;">*</span></label>
                     <select asp-for="CategoryId" class="form-select form-cyber-control" asp-items="ViewBag.CategoryId"><option value="">-- SELECT --</option></select>
@@ -94,6 +80,12 @@
                     <span asp-validation-for="ImageUpload" class="text-danger"></span>
                 </div>
                 
+                <div class="col-12 mb-2 mt-3 pt-3" style="border-top: 1px dashed rgba(0, 229, 255, 0.3);">
+                    <label asp-for="Description" class="form-cyber-label"></label>
+                    <textarea asp-for="Description" class="form-control form-cyber-control" rows="5" placeholder="Product details / specifications"></textarea>
+                    <span asp-validation-for="Description" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
+                </div>
+                
                 <div class="col-12 mb-2 d-flex align-items-center gap-3">
                     <label asp-for="IsActive" class="form-cyber-label mb-0"></label>
                     <input asp-for="IsActive" type="checkbox" class="form-check-input form-check-cyber" />
@@ -101,8 +93,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
             <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE PRODUCT</button>
         </div>
     </form>
 </div>
+

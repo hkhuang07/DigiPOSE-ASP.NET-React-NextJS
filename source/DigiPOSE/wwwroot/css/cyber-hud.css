@@ -862,8 +862,8 @@ button[type="submit"]:has(.fa-toggle-on):hover,
 }
 
 /* Universal Modal Cancel / Dismiss / Close Button Override (Aliceblue + Dark Grey BG) */
-.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning),
-.modal button[data-bs-dismiss="modal"].btn-cyber-primary,
+.modal-cyber button[data-bs-dismiss="modal"].btn-cyber-cancel,
+.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning):not(.btn-cyber-orange):not(.btn-cyber-deactivate):not(.btn-cyber-primary),
 .modal button[data-bs-dismiss="modal"].btn-secondary {
     background: #222222 !important;
     background-color: #222222 !important;
@@ -887,8 +887,8 @@ button[type="submit"]:has(.fa-toggle-on):hover,
     gap: 8px;
 }
 
-.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning):hover,
-.modal button[data-bs-dismiss="modal"].btn-cyber-primary:hover,
+.modal-cyber button[data-bs-dismiss="modal"].btn-cyber-cancel:hover,
+.modal-cyber button[data-bs-dismiss="modal"]:not(.btn-close-cyber):not(.btn-cyber-success):not(.btn-cyber-danger):not(.btn-cyber-warning):not(.btn-cyber-orange):not(.btn-cyber-deactivate):not(.btn-cyber-primary):hover,
 .modal button[data-bs-dismiss="modal"].btn-secondary:hover {
     background: aliceblue !important;
     background-color: aliceblue !important;
@@ -1383,4 +1383,44 @@ div.dataTables_processing {
 .cyber-proc-dots {
     color: #00FF00 !important;
     font-weight: bold;
+}
+/* CKEDITOR CYBER THEME OVERRIDE */
+.ck.ck-editor {
+    border: 1px solid rgba(0, 229, 255, 0.3) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1) inset !important;
+}
+.ck.ck-toolbar {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.3) !important;
+    border-radius: 4px 4px 0 0 !important;
+}
+.ck.ck-toolbar .ck.ck-button {
+    color: #00E5FF !important;
+}
+.ck.ck-toolbar .ck.ck-button:hover,
+.ck.ck-toolbar .ck.ck-button.ck-on {
+    background: rgba(0, 229, 255, 0.2) !important;
+    color: #FFF !important;
+    border-radius: 4px !important;
+}
+.ck.ck-toolbar .ck-icon {
+    fill: #00E5FF !important;
+}
+.ck.ck-toolbar .ck.ck-button:hover .ck-icon,
+.ck.ck-toolbar .ck.ck-button.ck-on .ck-icon {
+    fill: #FFF !important;
+}
+.ck.ck-editor__main .ck-content {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: #A0C0CE !important;
+    font-family: 'Roboto Mono', monospace !important;
+    border: none !important;
+    min-height: 120px;
+    border-radius: 0 0 4px 4px !important;
+}
+.ck.ck-editor__main .ck-content:focus {
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2) inset !important;
+    outline: none !important;
 }

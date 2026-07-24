@@ -89,7 +89,7 @@
                             var editUrl = '@Url.Action("Edit", "Categories")/' + r.categoryId;
                             var deleteUrl = '@Url.Action("Delete", "Categories")/' + r.categoryId;
                             return '<div style="text-align:center;">'
-                                 + '<button type="button" class="btn-cyber-primary btn-show-modal me-1" data-url="' + detailsUrl + '" style="padding: 4px 10px; font-size: 0.75rem; border-color:#00FF66; color:#00FF66;"><i class="fa-solid fa-eye"></i> INFO</button> '
+                                 + '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> '
                                  + '<button type="button" class="btn-cyber-primary btn-show-modal me-1" data-url="' + editUrl + '" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fa-solid fa-pen-to-square"></i> EDIT</button> ' 
                                  + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fa-solid fa-trash"></i> DELETE</button>'
                                  + '</div>'; 
@@ -107,3 +107,4 @@
         });
     </script>
 }
+

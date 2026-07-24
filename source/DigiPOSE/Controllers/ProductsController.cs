@@ -79,8 +79,6 @@ namespace DigiPOSE.Controllers
                     CostPrice = p.CostPrice,
                     BasePrice = p.BasePrice,
                     Barcode = p.Barcode,
-                    MinStockLevel = p.MinStockLevel,
-                    MaxStockLevel = p.MaxStockLevel,
                     Description = p.Description,
                     RowVersion = p.RowVersion,
                     IsActive = p.IsActive

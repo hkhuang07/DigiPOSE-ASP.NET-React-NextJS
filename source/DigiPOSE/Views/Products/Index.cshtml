@@ -38,8 +38,6 @@
                     <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.Barcode)</th>
                     <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.BasePrice)</th>
                     <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.CostPrice)</th>
-                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.MinStockLevel)</th>
-                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.MaxStockLevel)</th>
                     <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.IsActive)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
@@ -90,8 +88,6 @@
                     { data: 'barcode', name: 'Barcode' },
                     { data: 'basePrice', name: 'BasePrice', render: $.fn.dataTable.render.number(',', '.', 0, '') },
                     { data: 'costPrice', name: 'CostPrice', render: $.fn.dataTable.render.number(',', '.', 0, '') },
-                    { data: 'minStockLevel', name: 'MinStockLevel' },
-                    { data: 'maxStockLevel', name: 'MaxStockLevel' },
                     { 
                         data: 'isActive', 
                         name: 'IsActive',
@@ -102,10 +98,12 @@
                         searchable: false, 
                         orderable: false, 
                         render: function (d, t, r) { 
+                            var detailsUrl = '@Url.Action("Details", "Products")/' + r.productId;
                             var editUrl = '@Url.Action("Edit", "Products")/' + r.productId;
                             var deleteUrl = '@Url.Action("Delete", "Products")/' + r.productId;
-                            return '<button class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
-                                 + '<button class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'; 
+                            return '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> ' 
+                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
+                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'; 
                         } 
                     }                        
                 ],
@@ -137,3 +135,4 @@
         }); 
     </script>
 }
+

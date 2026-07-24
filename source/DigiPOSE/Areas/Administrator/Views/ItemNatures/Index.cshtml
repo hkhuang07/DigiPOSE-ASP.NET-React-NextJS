@@ -1,6 +1,8 @@
 @model IEnumerable<DigiPOSE.Models.ItemNature>
 @{ ViewData["Title"] = "Item Natures"; }
 
+@Html.AntiForgeryToken()
+
 <div class="cyber-panel">
     <div class="cyber-panel-header">
         <div class="cyber-panel-title"><i class="fa-solid fa-tags"></i> ITEM NATURES</div>
@@ -8,7 +10,7 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <button type="button" class="btn-cyber-success btn-show-modal" data-url="@Url.Action("Create", "ItemNatures")">
-            <i class="fa-solid fa-plus me-1"></i> ADD NEW NATURE
+            <i class="fa-solid fa-plus me-1"></i> ADD NEW ITEM NATURE
         </button>
         <div style="font-family:'Roboto Mono'; font-size:0.85rem; color:#00E5FF; white-space:nowrap;">
             TOTAL RECORDS: <strong id="totalRecordsCount" style="color:#FFF; font-family:'VT323'; font-size:1.3rem;">--</strong>
@@ -50,7 +52,19 @@
                     { data: null, name: null, sortable: false, render: (d, t, r, meta) => meta.row + meta.settings._iDisplayStart + 1 },
                     { data: 'natureName', name: 'NatureName', render: d => `<span style="font-family:'Rajdhani'; font-weight:600; color:#FFF; white-space:nowrap;"><i class="fa-solid fa-tag me-2 text-cyan"></i>${d}</span>` },
                     { data: 'taxXmlCode', name: 'TaxXmlCode', render: d => `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d || ""}</span>` },
-                    { data: 'isActive', name: 'IsActive', render: d => d ? '<span class="badge bg-success">ACTIVE</span>' : '<span class="badge bg-danger">INACTIVE</span>' },
+                    { 
+                        data: 'isActive', 
+                        name: 'IsActive',
+                        render: (d, t, r) => {
+                            var antiForgery = $('input[name="__RequestVerificationToken"]').val() || '';
+                            return `<form class="toggle-active-form" action="/Administrator/ItemNatures/ToggleActive/${r.natureId || r.NatureId}" method="post" style="display:inline; text-align:center;">
+                                        <input name="__RequestVerificationToken" type="hidden" value="${antiForgery}" />
+                                        <button type="submit" class="badge ${d ? "bg-success" : "bg-secondary"} border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                            ${d ? "ACTIVE" : "INACTIVE"}
+                                        </button>
+                                    </form>`;
+                        }
+                    },
                     { 
                         data: null, 
                         searchable: false, 
@@ -60,7 +74,7 @@
                             var editUrl = '@Url.Action("Edit", "ItemNatures")/' + r.natureId;
                             var deleteUrl = '@Url.Action("Delete", "ItemNatures")/' + r.natureId;
                             return '<div style="text-align:center;">'
-                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                                 + '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> '
                                  + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
                                  + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'
                                  + '</div>'; 
@@ -78,3 +92,4 @@
         });
     </script>
 }
+

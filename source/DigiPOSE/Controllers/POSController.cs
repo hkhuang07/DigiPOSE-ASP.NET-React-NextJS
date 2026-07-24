@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DigiPOSE.Controllers
 {
     [Authorize(Policy = "POS.Order.Create")]
-    public class POSController : Controller
+    public class PosController : Controller
     {
         public IActionResult Index()
         {

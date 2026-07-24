@@ -26,7 +26,6 @@
         <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
             <tr><td style="color:#00E5FF; width:40%;">BARCODE</td><td>@(string.IsNullOrEmpty(Model.Barcode) ? "N/A" : Model.Barcode)</td></tr>
             <tr><td style="color:#00E5FF;">COST PRICE (GIÁ VỐN)</td><td style="color:#FFB000; font-family:'VT323'; font-size:1.2rem;">@string.Format("{0:N0}", Model.CostPrice) VNĐ</td></tr>
-            <tr><td style="color:#00E5FF;">STOCK THRESHOLD</td><td>Min: @Model.MinStockLevel | Max: @Model.MaxStockLevel</td></tr>
             <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Category)</td><td>@Model.Category?.CategoryName</td></tr>
             <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.ProductType)</td><td>@Model.ProductType?.TypeName</td></tr>
             <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.Unit)</td><td>@Model.Unit?.UnitName</td></tr>
@@ -37,6 +36,7 @@
         </table>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
     </div>
 </div>
+

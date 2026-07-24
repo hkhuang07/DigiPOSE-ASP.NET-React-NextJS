@@ -419,6 +419,11 @@
         </footer>
     </div>
 
+    <!-- Global AntiForgeryToken Provider -->
+    <div style="display:none;" id="globalAntiforgeryContainer">
+        @Html.AntiForgeryToken()
+    </div>
+
     <!-- Shared Global Notification Modal -->
     @await Html.PartialAsync("_CyberNotificationModal")
 

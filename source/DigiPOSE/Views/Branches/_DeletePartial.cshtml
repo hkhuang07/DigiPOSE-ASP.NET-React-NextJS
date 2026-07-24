@@ -15,12 +15,21 @@
         </div>
     </div>
     <div class="modal-footer" style="gap:8px;">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
         <form class="ajax-modal-form d-inline" asp-action="ToggleActive" asp-controller="Branches" asp-route-id="@Model.BranchId" method="post">
             @Html.AntiForgeryToken()
-            <button type="submit" class="btn-cyber-primary" style="border-color:#FFB000;color:#FFB000;">
-                <i class="fa-solid fa-toggle-off me-1"></i> @(Model.IsActive ? "DEACTIVATE" : "ACTIVATE")
-            </button>
+            @if (Model.IsActive)
+            {
+                <button type="submit" class="btn-cyber-warning" style="border-top: 1px solid #FFB000 !important; border-bottom: 1px solid #FFB000 !important; border-left: none !important; border-right: none !important; color: #FFB000 !important; background: #331a00 !important;">
+                    <i class="fa-solid fa-toggle-off me-1"></i> DEACTIVATE
+                </button>
+            }
+            else
+            {
+                <button type="submit" class="btn-cyber-success" style="border-top: 1px solid #00FF66 !important; border-bottom: 1px solid #00FF66 !important; border-left: none !important; border-right: none !important; color: #00FF66 !important; background: #0A0A0A !important;">
+                    <i class="fa-solid fa-toggle-on me-1"></i> ACTIVATE
+                </button>
+            }
         </form>
         <form class="ajax-modal-form d-inline" asp-action="Delete" asp-controller="Branches" asp-route-id="@Model.BranchId" method="post">
             @Html.AntiForgeryToken()
@@ -30,3 +39,4 @@
         </form>
     </div>
 </div>
+

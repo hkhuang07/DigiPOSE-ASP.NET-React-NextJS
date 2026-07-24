@@ -74,7 +74,7 @@
                             var detailsUrl = '@Url.Action("Details", "Users")/' + r.userId;
                             var editUrl = '@Url.Action("Edit", "Users")/' + r.userId;
                             var deleteUrl = '@Url.Action("Delete", "Users")/' + r.userId;
-                            return '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                            return '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> '
                                  + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
                                  + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'; 
                         } 
@@ -91,3 +91,4 @@
         });
     </script>
 }
+

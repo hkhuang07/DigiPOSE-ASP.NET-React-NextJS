@@ -1,4 +1,4 @@
-﻿@model DigiPOSE.Models.TaxType
+@model DigiPOSE.Models.TaxType
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title"><i class="fa-solid fa-percent text-cyan me-2"></i> @(Model.TaxTypeId == 0 ? "ADD NEW" : "EDIT") TAXTYPE</h5>
@@ -30,9 +30,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
             <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE</button>
         </div>
     </form>
 </div>
+
 

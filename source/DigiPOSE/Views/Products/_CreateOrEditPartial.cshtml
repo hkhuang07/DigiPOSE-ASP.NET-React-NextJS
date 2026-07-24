@@ -34,16 +34,6 @@
                     <input asp-for="CostPrice" class="form-control form-cyber-control" type="number" step="any" min="0" />
                     <span asp-validation-for="CostPrice" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
                 </div>
-                <div class="col-md-3 mb-2">
-                    <label asp-for="MinStockLevel" class="form-cyber-label"></label>
-                    <input asp-for="MinStockLevel" class="form-control form-cyber-control" type="number" min="0" />
-                    <span asp-validation-for="MinStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <label asp-for="MaxStockLevel" class="form-cyber-label"></label>
-                    <input asp-for="MaxStockLevel" class="form-control form-cyber-control" type="number" min="0" />
-                    <span asp-validation-for="MaxStockLevel" class="text-danger" style="font-family:'Roboto Mono'; font-size:0.8rem;"></span>
-                </div>
                 <div class="col-12 mb-2">
                     <label asp-for="ProductName" class="form-cyber-label">@Html.DisplayNameFor(model => model.ProductName) <span style="color:#FF3333;">*</span></label>
                     <input asp-for="ProductName" class="form-control form-cyber-control" placeholder="Full product name" id="productNameInput" />
@@ -101,8 +91,9 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
+            <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CANCEL</button>
             <button type="submit" class="btn-cyber-success"><i class="fa-solid fa-floppy-disk me-1"></i> SAVE PRODUCT</button>
         </div>
     </form>
 </div>
+

@@ -20,6 +20,7 @@
                     <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.StartTime)</th>
                     <th style="white-space:nowrap;">@Html.DisplayNameFor(model => model.EndTime)</th>
                     <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.StartCash)</th>
+                    <th style="white-space:nowrap; text-align:right;">@Html.DisplayNameFor(model => model.EndCash)</th>
                     <th style="width:120px; text-align:center; white-space:nowrap;">ACTIONS</th>
                 </tr>
             </thead>
@@ -52,6 +53,7 @@
                     { data: 'startTime', name: 'StartTime', render: d => d ? `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d.replace('T', ' ')}</span>` : '' },
                     { data: 'endTime', name: 'EndTime', render: d => d ? `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d.replace('T', ' ')}</span>` : '<span style="color:#A0C0CE; font-family:\'Roboto Mono\'; font-size:0.85rem;">---</span>' },
                     { data: 'startCash', name: 'StartCash', render: d => d !== null ? `<span style="color:#00FF66; font-family:'VT323'; font-size:1.1rem; float:right;">${$.fn.dataTable.render.number(',', '.', 0, '').display(d)}</span>` : '' },
+                    { data: 'endCash', name: 'EndCash', render: d => d !== null ? `<span style="color:#FFB000; font-family:'VT323'; font-size:1.1rem; float:right;">${$.fn.dataTable.render.number(',', '.', 0, '').display(d)}</span>` : '' },
                     { 
                         data: null, 
                         searchable: false, 
@@ -60,7 +62,7 @@
                             var detailsUrl = '@Url.Action("Details", "Shifts")/' + r.shiftId;
                             var editUrl = '@Url.Action("Edit", "Shifts")/' + r.shiftId;
                             var deleteUrl = '@Url.Action("Delete", "Shifts")/' + r.shiftId;
-                            return '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                            return '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> '
                                  + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
                                  + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'; 
                         } 
@@ -77,3 +79,4 @@
         });
     </script>
 }
+

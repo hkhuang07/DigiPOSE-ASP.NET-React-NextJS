@@ -105,66 +105,77 @@ namespace DigiPOSE.Areas.Administrator.Controllers
             return View(detail);
         }
 
-        // POST: OrderDetails/Create
+        public async Task<IActionResult> Create()
+        {
+            await PopulateSelectListsAsync();
+            return PartialView("_CreateOrEditPartial", new OrderDetail());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderDetailId,OrderId,ProductId,NatureId,TaxTypeId,Quantity,ProductName,UnitName,UnitPrice,DiscountRate,DiscountAmount,TaxRate,TaxAmount,TotalAmount,Notes,IsFree")] OrderDetail orderDetail)
+        public async Task<IActionResult> Create(OrderDetail model)
         {
             if (ModelState.IsValid)
             {
-                orderDetail.TotalAmount = (orderDetail.Quantity * orderDetail.UnitPrice) - orderDetail.DiscountAmount + orderDetail.TaxAmount;
-                _context.Add(orderDetail);
+                model.TotalAmount = (model.Quantity * model.UnitPrice) - model.DiscountAmount + model.TaxAmount;
+                _context.Add(model);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Json(new { success = true, message = "Created successfully." });
             }
-
-            var details = await _context.OrderDetails
-                .Include(od => od.Order).Include(od => od.Product).Include(od => od.ItemNature).Include(od => od.TaxType).ToListAsync();
             await PopulateSelectListsAsync();
-            return View("Index", details);
+            return PartialView("_CreateOrEditPartial", model);
         }
 
-        // POST: OrderDetails/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var item = await _context.OrderDetails.FindAsync(id);
+            if (item == null) return NotFound();
+            await PopulateSelectListsAsync();
+            return PartialView("_CreateOrEditPartial", item);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderDetailId,OrderId,ProductId,NatureId,TaxTypeId,Quantity,ProductName,UnitName,UnitPrice,DiscountRate,DiscountAmount,TaxRate,TaxAmount,TotalAmount,Notes,IsFree")] OrderDetail orderDetail)
+        public async Task<IActionResult> Edit(int id, OrderDetail model)
         {
-            if (id != orderDetail.OrderDetailId) return NotFound();
+            if (id != model.OrderDetailId) return Json(new { success = false, message = "ID mismatch." });
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    orderDetail.TotalAmount = (orderDetail.Quantity * orderDetail.UnitPrice) - orderDetail.DiscountAmount + orderDetail.TaxAmount;
-                    _context.Update(orderDetail);
+                    model.TotalAmount = (model.Quantity * model.UnitPrice) - model.DiscountAmount + model.TaxAmount;
+                    _context.Update(model);
                     await _context.SaveChangesAsync();
+                    return Json(new { success = true, message = "Updated successfully." });
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderDetailExists(orderDetail.OrderDetailId)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateConcurrencyException) { }
             }
-
-            var details = await _context.OrderDetails
-                .Include(od => od.Order).Include(od => od.Product).Include(od => od.ItemNature).Include(od => od.TaxType).ToListAsync();
             await PopulateSelectListsAsync();
-            return View("Index", details);
+            return PartialView("_CreateOrEditPartial", model);
         }
 
-        // POST: OrderDetails/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+            var item = await _context.OrderDetails.FirstOrDefaultAsync(m => m.OrderDetailId == id);
+            if (item == null) return NotFound();
+            return PartialView("_DeletePartial", item);
+        }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var detail = await _context.OrderDetails.FindAsync(id);
-            if (detail != null)
+            var item = await _context.OrderDetails.FindAsync(id);
+            if (item != null)
             {
-                _context.OrderDetails.Remove(detail);
+                _context.OrderDetails.Remove(item);
                 await _context.SaveChangesAsync();
+                return Json(new { success = true, message = "Deleted successfully." });
             }
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = false, message = "Not found." });
         }
 
         private bool OrderDetailExists(int id)

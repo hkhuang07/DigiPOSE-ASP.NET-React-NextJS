@@ -58,7 +58,7 @@
                         render: function (d, t, r) { 
                             var deleteUrl = '@Url.Action("Delete", "PermissionRoles")?roleId=' + r.roleId + '&permissionId=' + r.permissionId;
                             return '<div style="text-align:center;">'
-                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i> UNASSIGN</button>'
+                                 + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'
                                  + '</div>'; 
                         } 
                     }                        
@@ -74,3 +74,4 @@
         });
     </script>
 }
+

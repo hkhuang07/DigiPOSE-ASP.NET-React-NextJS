@@ -1,6 +1,8 @@
 @model IEnumerable<DigiPOSE.Models.TaxType>
 @{ ViewData["Title"] = "Tax Types"; }
 
+@Html.AntiForgeryToken()
+
 <div class="cyber-panel">
     <div class="cyber-panel-header">
         <div class="cyber-panel-title"><i class="fa-solid fa-percent"></i> TAX TYPES</div>
@@ -52,7 +54,19 @@
                     { data: 'taxName', name: 'TaxName', render: d => `<span style="font-family:'Rajdhani'; font-weight:600; color:#FFF; white-space:nowrap;"><i class="fa-solid fa-percent me-2 text-cyan"></i>${d}</span>` },
                     { data: 'taxPercentage', name: 'TaxPercentage', render: d => `<span style="color:#FFF; font-family:'Roboto Mono'; font-size:0.9rem;">${d}%</span>` },
                     { data: 'taxXmlCode', name: 'TaxXmlCode', render: d => `<span style="color:#A0C0CE; font-family:'Roboto Mono'; font-size:0.85rem;">${d || ""}</span>` },
-                    { data: 'isActive', name: 'IsActive', render: d => d ? '<span class="badge bg-success">ACTIVE</span>' : '<span class="badge bg-danger">INACTIVE</span>' },
+                    { 
+                        data: 'isActive', 
+                        name: 'IsActive',
+                        render: (d, t, r) => {
+                            var antiForgery = $('input[name="__RequestVerificationToken"]').val() || '';
+                            return `<form class="toggle-active-form" action="/Administrator/TaxTypes/ToggleActive/${r.taxTypeId || r.TaxTypeId}" method="post" style="display:inline; text-align:center;">
+                                        <input name="__RequestVerificationToken" type="hidden" value="${antiForgery}" />
+                                        <button type="submit" class="badge ${d ? "bg-success" : "bg-secondary"} border-0" style="cursor:pointer; font-size:0.75rem; padding:4px 8px;" title="Click to toggle status">
+                                            ${d ? "ACTIVE" : "INACTIVE"}
+                                        </button>
+                                    </form>`;
+                        }
+                    },
                     { 
                         data: null, 
                         searchable: false, 
@@ -62,7 +76,7 @@
                             var editUrl = '@Url.Action("Edit", "TaxTypes")/' + r.taxTypeId;
                             var deleteUrl = '@Url.Action("Delete", "TaxTypes")/' + r.taxTypeId;
                             return '<div style="text-align:center;">'
-                                 + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-eye"></i></button> '
+                                 + '<button type="button" class="btn-cyber-info btn-show-modal" data-url="' + detailsUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#00E5FF; color:#00E5FF;"><i class="fa-solid fa-circle-info"></i></button> '
                                  + '<button type="button" class="btn-cyber-primary btn-show-modal" data-url="' + editUrl + '" style="padding:4px 8px; font-size:0.75rem; border-color:#FFB000; color:#FFB000;"><i class="fa-solid fa-pen-to-square"></i></button> ' 
                                  + '<button type="button" class="btn-cyber-danger btn-show-modal" data-url="' + deleteUrl + '" style="padding:4px 8px; font-size:0.75rem;"><i class="fa-solid fa-trash"></i></button>'
                                  + '</div>'; 
@@ -80,3 +94,4 @@
         });
     </script>
 }
+

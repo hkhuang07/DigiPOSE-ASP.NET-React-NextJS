@@ -5,22 +5,61 @@
         <button type="button" class="btn-close-cyber" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-        <table class="table-cyber" style="font-family:'Roboto Mono'; font-size:0.9rem;">
-            <tr><td style="color:#00E5FF; width:35%;">@Html.DisplayNameFor(model => model.ManufacturerId)</td><td>@Model.ManufacturerId</td></tr>
-            <tr><td style="color:#00E5FF;">@Html.DisplayNameFor(model => model.ManufacturerName)</td><td style="font-weight:600;">@Model.ManufacturerName</td></tr>
-            <tr><td style="color:#00E5FF;">CONTACT PERSON</td><td>@(string.IsNullOrEmpty(Model.ContactPerson) ? "N/A" : Model.ContactPerson)</td></tr>
-            <tr><td style="color:#00E5FF;">PHONE</td><td>@(string.IsNullOrEmpty(Model.Phone) ? "N/A" : Model.Phone)</td></tr>
-            <tr><td style="color:#00E5FF;">EMAIL</td><td>@(string.IsNullOrEmpty(Model.Email) ? "N/A" : Model.Email)</td></tr>
-            <tr><td style="color:#00E5FF;">ADDRESS</td><td>@(string.IsNullOrEmpty(Model.Address) ? "N/A" : Model.Address)</td></tr>
-            <tr><td style="color:#00E5FF;">TAX CODE</td><td>@(string.IsNullOrEmpty(Model.TaxCode) ? "N/A" : Model.TaxCode)</td></tr>
-            <tr><td style="color:#00E5FF;">WEBSITE</td><td>@(string.IsNullOrEmpty(Model.Website) ? "N/A" : Model.Website)</td></tr>
-            <tr><td style="color:#00E5FF;">SLUG</td><td>@(string.IsNullOrEmpty(Model.Slug) ? "N/A" : Model.Slug)</td></tr>
-            <tr><td style="color:#00E5FF;">LOGO URL</td><td>@(string.IsNullOrEmpty(Model.ImageUrl) ? "N/A" : Model.ImageUrl)</td></tr>
-            <tr><td style="color:#00E5FF;">DESCRIPTION</td><td>@(string.IsNullOrEmpty(Model.Description) ? "N/A" : Model.Description)</td></tr>
-            <tr><td style="color:#00E5FF;">STATUS</td><td><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></td></tr>
-        </table>
+        <div style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 229, 255, 0.3); padding: 1.25rem;">
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">MANUFACTURER ID:</div>
+                <div class="col-8" style="font-family:'VT323'; font-size:1.4rem; color:#FFF;">#@Model.ManufacturerId.ToString("D4")</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">MANUFACTURER NAME:</div>
+                <div class="col-8" style="font-family:'Rajdhani'; font-size:1.1rem; font-weight:bold; color:#FFF;">@Model.ManufacturerName</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">CONTACT PERSON:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#FFF;">@(string.IsNullOrEmpty(Model.ContactPerson) ? "N/A" : Model.ContactPerson)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">PHONE:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#FFF;">@(string.IsNullOrEmpty(Model.Phone) ? "N/A" : Model.Phone)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">EMAIL:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE; word-break:break-word;">@(string.IsNullOrEmpty(Model.Email) ? "N/A" : Model.Email)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">ADDRESS:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#FFF; word-break:break-word;">@(string.IsNullOrEmpty(Model.Address) ? "N/A" : Model.Address)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">TAX CODE:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#FFB000; font-weight:600;">@(string.IsNullOrEmpty(Model.TaxCode) ? "N/A" : Model.TaxCode)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">WEBSITE:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE; word-break:break-word;">@(string.IsNullOrEmpty(Model.Website) ? "N/A" : Model.Website)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">SLUG:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#00FF66;">@(string.IsNullOrEmpty(Model.Slug) ? "N/A" : Model.Slug)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">LOGO URL:</div>
+                <div class="col-8" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE; word-break:break-word;">@(string.IsNullOrEmpty(Model.ImageUrl) ? "N/A" : Model.ImageUrl)</div>
+            </div>
+            <div class="row mb-3 align-items-center">
+                <div class="col-4" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase;">STATUS:</div>
+                <div class="col-8"><span class="badge @(Model.IsActive ? "bg-success" : "bg-secondary")">@(Model.IsActive ? "ACTIVE" : "INACTIVE")</span></div>
+            </div>
+            <div class="row mt-3 pt-3" style="border-top: 1px dashed rgba(0, 229, 255, 0.3);">
+                <div class="col-12" style="color:#00E5FF; font-family:'Orbitron'; font-size:0.75rem; text-transform:uppercase; margin-bottom:10px;">DESCRIPTION:</div>
+                <div class="col-12" style="font-family:'Roboto Mono'; font-size:0.9rem; color:#A0C0CE; word-break:break-word;">
+                    @(string.IsNullOrEmpty(Model.Description) || Model.Description == "<p>NO Description</p>" ? Html.Raw("N/A") : Html.Raw(Model.Description))
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn-cyber-primary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
+        <button type="button" class="btn-cyber-cancel" data-bs-dismiss="modal" style="border-top: 1px solid aliceblue !important; border-bottom: 1px solid aliceblue !important; border-left: none !important; border-right: none !important; color: aliceblue !important; background: #222222 !important;"><i class="fa-solid fa-xmark me-1"></i> CLOSE</button>
     </div>
 </div>
+

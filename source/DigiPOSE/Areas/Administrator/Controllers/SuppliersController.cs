@@ -59,6 +59,8 @@ namespace DigiPOSE.Areas.Administrator.Controllers
                     SupplierId = m.SupplierId,
                     SupplierName = m.SupplierName,
                     Phone = m.Phone,
+                    ContactPerson = m.ContactPerson,
+                    Email = m.Email,
                     DebtBalance = m.DebtBalance,
                     IsActive = m.IsActive
                 }).ToList();

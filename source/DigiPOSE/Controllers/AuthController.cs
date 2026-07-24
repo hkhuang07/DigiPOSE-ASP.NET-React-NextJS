@@ -49,13 +49,13 @@ namespace DigiPOSE.Controllers
 
                 if (user == null || !BC.Verify(model.Password, user.PasswordHash))
                 {
-                    TempData["ErrorMessage"] = "Sai tên đăng nhập hoặc mật khẩu.";
+                    TempData["ErrorMessage"] = "Invalid username or password.";
                     return View(model);
                 }
 
                 if (!user.IsActive)
                 {
-                    TempData["ErrorMessage"] = "Tài khoản của bạn đang chờ Quản trị viên phê duyệt.";
+                    TempData["ErrorMessage"] = "Your account is pending administrator approval.";
                     return View(model);
                 }
 

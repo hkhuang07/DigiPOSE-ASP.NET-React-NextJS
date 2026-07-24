@@ -136,7 +136,7 @@ $(document).ready(function () {
                 else if (typeof response === 'object' && !response.success) {
                     unlockFormSubmit($form);
                     if (typeof showCyberNotify === 'function') {
-                        showCyberNotify('Validation Fault', response.message, 'warning');
+                        showCyberNotify('Validation Fault', response.message, 'green');
                     }
                 }
                 // CASE C: SERVER RETURNS HTML PARTIAL VIEW (MODELSTATE INVALID WITH INLINE ERRORS)
@@ -190,11 +190,17 @@ $(document).ready(function () {
             }
 
             var tokenInput = form.querySelector('[name=__RequestVerificationToken]');
-            var token = tokenInput ? tokenInput.value : '';
+            var token = (tokenInput && tokenInput.value) ? tokenInput.value : ($('input[name="__RequestVerificationToken"]').first().val() || '');
+            
+            var postData = $form.serialize();
+            if (token && (!postData || postData.indexOf('__RequestVerificationToken') === -1)) {
+                postData = (postData ? postData + '&' : '') + '__RequestVerificationToken=' + encodeURIComponent(token);
+            }
+
             $.ajax({
                 url: form.action,
                 type: 'POST',
-                data: $form.serialize(),
+                data: postData,
                 headers: { "X-Requested-With": "XMLHttpRequest", "RequestVerificationToken": token },
                 success: function (d) {
                     if (typeof d === 'object' && d.success) {
@@ -213,7 +219,7 @@ $(document).ready(function () {
                 error: function (xhr) {
                     unlockFormSubmit($form);
                     if (typeof showCyberNotify === 'function') {
-                        showCyberNotify('NETWORK FAULT', 'Communication error with server.', 'error');
+                        showCyberNotify('NETWORK FAULT', 'Communication error with server.', 'green');
                     }
                 }
             });

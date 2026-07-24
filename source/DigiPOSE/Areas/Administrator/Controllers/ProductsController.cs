@@ -81,8 +81,8 @@ namespace DigiPOSE.Areas.Administrator.Controllers
                     CostPrice = p.CostPrice,
                     BasePrice = p.BasePrice,
                     Barcode = p.Barcode,
-                    MinStockLevel = p.MinStockLevel,
-                    MaxStockLevel = p.MaxStockLevel,
+                    //MinStockLevel = p.MinStockLevel,
+                    //MaxStockLevel = p.MaxStockLevel,
                     Description = p.Description,
                     RowVersion = p.RowVersion,
                     IsActive = p.IsActive
@@ -118,6 +118,11 @@ namespace DigiPOSE.Areas.Administrator.Controllers
         {
             if (string.IsNullOrWhiteSpace(model.Slug))
                 model.Slug = SlugHelper.GenerateSlug(model.ProductName);
+            
+            // Auto-populate Min and Max stock levels
+            //model.MinStockLevel = 0;
+            //model.MaxStockLevel = 999999;
+
             ModelState.Remove("Slug");
             ModelState.Remove("RowVersion");
 
@@ -166,6 +171,7 @@ namespace DigiPOSE.Areas.Administrator.Controllers
 
             if (string.IsNullOrWhiteSpace(model.Slug))
                 model.Slug = SlugHelper.GenerateSlug(model.ProductName);
+            
             
             ModelState.Remove("Slug");
             ModelState.Remove("RowVersion");
