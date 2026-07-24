@@ -15,6 +15,10 @@ namespace DigiPOSE.Models
         [Display(Name = "Product Type")] 
         [Required(ErrorMessage = "Please select product type.")]
         public int ProductTypeId { get; set; }
+
+        [Display(Name = "Item Nature")]
+        [Required(ErrorMessage = "Please select item nature (Physical/Digital).")]
+        public int ItemNatureId { get; set; }
         
         [Display(Name = "Unit of Measurement")]
         [Required(ErrorMessage = "Please select unit of measurement.")]
@@ -90,6 +94,7 @@ namespace DigiPOSE.Models
         public Unit? Unit { get; set; }
         public Manufacturer? Manufacturer { get; set; }
         public ProductType? ProductType { get; set; }
+        public ItemNature? ItemNature { get; set; }
 
         public ICollection<ProductInventory>? ProductInventories { get; set; }
         public ICollection<StockVoucherDetail>? StockVoucherDetails { get; set; }
